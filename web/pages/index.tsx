@@ -1,6 +1,5 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
 
 const Home: NextPage = () => {
   return (
@@ -9,9 +8,8 @@ const Home: NextPage = () => {
         <title>Snooker Scoreboard</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main>
-        <p>scoreboard dyal snooker</p>
+      <main className="flex items-center justify-center mx-auto h-screen">
+        <p className="text-blue-500 text-3xl font-bold">Snooker Scoreboard</p>
       </main>
     </div>
   );
