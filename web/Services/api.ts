@@ -1,4 +1,4 @@
-import Axios from 'axios';
+import axios from 'axios';
 
 export const url = 'http://localhost:5000';
 
@@ -14,7 +14,7 @@ if (token) {
   headers['authorization'] = `Bearer ${token}`;
 }
 
-const api = Axios.create({
+const api = axios.create({
   baseURL: url,
   headers: headers,
 });
