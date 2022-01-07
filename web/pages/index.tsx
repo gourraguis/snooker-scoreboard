@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Header from '../components/Header';
+import History from '../components/History';
 import Middel from '../components/Middel';
 import Player from '../components/Player';
 
@@ -22,8 +23,7 @@ const Home: NextPage = () => {
               <Player player="2" />
             </div>
             <Middel />
-            {/* Middel Section */}
-            {/* History */}
+            <History />
           </div>
           {/* Balls */}
         </main>
