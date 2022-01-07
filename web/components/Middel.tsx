@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { selectedBallState } from '../atoms/selectedBallState';
 
 const Middel = () => {
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
   const [startTimer, setStartTimer] = useState(true);
+  const ball = useRecoilValue(selectedBallState);
 
   useEffect(() => {
     let myInterval = setInterval(() => {
@@ -17,6 +20,7 @@ const Middel = () => {
       clearInterval(myInterval);
     };
   });
+
   return (
     <div
       className="grid grid-row-3 border-[1px] 
@@ -29,8 +33,13 @@ const Middel = () => {
           {minutes} : {seconds}
         </h1>
       </div>
-      <div className="w-full flex justify-center items-center">
-        <h1 className="text-primary-w font-semibold text-4xl py-4">LAST 7</h1>
+      <div className="w-full flex flex-col justify-center items-center">
+        <h1 className="text-primary-w font-semibold text-4xl py-4">LAST</h1>
+        <div
+          className={`text-primary-w font-semibold text-4xl py-3 px-6 rounded-full ${ball.color}`}
+        >
+          {ball.val}
+        </div>
       </div>
       <div className="w-full flex justify-center items-center">
         <h1 className="text-primary-w font-semibold text-4xl py-4">SCORE 8</h1>
