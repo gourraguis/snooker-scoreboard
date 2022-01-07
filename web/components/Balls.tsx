@@ -1,13 +1,18 @@
 import { RefreshIcon } from '@heroicons/react/outline';
 import { useRecoilState } from 'recoil';
-import { selectedBallState } from '../atoms/selectedBallState';
+import { scoreState, selectedBallState } from '../atoms/ballState';
 
 const Balls = () => {
   const [lastBall, setLastBall] = useRecoilState(selectedBallState);
+  const [score, setScore] = useRecoilState(scoreState);
   const handleRed = () => {
     setLastBall({
       color: 'bg-red-800',
       val: 1,
+    });
+    let newScore = score.val + 1;
+    setScore({
+      val: newScore,
     });
   };
   const handleYellow = () => {
@@ -15,11 +20,19 @@ const Balls = () => {
       color: 'bg-yellow-400',
       val: 2,
     });
+    let newScore = score.val + 2;
+    setScore({
+      val: newScore,
+    });
   };
   const handleGreen = () => {
     setLastBall({
       color: 'bg-green-600',
       val: 3,
+    });
+    let newScore = score.val + 3;
+    setScore({
+      val: newScore,
     });
   };
   const handleAmber = () => {
@@ -27,11 +40,19 @@ const Balls = () => {
       color: 'bg-amber-900',
       val: 4,
     });
+    let newScore = score.val + 4;
+    setScore({
+      val: newScore,
+    });
   };
   const handleBlue = () => {
     setLastBall({
       color: 'bg-blue-600',
       val: 5,
+    });
+    let newScore = score.val + 5;
+    setScore({
+      val: newScore,
     });
   };
   const handlePink = () => {
@@ -39,11 +60,19 @@ const Balls = () => {
       color: 'bg-pink-300',
       val: 6,
     });
+    let newScore = score.val + 6;
+    setScore({
+      val: newScore,
+    });
   };
   const handleBlack = () => {
     setLastBall({
       color: 'bg-black',
       val: 7,
+    });
+    let newScore = score.val + 7;
+    setScore({
+      val: newScore,
     });
   };
   return (
