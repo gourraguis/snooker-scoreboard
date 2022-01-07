@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Header from '../components/Header';
+import Player from '../components/Player';
 
 const Home: NextPage = () => {
   return (
@@ -13,11 +14,11 @@ const Home: NextPage = () => {
         <div className="flex items-center justify-center">
           <Header name={'Table 1'} />
         </div>
-        <main>
-          <div>
-            <div>
-              {/* Player 1 */}
-              {/* Player 2 */}
+        <main className="flex flex-col justify-center">
+          <div className="grid grid-cols-3 gap-4">
+            <div className="ml-10">
+              <Player player="1" />
+              <Player player="2" />
             </div>
             {/* Middel Section */}
             {/* History */}
