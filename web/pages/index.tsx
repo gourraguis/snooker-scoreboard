@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Header from '../components/Header';
+import Middel from '../components/Middel';
 import Player from '../components/Player';
 
 const Home: NextPage = () => {
@@ -15,11 +16,12 @@ const Home: NextPage = () => {
           <Header name={'Table 1'} />
         </div>
         <main className="flex flex-col justify-center">
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-3 gap-28">
             <div className="ml-10">
               <Player player="1" />
               <Player player="2" />
             </div>
+            <Middel />
             {/* Middel Section */}
             {/* History */}
           </div>
