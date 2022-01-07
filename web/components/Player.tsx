@@ -5,7 +5,9 @@ import { selectedUserState } from '../atoms/selectedUserState';
 const Player = ({ id, color, score }: any) => {
   const [selectedUser, setSelectedUser] = useRecoilState(selectedUserState);
   const handleUser = () => {
-    setSelectedUser(id);
+    setSelectedUser({
+      selectedUser: id,
+    });
   };
   return (
     <div
@@ -13,7 +15,7 @@ const Player = ({ id, color, score }: any) => {
       className={`flex flex-col justify-center items-center border-[1px] 
         border-primary-w bg-primary-b rounded-lg py-1
         my-8 divide-y divide-primary-w cursor-pointer ${
-          selectedUser === id &&
+          selectedUser.selectedUser === id &&
           'divide-green-600 border-green-600 shadow-md shadow-green-600 '
         }"`}
     >
