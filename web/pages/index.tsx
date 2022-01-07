@@ -1,5 +1,6 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import Header from '../components/Header';
 
 const Home: NextPage = () => {
   return (
@@ -8,9 +9,22 @@ const Home: NextPage = () => {
         <title>Snooker Scoreboard</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex items-center justify-center mx-auto h-screen">
-        <p className="text-blue-500 text-3xl font-bold">Snooker Scoreboard</p>
-      </main>
+      <div className="flex flex-col mx-auto h-screen bg-background-color">
+        <div className="flex items-center justify-center">
+          <Header name={'Table 1'} />
+        </div>
+        <main>
+          <div>
+            <div>
+              {/* Player 1 */}
+              {/* Player 2 */}
+            </div>
+            {/* Middel Section */}
+            {/* History */}
+          </div>
+          {/* Balls */}
+        </main>
+      </div>
     </div>
   );
 };
