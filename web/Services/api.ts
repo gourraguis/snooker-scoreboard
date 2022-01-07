@@ -1,9 +1,8 @@
 import Axios from 'axios';
-import Cookies from 'js-cookie';
 
 export const url = 'http://localhost:5000';
 
-const token = Cookies.get('token');
+const token = localStorage.getItem('token');
 
 const headers = {
   Accept: 'application/json',

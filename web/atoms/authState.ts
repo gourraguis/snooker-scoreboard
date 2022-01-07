@@ -1,7 +1,6 @@
-import Cookies from 'js-cookie';
 import { atom } from 'recoil';
 
-const token = Cookies.get('token');
+const token = localStorage.getItem('token');
 
 export const authState = atom({
   key: 'auth',
