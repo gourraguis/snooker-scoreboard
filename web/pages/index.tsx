@@ -31,7 +31,7 @@ const Home: NextPage = () => {
         <title>Snooker Scoreboard</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex flex-col mx-auto h-screen bg-background-color">
+      <div className="flex flex-col mx-auto h-screen bg-background-color overflow-y-scroll">
         <div className="flex items-center justify-center">
           <Header name={'Table 1'} />
         </div>
