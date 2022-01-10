@@ -3,7 +3,7 @@ import Head from 'next/head';
 import Controls from '../components/Controls';
 import Header from '../components/Header';
 import History from '../components/History';
-import Middel from '../components/Middel';
+import Middle from '../components/Middle';
 import PlayerCard from '../components/PlayerCard';
 
 interface player {
@@ -49,7 +49,7 @@ const Home: NextPage = () => {
                 color={player2.color}
               />
             </div>
-            <Middel />
+            <Middle />
             <History />
           </div>
           <Controls />
