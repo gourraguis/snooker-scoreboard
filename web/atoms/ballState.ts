@@ -3,14 +3,15 @@ import { atom } from 'recoil';
 export const selectedBallState = atom({
   key: 'lastBall',
   default: {
+    id: 0,
     color: '',
-    val: 0,
+    value: 0,
   },
 });
 
 export const scoreState = atom({
   key: 'score',
   default: {
-    val: 0,
+    value: 0,
   },
 });
