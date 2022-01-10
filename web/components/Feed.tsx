@@ -1,9 +1,10 @@
 import { useRecoilValue } from 'recoil';
-import { ballsState } from '../atoms/ballState';
+import { lastBallsState, scoreState } from '../atoms/ballState';
 import Timer from './Timer';
 
 const Feed = () => {
-  const ball = useRecoilValue(ballsState);
+  const ball = useRecoilValue(lastBallsState);
+  const score = useRecoilValue(scoreState);
   return (
     <div
       className="grid grid-row-3 border-[1px] 
@@ -15,14 +16,15 @@ const Feed = () => {
       <div className="w-full flex flex-col justify-center items-center">
         <h1 className="text-primary-w font-semibold text-4xl py-4">LAST</h1>
         <div
-          className={`text-primary-w font-semibold text-4xl py-3 px-6 rounded-full ${ball.color}`}
+          className={`text-primary-w font-semibold text-4xl py-3 px-6 rounded-full`}
+          style={{ backgroundColor: ball.color }}
         >
           {ball.value}
         </div>
       </div>
       <div className="w-full flex justify-center items-center">
         <h1 className="text-primary-w font-semibold text-4xl py-4">
-          SCORE {ball.score}
+          SCORE {score.value}
         </h1>
       </div>
     </div>

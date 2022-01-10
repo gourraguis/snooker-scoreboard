@@ -10,12 +10,12 @@ const PlayerCard = ({ id }: any) => {
       className={`flex flex-col justify-center items-center border-[1px] 
         border-primary-w bg-primary-b rounded-lg py-1
         my-8 divide-y divide-primary-w ${
-          id === currentPlayerId &&
+          id == currentPlayerId &&
           'divide-green-600 border-green-600 shadow-md shadow-green-600 '
         }"`}
     >
       <div className="w-full flex justify-center items-center">
-        <UserIcon className={`w-20 h-20 my-2 ${user[id].color}`} />
+        <UserIcon className={`w-20 h-20 my-2`} />
       </div>
       <div className="w-full flex justify-center items-center">
         <h1 className="text-primary-w font-semibold text-4xl py-4">

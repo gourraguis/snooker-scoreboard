@@ -1,11 +1,17 @@
 import { atom } from 'recoil';
 
-export const ballsState = atom({
+export const lastBallsState = atom({
   key: 'ball',
   default: {
     id: 0,
     color: '',
     value: 0,
-    score: 0,
+  },
+});
+
+export const scoreState = atom({
+  key: 'score',
+  default: {
+    value: 0,
   },
 });

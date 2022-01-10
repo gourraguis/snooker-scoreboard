@@ -2,28 +2,41 @@ import { RefreshIcon } from '@heroicons/react/outline';
 import { useRecoilState } from 'recoil';
 import { Balls } from '../utils/balls';
 import { currentPlayerIdState, playersState } from '../atoms/userState';
-import { ballsState } from '../atoms/ballState';
+import { lastBallsState, scoreState } from '../atoms/ballState';
 
 const Controls = () => {
   const [currentPlayerId, setCurrentPlayerId] =
     useRecoilState(currentPlayerIdState);
   const [playerState, setPlayerState] = useRecoilState(playersState);
-  const [ballState, setBallState] = useRecoilState(ballsState);
+  const [ballState, setBallState] = useRecoilState(lastBallsState);
+  const [score, setScore] = useRecoilState(scoreState);
   const handleScore = (ball: any) => {
-    let newScore = ball.value + ballState.score;
+    let newScore = ball.value + score.value;
     setBallState({
       id: ball.id,
       color: ball.color,
       value: ball.value,
-      score: newScore,
     });
+    setScore({ value: newScore });
   };
 
-  const handleUser = () => {
-    let next;
-    if (currentPlayerId === playerState[0].id) next = playerState[1].id;
-    else next = playerState[0].id;
-    setCurrentPlayerId(next);
+  const switchPlayer = () => {
+    const currentPlayer = playerState.find(({ id }) => currentPlayerId === id)!;
+    const newScore = currentPlayer.score + score.value;
+    setPlayerState([
+      ...playerState.filter(({ id }) => currentPlayerId !== id),
+      {
+        ...currentPlayer,
+        score: newScore,
+      },
+    ]);
+    setScore({ value: 0 });
+    const nextPlayer =
+      currentPlayerId === playerState[0].id
+        ? playerState[1].id
+        : playerState[0].id;
+    setCurrentPlayerId(nextPlayer);
+    console.log(currentPlayer);
   };
   return (
     <div className="flex justify-between items-center px-8 py-3 my-8 mx-20">
@@ -36,9 +49,8 @@ const Controls = () => {
           style={{ backgroundColor: ball.color }}
         ></button>
       ))}
-
       <RefreshIcon
-        onClick={handleUser}
+        onClick={switchPlayer}
         className="w-14 h-14 text-white cursor-pointer"
       />
     </div>
