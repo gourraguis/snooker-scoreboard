@@ -2,8 +2,9 @@ import { RefreshIcon } from '@heroicons/react/outline';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { scoreState, selectedBallState } from '../atoms/ballState';
 import { selectedUserState } from '../atoms/selectedUserState';
+// import { IBall } from '../types/Ball';
 
-const Balls = () => {
+const Controls = () => {
   const [lastBall, setLastBall] = useRecoilState(selectedBallState);
   const [score, setScore] = useRecoilState(scoreState);
   const user = useRecoilValue(selectedUserState);
@@ -12,6 +13,10 @@ const Balls = () => {
       color: 'bg-red-800',
       val: 1,
     });
+
+    // const hadleForm = (e: React.MouseEvent<HTMLElement>) => {
+    //   e.preventDefault();
+    // };
 
     if (user.selectedUser) {
       let newScore = score.val + 1;
@@ -127,4 +132,4 @@ const Balls = () => {
   );
 };
 
-export default Balls;
+export default Controls;
