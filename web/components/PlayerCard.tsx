@@ -7,7 +7,7 @@ import {
   user2PointState,
 } from '../atoms/selectedUserState';
 
-const Player = ({ id, color, score }: any) => {
+const PlayerCard = ({ id, color, score }: any) => {
   const [selectedUser, setSelectedUser] = useRecoilState(selectedUserState);
   const [user1Point, setUser1Point] = useRecoilState(user1PointState);
   const [user2Point, setUser2Point] = useRecoilState(user2PointState);
@@ -64,4 +64,4 @@ const Player = ({ id, color, score }: any) => {
   );
 };
 
-export default Player;
+export default PlayerCard;

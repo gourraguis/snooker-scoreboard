@@ -4,7 +4,7 @@ import Controls from '../components/Controls';
 import Header from '../components/Header';
 import History from '../components/History';
 import Middel from '../components/Middel';
-import Player from '../components/Player';
+import PlayerCard from '../components/PlayerCard';
 
 interface player {
   id: String;
@@ -38,12 +38,12 @@ const Home: NextPage = () => {
         <main className="flex flex-col justify-center">
           <div className="grid grid-cols-3 gap-28">
             <div className="ml-10">
-              <Player
+              <PlayerCard
                 id={player1.id}
                 score={player1.score}
                 color={player1.color}
               />
-              <Player
+              <PlayerCard
                 id={player2.id}
                 score={player2.score}
                 color={player2.color}
