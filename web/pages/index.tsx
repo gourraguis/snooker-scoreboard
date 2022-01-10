@@ -5,26 +5,19 @@ import Header from '../components/Header';
 import History from '../components/History';
 import Feed from '../components/Feed';
 import PlayerCard from '../components/PlayerCard';
-
-interface player {
-  id: String;
-  color: String;
-  score: number;
-}
-
-const player1: player = {
-  id: '1',
-  color: 'text-red-800',
-  score: 36,
-};
-
-const player2: player = {
-  id: '2',
-  color: 'text-blue-800',
-  score: 54,
-};
+import { initialUsers } from '../utils/user';
+import { useRecoilState } from 'recoil';
+import { currentPlayerIdState, playersState } from '../atoms/userState';
+import { useEffect } from 'react';
 
 const Home: NextPage = () => {
+  const [playerState, setPlayerState] = useRecoilState(playersState);
+  const [currentPlayerId, setCurrentPlayerId] =
+    useRecoilState(currentPlayerIdState);
+  useEffect(() => {
+    setPlayerState(initialUsers);
+    setCurrentPlayerId(initialUsers[0].id);
+  }, []);
   return (
     <div>
       <Head>
@@ -38,16 +31,9 @@ const Home: NextPage = () => {
         <main className="flex flex-col justify-center">
           <div className="grid grid-cols-3 gap-28">
             <div className="ml-10">
-              <PlayerCard
-                id={player1.id}
-                score={player1.score}
-                color={player1.color}
-              />
-              <PlayerCard
-                id={player2.id}
-                score={player2.score}
-                color={player2.color}
-              />
+              {playerState?.map((player) => (
+                <PlayerCard id={player.id} key={player.id} />
+              ))}
             </div>
             <Feed />
             <History />

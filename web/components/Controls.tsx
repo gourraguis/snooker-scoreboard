@@ -1,26 +1,21 @@
 import { RefreshIcon } from '@heroicons/react/outline';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { scoreState, selectedBallState } from '../atoms/ballState';
-import { selectedUserState } from '../atoms/selectedUserState';
+import { useRecoilState } from 'recoil';
 import { Balls } from '../utils/balls';
-import { IBall } from '../types/Ball';
+import { currentPlayerIdState, playersState } from '../atoms/userState';
 
 const Controls = () => {
-  const [lastBall, setLastBall] = useRecoilState<IBall>(selectedBallState);
-  const [score, setScore] = useRecoilState(scoreState);
-  const user = useRecoilValue(selectedUserState);
-  const handleScore = (ball: any) => {
-    setLastBall({
-      id: ball.id,
-      value: ball.value,
-      color: ball.color,
-    });
-    if (user.selectedUser) {
-      let newScore = score.value + 1;
-      setScore({
-        value: newScore,
-      });
-    }
+  const [currentPlayerId, setCurrentPlayerId] =
+    useRecoilState(currentPlayerIdState);
+
+  const [playerState, setPlayerState] = useRecoilState(playersState);
+  const handleScore = (ball: any) => {};
+
+  const handleUser = () => {
+    let next;
+    if (currentPlayerId === playerState[0].id) next = playerState[1].id;
+    else next = playerState[0].id;
+    setCurrentPlayerId(next);
+    console.log(currentPlayerId);
   };
   return (
     <div className="flex justify-between items-center px-8 py-3 my-8 mx-20">
@@ -29,10 +24,15 @@ const Controls = () => {
           key={ball.id}
           value={ball.value}
           onClick={() => handleScore(ball)}
-          className={`w-14 h-14 rounded-full ${ball.color}`}
+          className="w-14 h-14 rounded-full"
+          style={{ backgroundColor: ball.color }}
         ></button>
       ))}
-      <RefreshIcon className="w-14 h-14 text-white cursor-pointer" />
+
+      <RefreshIcon
+        onClick={handleUser}
+        className="w-14 h-14 text-white cursor-pointer"
+      />
     </div>
   );
 };

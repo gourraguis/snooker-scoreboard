@@ -2,36 +2,36 @@ export const Balls = [
   {
     id: 1,
     value: 1,
-    color: 'bg-red-800',
+    color: 'rgb(153 27 27)',
   },
   {
     id: 2,
     value: 2,
-    color: 'bg-yellow-400',
+    color: 'rgb(250 204 21)',
   },
   {
     id: 3,
     value: 3,
-    color: 'bg-green-600',
+    color: 'rgb(101 163 13)',
   },
   {
     id: 4,
     value: 4,
-    color: 'bg-amber-900',
+    color: 'rgb(120 53 15)',
   },
   {
     id: 5,
     value: 5,
-    color: 'bg-blue-600',
+    color: 'rgb(37 99 235)',
   },
   {
     id: 6,
     value: 6,
-    color: 'bg-pink-300',
+    color: 'rgb(249 168 212)',
   },
   {
     id: 7,
     value: 7,
-    color: 'bg-black',
+    color: 'rgb(0 0 0)',
   },
 ];

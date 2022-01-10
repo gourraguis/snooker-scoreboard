@@ -1,5 +1,5 @@
 export interface IBall {
-  id: number;
+  id: string;
   value: number;
   color: string;
 }

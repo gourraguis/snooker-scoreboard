@@ -7,15 +7,15 @@ const Timer = () => {
   const [startTimer, setStartTimer] = useState(true);
 
   useEffect(() => {
-    let myInterval = setInterval(() => {
+    const myInterval = setInterval(() => {
       if (startTimer) setSeconds(seconds + 1);
-      let formatted = Moment.utc(seconds * 1000).format('mm:ss');
+      const formatted = Moment.utc(seconds * 1000).format('mm:ss');
       setTimer(formatted);
     }, 1000);
     return () => {
       clearInterval(myInterval);
     };
-  });
+  }, [seconds]);
 
   return (
     <div className="w-full flex justify-center items-center">
