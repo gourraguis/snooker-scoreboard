@@ -39,12 +39,12 @@ const Middel = () => {
         <div
           className={`text-primary-w font-semibold text-4xl py-3 px-6 rounded-full ${ball.color}`}
         >
-          {ball.val}
+          {ball.value}
         </div>
       </div>
       <div className="w-full flex justify-center items-center">
         <h1 className="text-primary-w font-semibold text-4xl py-4">
-          SCORE {score.val}
+          SCORE {score.value}
         </h1>
       </div>
     </div>

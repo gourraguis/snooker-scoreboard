@@ -15,20 +15,20 @@ const PlayerCard = ({ id, color, score }: any) => {
 
   const handleUser = () => {
     if (selectedUser.selectedUser == 1) {
-      let newScore = user1Point.score + lastScore.val;
+      let newScore = user1Point.score + lastScore.value;
       setUser1Point({
         score: newScore,
       });
       setLastScore({
-        val: 0,
+        value: 0,
       });
     } else if (selectedUser.selectedUser == 2) {
-      let newScore = user2Point.score + lastScore.val;
+      let newScore = user2Point.score + lastScore.value;
       setUser2Point({
         score: newScore,
       });
       setLastScore({
-        val: 0,
+        value: 0,
       });
     }
     setSelectedUser({
