@@ -2,7 +2,7 @@ import { useRecoilValue } from 'recoil';
 import { scoreState, selectedBallState } from '../atoms/ballState';
 import Timer from './Timer';
 
-const Middle = () => {
+const Feed = () => {
   const ball = useRecoilValue(selectedBallState);
   const score = useRecoilValue(scoreState);
 
@@ -31,4 +31,4 @@ const Middle = () => {
   );
 };
 
-export default Middle;
+export default Feed;
