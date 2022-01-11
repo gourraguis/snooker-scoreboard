@@ -3,7 +3,7 @@ import Head from 'next/head';
 import Controls from '../components/Controls';
 import Heading from '../components/Header';
 import History from '../components/History';
-import GameDetails from '../components/Feed';
+import GameDetails from '../components/GameDetails';
 import PlayerCard from '../components/PlayerCard';
 import { useRecoilValue } from 'recoil';
 import { playersState } from '../atoms/userState';
