@@ -24,11 +24,11 @@ const Controls = () => {
     const currentPlayer = playerState.find(({ id }) => currentPlayerId === id)!;
     const newScore = currentPlayer.score + score.value;
     setPlayerState([
-      ...playerState.filter(({ id }) => currentPlayerId !== id),
       {
         ...currentPlayer,
         score: newScore,
       },
+      ...playerState.filter(({ id }) => currentPlayerId !== id),
     ]);
     setScore({ value: 0 });
     const nextPlayer =
@@ -36,7 +36,6 @@ const Controls = () => {
         ? playerState[1].id
         : playerState[0].id;
     setCurrentPlayerId(nextPlayer);
-    console.log(currentPlayer);
   };
   return (
     <div className="flex justify-between items-center px-8 py-3 my-8 mx-20">
