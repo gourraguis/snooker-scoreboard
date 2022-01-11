@@ -5,9 +5,6 @@ import { playingHistoryState } from '../atoms/historyState';
 
 const History = () => {
   const history = useRecoilValue(playingHistoryState);
-  useEffect(() => {
-    console.log(history);
-  }, [history]);
   return (
     <div
       className="mr-10 flex flex-col items-center border-[1px] 
