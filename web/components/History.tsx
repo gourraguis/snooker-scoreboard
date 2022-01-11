@@ -1,10 +1,22 @@
 import { UserIcon } from '@heroicons/react/solid';
 import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
-import { playingHistoryState } from '../atoms/historyState';
+import { playingHistoryWithoutCurrentTurnSelector } from '../atoms/historyState';
 
 const History = () => {
-  const history = useRecoilValue(playingHistoryState);
+  const playingHistoryWithoutCurrentTurn = useRecoilValue(
+    playingHistoryWithoutCurrentTurnSelector,
+  );
+  const playingHistoryWithLastFiveTurns =
+    playingHistoryWithoutCurrentTurn.slice(
+      playingHistoryWithoutCurrentTurn.length - 5,
+      playingHistoryWithoutCurrentTurn.length,
+    );
+
+  const shownHistory =
+    playingHistoryWithLastFiveTurns.length > 4
+      ? playingHistoryWithLastFiveTurns
+      : playingHistoryWithoutCurrentTurn;
   return (
     <div
       className="mr-10 flex flex-col items-center border-[1px] 
@@ -15,9 +27,12 @@ const History = () => {
           Historique
         </h1>
       </div>
-      <div className="w-full ml-8 mt-4 overflow-y-auto">
-        {history.map((item) => (
-          <div className="w-full flex justify-start items-center space-x-8 mb-6">
+      <div className="w-full ml-12 mt-8 overflow-y-auto">
+        {shownHistory.map((item, index) => (
+          <div
+            key={index}
+            className="w-full flex justify-start items-center space-x-8 mb-6"
+          >
             <UserIcon
               className={`w-8 h-8 ${
                 item.value === 0 ? 'text-red-800' : 'text-blue-800'

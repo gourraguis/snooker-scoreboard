@@ -23,6 +23,14 @@ export const currentTurnSelector = selector<ITurn>({
   },
 });
 
+export const playingHistoryWithoutCurrentTurnSelector = selector({
+  key: 'playingHistoryWithoutCurrentTurnSelector',
+  get: ({ get }) => {
+    const playingHistory = get(playingHistoryState);
+    return playingHistory.slice(0, playingHistory.length - 1);
+  },
+});
+
 export const lastBallSelector = selector<IBall>({
   key: 'lastBallSelector',
   get: ({ get }) => {
@@ -45,10 +53,8 @@ export const currentScoreSelector = selector<number>({
 export const playerPointsSelector = selector<number[]>({
   key: 'playerPointsSelector',
   get: ({ get }) => {
-    const playingHistory = get(playingHistoryState);
-    const playingHistoryWithoutCurrentTurn = playingHistory.slice(
-      0,
-      playingHistory.length - 1,
+    const playingHistoryWithoutCurrentTurn = get(
+      playingHistoryWithoutCurrentTurnSelector,
     );
 
     const playerZeroScore = playingHistoryWithoutCurrentTurn
@@ -68,3 +74,7 @@ export const playerPointsSelector = selector<number[]>({
     return [playerZeroScore, playerOneScore];
   },
 });
+
+// ToDo: Add state startedAt
+// fach ybda lmatch ndiro moment().toUtc()
+// useCallback (memo func) -> useEffect (seti interval)
