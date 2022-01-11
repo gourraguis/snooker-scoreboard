@@ -6,6 +6,7 @@ const Timer = () => {
   const [seconds, setSeconds] = useState(0);
   const [startTimer, setStartTimer] = useState(true);
 
+  // todo: refactor this to use createdAt instead of tracking seconds
   useEffect(() => {
     const myInterval = setInterval(() => {
       if (startTimer) setSeconds(seconds + 1);
@@ -15,7 +16,7 @@ const Timer = () => {
     return () => {
       clearInterval(myInterval);
     };
-  }, [seconds]);
+  }, []);
 
   return (
     <div className="w-full flex justify-center items-center">

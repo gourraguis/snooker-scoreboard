@@ -1,10 +1,11 @@
 import { useRecoilValue } from 'recoil';
-import { lastBallsState, scoreState } from '../atoms/ballState';
+import { currentScoreSelector, lastBallSelector } from '../atoms/historyState';
 import Timer from './Timer';
 
-const Feed = () => {
-  const ball = useRecoilValue(lastBallsState);
-  const score = useRecoilValue(scoreState);
+const GameDetails = () => {
+  const lastBall = useRecoilValue(lastBallSelector);
+  const currentScore = useRecoilValue(currentScoreSelector);
+
   return (
     <div
       className="grid grid-row-3 border-[1px] 
@@ -15,20 +16,22 @@ const Feed = () => {
       <Timer />
       <div className="w-full flex flex-col justify-center items-center">
         <h1 className="text-primary-w font-semibold text-4xl py-4">LAST</h1>
-        <div
-          className={`text-primary-w font-semibold text-4xl py-3 px-6 rounded-full`}
-          style={{ backgroundColor: ball.color }}
-        >
-          {ball.value}
-        </div>
+        {lastBall && (
+          <div
+            className={`text-primary-w font-semibold text-4xl py-3 px-6 rounded-full`}
+            style={{ backgroundColor: lastBall.color }}
+          >
+            {lastBall.value}
+          </div>
+        )}
       </div>
       <div className="w-full flex justify-center items-center">
         <h1 className="text-primary-w font-semibold text-4xl py-4">
-          SCORE {score.value}
+          SCORE {currentScore}
         </h1>
       </div>
     </div>
   );
 };
 
-export default Feed;
+export default GameDetails;

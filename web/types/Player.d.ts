@@ -1,5 +1,4 @@
 export interface IPlayer {
-  id: string;
-  score: number;
   color: string;
+  turn: 0 | 1;
 }

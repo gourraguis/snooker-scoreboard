@@ -1,49 +1,45 @@
 import { RefreshIcon } from '@heroicons/react/outline';
-import { useRecoilState } from 'recoil';
-import { Balls } from '../utils/balls';
-import { currentPlayerIdState, playersState } from '../atoms/userState';
-import { lastBallsState, scoreState } from '../atoms/ballState';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { balls } from '../utils/balls';
+import { IBall } from '../types/Ball';
+import {
+  currentTurnSelector,
+  playingHistoryState,
+} from '../atoms/historyState';
 
 const Controls = () => {
-  const [currentPlayerId, setCurrentPlayerId] =
-    useRecoilState(currentPlayerIdState);
-  const [playerState, setPlayerState] = useRecoilState(playersState);
-  const [ballState, setBallState] = useRecoilState(lastBallsState);
-  const [score, setScore] = useRecoilState(scoreState);
-  const handleScore = (ball: any) => {
-    let newScore = ball.value + score.value;
-    setBallState({
-      id: ball.id,
-      color: ball.color,
-      value: ball.value,
-    });
-    setScore({ value: newScore });
+  const [playingHistory, setPlayingHistory] =
+    useRecoilState(playingHistoryState);
+  const currentTurn = useRecoilValue(currentTurnSelector);
+
+  const scoreBall = (ball: IBall) => {
+    setPlayingHistory([
+      ...playingHistory.slice(0, playingHistory.length - 1),
+      {
+        value: currentTurn.value,
+        scoredBalls: [...currentTurn.scoredBalls, ball.value],
+      },
+    ]);
   };
 
   const switchPlayer = () => {
-    const currentPlayer = playerState.find(({ id }) => currentPlayerId === id)!;
-    const newScore = currentPlayer.score + score.value;
-    setPlayerState([
+    const nextTurn = ((currentTurn.value + 1) % 2) as 0 | 1;
+    setPlayingHistory([
+      ...playingHistory,
       {
-        ...currentPlayer,
-        score: newScore,
+        value: nextTurn,
+        scoredBalls: [],
       },
-      ...playerState.filter(({ id }) => currentPlayerId !== id),
     ]);
-    setScore({ value: 0 });
-    const nextPlayer =
-      currentPlayerId === playerState[0].id
-        ? playerState[1].id
-        : playerState[0].id;
-    setCurrentPlayerId(nextPlayer);
   };
+
   return (
     <div className="flex justify-between items-center px-8 py-3 my-8 mx-20">
-      {Balls.map((ball) => (
+      {balls.map((ball) => (
         <button
-          key={ball.id}
+          key={ball.value}
           value={ball.value}
-          onClick={() => handleScore(ball)}
+          onClick={() => scoreBall(ball)}
           className="w-14 h-14 rounded-full"
           style={{ backgroundColor: ball.color }}
         ></button>
