@@ -75,6 +75,7 @@ export const playerPointsSelector = selector<number[]>({
   },
 });
 
-// ToDo: Add state startedAt
-// fach ybda lmatch ndiro moment().toUtc()
-// useCallback (memo func) -> useEffect (seti interval)
+export const startTimerState = atom<boolean>({
+  key: 'startTimerState',
+  default: true,
+});
