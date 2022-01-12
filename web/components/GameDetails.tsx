@@ -24,6 +24,9 @@ const GameDetails = () => {
             {lastBall.value}
           </div>
         )}
+        {!lastBall && (
+          <div className="text-primary-w font-semibold text-4xl py-8 px-8 rounded-full bg-white"></div>
+        )}
       </div>
       <div className="w-full flex justify-center items-center">
         <h1 className="text-primary-w font-semibold text-4xl py-4">
