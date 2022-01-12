@@ -1,8 +1,6 @@
 import { UserIcon } from '@heroicons/react/solid';
-import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { playingHistoryWithoutCurrentTurnSelector } from '../atoms/historyState';
-import { balls } from '../utils/balls';
 import Ball from './Ball';
 
 const History = () => {
