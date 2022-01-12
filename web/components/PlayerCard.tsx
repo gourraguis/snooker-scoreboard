@@ -6,14 +6,14 @@ interface PlayerCardProps {
   isCurrent: boolean;
   color: string;
   points: number;
-  name: string;
+  playerName: string;
 }
 
 const PlayerCard: FunctionComponent<PlayerCardProps> = ({
   isCurrent,
   color,
   points,
-  name,
+  playerName,
 }) => {
   return (
     <div
@@ -27,7 +27,9 @@ const PlayerCard: FunctionComponent<PlayerCardProps> = ({
     >
       <div className="w-full flex flex-col justify-center items-center">
         <UserIcon className={`w-16 h-16 my-2 ${color}`} />
-        <h3 className="text-primary-w font-semibold text-2xl mb-4">{name}</h3>
+        <h3 className="text-primary-w font-semibold text-2xl mb-4">
+          {playerName}
+        </h3>
       </div>
       <div className="hidden text-blue-800"></div>
       <div className="hidden text-red-800"></div>

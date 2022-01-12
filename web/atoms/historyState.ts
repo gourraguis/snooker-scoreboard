@@ -76,7 +76,7 @@ export const playerPointsSelector = selector<number[]>({
   },
 });
 
-export const startedAtState = atom<any>({
+export const startedAtState = atom<Date>({
   key: 'startedAtState',
-  default: moment(),
+  default: moment().toDate(),
 });

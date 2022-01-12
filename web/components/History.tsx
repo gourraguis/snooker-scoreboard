@@ -42,12 +42,8 @@ const History = () => {
                 Marque {item.scoredBalls.reduce((a, b) => a + b, 0)} points
               </h3>
               <div className="flex justify-start items-center space-x-1">
-                {item.scoredBalls.map((ball) => (
-                  <Ball
-                    key={ball.value}
-                    size={2}
-                    color={balls.find((b) => b.value === ball)?.color}
-                  />
+                {item.scoredBalls.map((ball, index) => (
+                  <Ball key={index} value={ball} showValue={false} size="sm" />
                 ))}
               </div>
             </div>

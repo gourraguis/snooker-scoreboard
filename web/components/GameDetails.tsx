@@ -17,8 +17,11 @@ const GameDetails = () => {
       <Timer />
       <div className="w-full flex flex-col justify-center items-center">
         <h1 className="text-primary-w font-semibold text-4xl py-4">LAST</h1>
-        {lastBall && <Ball color={lastBall.color} value={lastBall.value} />}
-        {!lastBall && <Ball color="white" size={8} />}
+        {lastBall ? (
+          <Ball value={lastBall.value} showValue={true} />
+        ) : (
+          <Ball value={0} />
+        )}
       </div>
       <div className="w-full flex justify-center items-center">
         <h1 className="text-primary-w font-semibold text-4xl py-4">

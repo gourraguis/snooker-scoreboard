@@ -39,8 +39,7 @@ const Controls = () => {
       {balls.map((ball) => (
         <Ball
           key={ball.value}
-          size={8}
-          color={ball.color}
+          value={ball.value}
           onClick={() => scoreBall(ball)}
         />
       ))}

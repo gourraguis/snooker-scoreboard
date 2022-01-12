@@ -1,17 +1,16 @@
 import { useState, useEffect } from 'react';
-import Moment from 'moment';
+import moment from 'moment';
 import { useRecoilValue } from 'recoil';
 import { startedAtState } from '../atoms/historyState';
 
 const Timer = () => {
   const startedAt = useRecoilValue(startedAtState);
-  const [timerText, setTimerText] = useState('');
+  const [timerText, setTimerText] = useState('00:00');
 
   useEffect(() => {
     if (startedAt) {
       setInterval(() => {
-        let currentTime = Moment();
-        setTimerText(Moment(currentTime).subtract(startedAt).format('mm:ss'));
+        setTimerText(moment(moment().diff(moment(startedAt))).format('mm:ss'));
       }, 1000);
     }
   }, [startedAt]);
