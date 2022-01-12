@@ -35,7 +35,7 @@ const Controls = () => {
   };
 
   return (
-    <div className="flex justify-between items-center px-8 py-3 my-8 mx-20">
+    <div className="flex justify-between items-center px-8 py-3 mx-20">
       {balls.map((ball) => (
         <Ball
           key={ball.value}

@@ -12,21 +12,21 @@ const History = () => {
 
   const historyLength = playingHistoryWithoutCurrentTurn.length;
   const shownHistory = playingHistoryWithoutCurrentTurn.slice(
-    historyLength > 3 ? historyLength - 4 : 0,
+    historyLength > 4 ? historyLength - 5 : 0,
     historyLength,
   );
 
   return (
     <div
       className="mr-10 flex flex-col items-center border-[1px] 
-        border-primary-w bg-primary-b rounded-lg py-3 my-8 h-96"
+        border-primary-w bg-primary-b rounded-lg py-3 my-8 h-[28rem]"
     >
       <div className="w-full border-primary-w border-b-2 pb-2">
         <h1 className="text-primary-w font-semibold text-3xl text-center">
           Historique
         </h1>
       </div>
-      <div className="w-full ml-12 mt-4 overflow-y-auto">
+      <div className="w-full ml-12 mt-8 overflow-y-auto">
         {shownHistory.map((item, index) => (
           <div
             key={index}

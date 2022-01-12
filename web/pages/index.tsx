@@ -36,6 +36,7 @@ const Home: NextPage = () => {
                 <PlayerCard
                   isCurrent={currentTurn.value === player.turn}
                   color={player.color}
+                  name={player.name}
                   points={playerPoints[player.turn]}
                   key={player.turn}
                 />
