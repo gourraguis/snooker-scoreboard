@@ -9,7 +9,7 @@ const History = () => {
   );
   const playingHistoryWithLastFiveTurns =
     playingHistoryWithoutCurrentTurn.slice(
-      playingHistoryWithoutCurrentTurn.length - 5,
+      playingHistoryWithoutCurrentTurn.length - 4,
       playingHistoryWithoutCurrentTurn.length,
     );
 
@@ -27,7 +27,7 @@ const History = () => {
           Historique
         </h1>
       </div>
-      <div className="w-full ml-12 mt-8 overflow-y-auto">
+      <div className="w-full ml-12 mt-4 overflow-y-auto">
         {shownHistory.map((item, index) => (
           <div
             key={index}
@@ -38,9 +38,18 @@ const History = () => {
                 item.value === 0 ? 'text-red-800' : 'text-blue-800'
               } `}
             />
-            <h3 className="text-primary-w">
-              Marque {item.scoredBalls.reduce((a, b) => a + b, 0)} points
-            </h3>
+            <div>
+              <h3 className="text-primary-w">
+                Marque {item.scoredBalls.reduce((a, b) => a + b, 0)} points
+              </h3>
+              <div className="flex justify-start items-center space-x-1">
+                {item.scoredBalls.map((ball) => (
+                  <div className="flex text-primary-w font-semibold text-1xl py-1 px-3 rounded-full bg-slate-600">
+                    {ball}
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         ))}
       </div>
