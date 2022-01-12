@@ -1,5 +1,6 @@
 import { useRecoilValue } from 'recoil';
 import { currentScoreSelector, lastBallSelector } from '../atoms/historyState';
+import Ball from './Ball';
 import Timer from './Timer';
 
 const GameDetails = () => {
@@ -16,17 +17,8 @@ const GameDetails = () => {
       <Timer />
       <div className="w-full flex flex-col justify-center items-center">
         <h1 className="text-primary-w font-semibold text-4xl py-4">LAST</h1>
-        {lastBall && (
-          <div
-            className={`text-primary-w font-semibold text-4xl py-3 px-6 rounded-full`}
-            style={{ backgroundColor: lastBall.color }}
-          >
-            {lastBall.value}
-          </div>
-        )}
-        {!lastBall && (
-          <div className="text-primary-w font-semibold text-4xl py-8 px-8 rounded-full bg-white"></div>
-        )}
+        {lastBall && <Ball color={lastBall.color} value={lastBall.value} />}
+        {!lastBall && <Ball color="white" size={8} />}
       </div>
       <div className="w-full flex justify-center items-center">
         <h1 className="text-primary-w font-semibold text-4xl py-4">
