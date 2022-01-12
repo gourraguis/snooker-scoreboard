@@ -2,21 +2,20 @@ import { UserIcon } from '@heroicons/react/solid';
 import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { playingHistoryWithoutCurrentTurnSelector } from '../atoms/historyState';
+import { balls } from '../utils/balls';
+import Ball from './Ball';
 
 const History = () => {
   const playingHistoryWithoutCurrentTurn = useRecoilValue(
     playingHistoryWithoutCurrentTurnSelector,
   );
-  const playingHistoryWithLastFiveTurns =
-    playingHistoryWithoutCurrentTurn.slice(
-      playingHistoryWithoutCurrentTurn.length - 4,
-      playingHistoryWithoutCurrentTurn.length,
-    );
 
-  const shownHistory =
-    playingHistoryWithLastFiveTurns.length > 4
-      ? playingHistoryWithLastFiveTurns
-      : playingHistoryWithoutCurrentTurn;
+  const historyLength = playingHistoryWithoutCurrentTurn.length;
+  const shownHistory = playingHistoryWithoutCurrentTurn.slice(
+    historyLength > 3 ? historyLength - 4 : 0,
+    historyLength,
+  );
+
   return (
     <div
       className="mr-10 flex flex-col items-center border-[1px] 
@@ -44,9 +43,11 @@ const History = () => {
               </h3>
               <div className="flex justify-start items-center space-x-1">
                 {item.scoredBalls.map((ball) => (
-                  <div className="flex text-primary-w font-semibold text-1xl py-1 px-3 rounded-full bg-slate-600">
-                    {ball}
-                  </div>
+                  <Ball
+                    key={ball.value}
+                    size={2}
+                    color={balls.find((b) => b.value === ball)?.color}
+                  />
                 ))}
               </div>
             </div>

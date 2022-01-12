@@ -6,6 +6,7 @@ import {
   currentTurnSelector,
   playingHistoryState,
 } from '../atoms/historyState';
+import Ball from './Ball';
 
 const Controls = () => {
   const [playingHistory, setPlayingHistory] =
@@ -36,13 +37,12 @@ const Controls = () => {
   return (
     <div className="flex justify-between items-center px-8 py-3 my-8 mx-20">
       {balls.map((ball) => (
-        <button
+        <Ball
           key={ball.value}
-          value={ball.value}
+          size={8}
+          color={ball.color}
           onClick={() => scoreBall(ball)}
-          className="w-14 h-14 rounded-full"
-          style={{ backgroundColor: ball.color }}
-        ></button>
+        />
       ))}
       <RefreshIcon
         onClick={switchPlayer}

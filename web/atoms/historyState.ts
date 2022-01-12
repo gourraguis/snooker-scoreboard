@@ -79,3 +79,7 @@ export const startTimerState = atom<boolean>({
   key: 'startTimerState',
   default: true,
 });
+
+// ToDo: Add state startedAt
+// fach ybda lmatch ndiro moment().toUtc()
+// useCallback (memo func) -> useEffect (seti interval)
