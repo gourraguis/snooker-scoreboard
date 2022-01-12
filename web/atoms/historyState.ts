@@ -1,8 +1,9 @@
 import { atom, selector } from 'recoil';
 import { ITurn } from '../types/History';
-import _ from 'underscore';
+import _, { any } from 'underscore';
 import { EBallValue, IBall } from '../types/Ball';
 import { balls } from '../utils/balls';
+import moment from 'moment';
 
 export const playingHistoryState = atom<ITurn[]>({
   key: 'playingHistoryState',
@@ -75,11 +76,7 @@ export const playerPointsSelector = selector<number[]>({
   },
 });
 
-export const startTimerState = atom<boolean>({
-  key: 'startTimerState',
-  default: true,
+export const startedAtState = atom<any>({
+  key: 'startedAtState',
+  default: moment(),
 });
-
-// ToDo: Add state startedAt
-// fach ybda lmatch ndiro moment().toUtc()
-// useCallback (memo func) -> useEffect (seti interval)

@@ -1,24 +1,20 @@
 import { useState, useEffect } from 'react';
 import Moment from 'moment';
 import { useRecoilValue } from 'recoil';
-import { startTimerState } from '../atoms/historyState';
+import { startedAtState } from '../atoms/historyState';
 
 const Timer = () => {
-  const startTimer = useRecoilValue(startTimerState);
+  const startedAt = useRecoilValue(startedAtState);
   const [timerText, setTimerText] = useState('');
-  const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
-    if (startTimer) {
+    if (startedAt) {
       setInterval(() => {
-        setSeconds((prevSconds) => prevSconds + 1);
+        let currentTime = Moment();
+        setTimerText(Moment(currentTime).subtract(startedAt).format('mm:ss'));
       }, 1000);
     }
-  }, [startTimer]);
-
-  useEffect(() => {
-    setTimerText(Moment.utc(seconds * 1000).format('mm:ss'));
-  }, [seconds]);
+  }, [startedAt]);
 
   return (
     <div className="w-full flex justify-center items-center">
