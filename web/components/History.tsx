@@ -41,7 +41,7 @@ const History = () => {
               </h3>
               <div className="flex justify-start items-center space-x-1">
                 {item.scoredBalls.map((ball, index) => (
-                  <Ball key={index} value={ball} showValue={false} size="sm" />
+                  <Ball key={index} value={ball} size="sm" />
                 ))}
               </div>
             </div>
