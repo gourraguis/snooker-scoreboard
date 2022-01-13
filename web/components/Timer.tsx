@@ -1,26 +1,25 @@
 import { useState, useEffect } from 'react';
-import Moment from 'moment';
+import moment from 'moment';
+import { useRecoilValue } from 'recoil';
+import { startedAtState } from '../atoms/historyState';
 
 const Timer = () => {
-  const [timer, setTimer] = useState('');
-  const [seconds, setSeconds] = useState(0);
-  const [startTimer, setStartTimer] = useState(true);
+  const startedAt = useRecoilValue(startedAtState);
+  const [timerText, setTimerText] = useState('00:00');
 
-  // todo: refactor this to use createdAt instead of tracking seconds
   useEffect(() => {
-    const myInterval = setInterval(() => {
-      if (startTimer) setSeconds(seconds + 1);
-      const formatted = Moment.utc(seconds * 1000).format('mm:ss');
-      setTimer(formatted);
-    }, 1000);
-    return () => {
-      clearInterval(myInterval);
-    };
-  }, []);
+    if (startedAt) {
+      setInterval(() => {
+        setTimerText(moment(moment().diff(moment(startedAt))).format('mm:ss'));
+      }, 1000);
+    }
+  }, [startedAt]);
 
   return (
     <div className="w-full flex justify-center items-center">
-      <h1 className="text-primary-w font-semibold text-5xl py-4">{timer}</h1>
+      <h1 className="text-primary-w font-semibold text-5xl py-4">
+        {timerText}
+      </h1>
     </div>
   );
 };

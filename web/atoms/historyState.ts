@@ -3,6 +3,7 @@ import { ITurn } from '../types/History';
 import _ from 'underscore';
 import { EBallValue, IBall } from '../types/Ball';
 import { balls } from '../utils/balls';
+import moment from 'moment';
 
 export const playingHistoryState = atom<ITurn[]>({
   key: 'playingHistoryState',
@@ -20,6 +21,14 @@ export const currentTurnSelector = selector<ITurn>({
     const playingHistory = get(playingHistoryState);
 
     return _.last(playingHistory)!;
+  },
+});
+
+export const playingHistoryWithoutCurrentTurnSelector = selector({
+  key: 'playingHistoryWithoutCurrentTurnSelector',
+  get: ({ get }) => {
+    const playingHistory = get(playingHistoryState);
+    return playingHistory.slice(0, playingHistory.length - 1);
   },
 });
 
@@ -45,10 +54,8 @@ export const currentScoreSelector = selector<number>({
 export const playerPointsSelector = selector<number[]>({
   key: 'playerPointsSelector',
   get: ({ get }) => {
-    const playingHistory = get(playingHistoryState);
-    const playingHistoryWithoutCurrentTurn = playingHistory.slice(
-      0,
-      playingHistory.length - 1,
+    const playingHistoryWithoutCurrentTurn = get(
+      playingHistoryWithoutCurrentTurnSelector,
     );
 
     const playerZeroScore = playingHistoryWithoutCurrentTurn
@@ -67,4 +74,9 @@ export const playerPointsSelector = selector<number[]>({
 
     return [playerZeroScore, playerOneScore];
   },
+});
+
+export const startedAtState = atom<Date>({
+  key: 'startedAtState',
+  default: moment().toDate(),
 });
