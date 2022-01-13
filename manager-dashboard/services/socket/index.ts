@@ -11,9 +11,9 @@ socket.on('connect', () => {
   console.log('Connected to server')
 })
 
-socket.on('connect_error', () => {
-  console.error('Failed to connect to server')
-})
+// socket.on('connect_error', () => {
+//   console.error('Failed to connect to server')
+// })
 
 socket.on('disconnect', () => {
   console.error('Disconnected from server')
