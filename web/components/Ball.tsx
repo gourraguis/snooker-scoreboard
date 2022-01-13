@@ -10,8 +10,8 @@ interface HeadingProps {
 }
 
 const sizes = {
-  sm: 2,
-  md: 8,
+  sm: 4,
+  md: 16,
 };
 
 const Ball: FunctionComponent<HeadingProps> = ({
@@ -28,8 +28,10 @@ const Ball: FunctionComponent<HeadingProps> = ({
       }}
       className={classNames(
         'mt-1 rounded-full text-primary-w font-semibold text-4xl text-center',
-        !showValue && `w-1 h-1 px-${sizes[size]} py-${sizes[size]}`,
-        showValue && 'py-3 px-6',
+        {
+          [`w-${sizes[size]} h-${sizes[size]} px-2 py-2`]: !showValue,
+        },
+        { ['py-3 px-6']: showValue },
       )}
     >
       {showValue && value}
