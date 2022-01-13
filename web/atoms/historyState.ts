@@ -1,6 +1,6 @@
 import { atom, selector } from 'recoil';
 import { ITurn } from '../types/History';
-import _, { any } from 'underscore';
+import _ from 'underscore';
 import { EBallValue, IBall } from '../types/Ball';
 import { balls } from '../utils/balls';
 import moment from 'moment';
