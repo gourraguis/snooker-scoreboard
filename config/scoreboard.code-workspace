@@ -9,8 +9,8 @@
 			"path": "../api"
 		},
 		{
-			"name": "snooker-scoreboard",
-			"path": "../"
+			"name": "manager-dashboard",
+			"path": "../manager-dashboard"
 		}
 	],
 	"settings": {}
