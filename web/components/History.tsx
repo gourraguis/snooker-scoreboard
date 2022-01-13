@@ -2,6 +2,7 @@ import { UserIcon } from '@heroicons/react/solid';
 import { useRecoilValue } from 'recoil';
 import { playingHistoryWithoutCurrentTurnSelector } from '../atoms/historyState';
 import Ball from './Ball';
+import classNames from 'classnames';
 
 const History = () => {
   const playingHistoryWithoutCurrentTurn = useRecoilValue(
@@ -31,9 +32,10 @@ const History = () => {
             className="w-full flex justify-start items-center space-x-8 mb-6"
           >
             <UserIcon
-              className={`w-8 h-8 ${
-                item.value === 0 ? 'text-red-800' : 'text-blue-800'
-              } `}
+              className={classNames(
+                'w-8 h-8',
+                item.value === 0 ? 'text-red-800' : 'text-blue-800',
+              )}
             />
             <div>
               <h3 className="text-primary-w">
