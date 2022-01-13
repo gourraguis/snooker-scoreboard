@@ -13,9 +13,9 @@ import { Logger } from '@nestjs/common'
 
 @WebSocketGateway({ cors: true, namespace: '/app' })
 export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
+  private logger: Logger = new Logger(AppGateway.name)
   @WebSocketServer()
   server: Server<ClientToServerEvents, ServerToClientEvents, unknown, SocketData>
-  private logger: Logger = new Logger('AppGateway')
 
   afterInit() {
     this.logger.log('Init')
