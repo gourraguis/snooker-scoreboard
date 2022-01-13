@@ -3,7 +3,7 @@ import { IBoard } from '../../common/types/Board'
 
 const socketBoard = io('localhost:5000/board')
 
-const onGetBoard = (data: IBoard) => {
+const onGetBoard = (data: IBoard[]) => {
   console.log(data)
 }
 const onMessage = (serverMessage: string) => {

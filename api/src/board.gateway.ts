@@ -1,5 +1,4 @@
 import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets'
-import { IBoard } from './common/types/Board'
 
 @WebSocketGateway({ cors: true, namespace: 'board' })
 export class BoardGateway {
