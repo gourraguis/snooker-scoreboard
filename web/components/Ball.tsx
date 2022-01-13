@@ -6,7 +6,7 @@ interface HeadingProps {
   value: number;
   showValue?: boolean;
   size?: 'sm' | 'md';
-  onClick?: any;
+  onClick?: () => void;
 }
 
 const sizes = {
