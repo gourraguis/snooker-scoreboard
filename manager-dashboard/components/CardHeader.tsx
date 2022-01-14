@@ -1,13 +1,23 @@
 import { startGame } from '../services/socket'
+import { FunctionComponent } from 'react'
 
-const CardHeader = () => {
+interface HeadingProps {
+  tableName: string
+}
+
+const CardHeader: FunctionComponent<HeadingProps> = ({ tableName }) => {
   const handleStart = () => {
     startGame()
   }
   return (
-    <div className="flex">
-      <h3>Table 1</h3>
-      <button onClick={handleStart}>Restart</button>
+    <div className="flex justify-between items-center mx-10 py-4">
+      <h3 className="text-3xl font-semibold text-primary-w">{tableName}</h3>
+      <button
+        onClick={handleStart}
+        className="text-primary-w text-xl rounded-lg px-4 py-1 border-primary-w border-[1px] hover:bg-black"
+      >
+        Restart
+      </button>
     </div>
   )
 }
