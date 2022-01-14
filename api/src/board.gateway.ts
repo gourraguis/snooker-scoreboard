@@ -18,7 +18,7 @@ export class BoardGateway {
           {
             color: 'text-red-800',
             turn: 0,
-            name: 'Harvey Specter',
+            name: 'Harvey',
             points: 44,
           },
           {
@@ -31,7 +31,7 @@ export class BoardGateway {
       },
       {
         tableName: 'Table 2',
-        startedAt: `Thu Jan 13 2022 13:05:58 GMT+0100 (GMT+01:00)`,
+        startedAt: 'Thu Jan 13 2022 13:05:58 GMT+0100 (GMT+01:00)',
         players: [
           {
             color: 'text-red-800',

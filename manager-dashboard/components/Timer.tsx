@@ -19,7 +19,7 @@ const Timer: FunctionComponent<TimerProps> = ({ startedAt }) => {
 
   return (
     <div className="w-full flex justify-center items-center border-r-[1px] border-l-[1px] border-primary-w">
-      <h1 className="text-primary-w font-semibold text-5xl py-4">{timerText}</h1>
+      <h1 className="text-primary-w font-semibold text-2xl py-4">{timerText}</h1>
     </div>
   )
 }

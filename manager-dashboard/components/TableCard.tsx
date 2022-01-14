@@ -10,7 +10,10 @@ const TableCard = () => {
   return (
     <div className="flex flex-col justify-center items-center w-full mx-5 space-y-8">
       {boards.map((item) => (
-        <div key={item.tableName} className="flex flex-col mx-10 w-full rounded-lg border-2 border-primary-w">
+        <div
+          key={item.tableName}
+          className="flex flex-col mx-10 w-full rounded-lg border-2 border-primary-w bg-primary-b"
+        >
           <CardHeader tableName={item.tableName} />
           <div className="grid grid-cols-3 border-t-2 border-primary-w">
             <Player
