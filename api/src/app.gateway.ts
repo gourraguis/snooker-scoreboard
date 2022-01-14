@@ -29,9 +29,9 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
     this.logger.log(`Client disconnected: ${client.id}`)
   }
 
-  @SubscribeMessage('message')
-  handleMessage(@MessageBody() message: string): void {
-    this.logger.log(`received message: ${message}. Sending response!`)
-    this.server.emit('message', `!!!${message}!!!`)
-  }
+  // @SubscribeMessage('message')
+  // handleMessage(@MessageBody() message: string): void {
+  //   this.logger.log(`received message: ${message}. Sending response!`)
+  //   this.server.emit('message', `!!!${message}!!!`)
+  // }
 }

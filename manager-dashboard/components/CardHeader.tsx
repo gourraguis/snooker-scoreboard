@@ -1,8 +1,8 @@
-import board from '../services/socket/board'
+import { startGame } from '../services/socket'
 
 const CardHeader = () => {
   const handleStart = () => {
-    board.startGame()
+    startGame()
   }
   return (
     <div className="flex">

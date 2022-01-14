@@ -1,35 +1,57 @@
+import { Server, Socket } from 'socket.io'
 import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets'
+import { ClientToServerEvents, ServerToClientEvents, SocketData } from './common/types/sockets'
+import { IBoard } from './common/types/Board'
 
-@WebSocketGateway({ cors: true, namespace: 'board' })
+@WebSocketGateway({ cors: true, namespace: 'manager' })
 export class BoardGateway {
   @WebSocketServer()
-  server
+  server: Server<ClientToServerEvents, ServerToClientEvents, unknown, SocketData>
 
-  @SubscribeMessage('board')
-  handleBoard(): void {
-    const board = {
-      tableName: 'Table 1',
-      startedAt: `Thu Jan 13 2022 13:05:58 GMT+0100 (GMT+01:00)`,
-      players: [
-        {
-          color: 'text-red-800',
-          turn: 0,
-          name: 'Harvey Specter',
-        },
-        {
-          color: 'text-blue-800',
-          turn: 1,
-          name: 'Mike Ross',
-        },
-      ],
-    }
-    this.server.emit('board', board)
+  @SubscribeMessage('fetchBoardsList')
+  fetchBoardsList(): void {
+    const boards: IBoard[] = [
+      {
+        tableName: 'Table 1',
+        startedAt: `Thu Jan 13 2022 13:05:58 GMT+0100 (GMT+01:00)`,
+        players: [
+          {
+            color: 'text-red-800',
+            turn: 0,
+            name: 'Harvey Specter',
+          },
+          {
+            color: 'text-blue-800',
+            turn: 1,
+            name: 'Mike Ross',
+          },
+        ],
+      },
+      {
+        tableName: 'Table 2',
+        startedAt: `Thu Jan 13 2022 13:05:58 GMT+0100 (GMT+01:00)`,
+        players: [
+          {
+            color: 'text-red-800',
+            turn: 0,
+            name: 'Toto',
+          },
+          {
+            color: 'text-blue-800',
+            turn: 1,
+            name: '7liwa',
+          },
+        ],
+      },
+    ]
+    console.log('toto')
+
+    this.server.emit('fetchBoardsList', boards)
   }
 
-  @SubscribeMessage('newGame')
-  startNewGame(@MessageBody() body: string): void {
+  @SubscribeMessage('startNewGame')
+  startNewGame(): void {
     console.log('Game has been started')
-
-    this.server.emit('newGame', 'Game has been started')
+    this.server.emit('startNewGame', true)
   }
 }

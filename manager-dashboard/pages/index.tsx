@@ -1,22 +1,17 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useEffect } from 'react'
+import { useRecoilState } from 'recoil'
+import { boardState } from '../atoms/boardState'
 import Heading from '../components/Heading'
 import TableCard from '../components/TableCard'
-import board from '../services/socket/board'
+import { initSocket } from '../services/socket'
 
 const Home: NextPage = () => {
-  // useEffect(() => {
-  //   setInterval(() => {
-  //     const randomNumber = Math.floor(Math.random() * 1000)
-  //     console.log(`sending random number ${randomNumber}`)
-
-  //     emitMessage(randomNumber.toFixed())
-  //   }, 2000)
-  // }, [])
+  const [boardData, setBoardData] = useRecoilState(boardState)
 
   useEffect(() => {
-    board.getBoard()
+    initSocket(setBoardData)
   }, [])
 
   return (
