@@ -10,7 +10,7 @@ const CardHeader: FunctionComponent<HeadingProps> = ({ tableName }) => {
     startGame()
   }
   return (
-    <div className="flex justify-between items-center mx-10 py-4">
+    <div className="flex justify-between items-center mx-5 py-4">
       <h3 className="text-3xl font-semibold text-primary-w">{tableName}</h3>
       <button
         onClick={handleStart}

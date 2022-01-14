@@ -2,6 +2,7 @@ import { Server, Socket } from 'socket.io'
 import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets'
 import { ClientToServerEvents, ServerToClientEvents, SocketData } from './common/types/sockets'
 import { IBoard } from './common/types/Board'
+import * as moment from 'moment'
 
 @WebSocketGateway({ cors: true, namespace: 'manager' })
 export class BoardGateway {
@@ -13,7 +14,7 @@ export class BoardGateway {
     const boards: IBoard[] = [
       {
         tableName: 'Table 1',
-        startedAt: `Thu Jan 13 2022 13:05:58 GMT+0100 (GMT+01:00)`,
+        startedAt: moment().toDate(),
         players: [
           {
             color: 'text-red-800',
@@ -31,7 +32,7 @@ export class BoardGateway {
       },
       {
         tableName: 'Table 2',
-        startedAt: 'Thu Jan 13 2022 13:05:58 GMT+0100 (GMT+01:00)',
+        startedAt: moment().toDate(),
         players: [
           {
             color: 'text-red-800',
@@ -48,7 +49,6 @@ export class BoardGateway {
         ],
       },
     ]
-    console.log('toto')
 
     this.server.emit('fetchBoardsList', boards)
   }

@@ -3,7 +3,7 @@ import moment from 'moment'
 import { FunctionComponent } from 'react'
 
 interface TimerProps {
-  startedAt: string
+  startedAt: Date
 }
 
 const Timer: FunctionComponent<TimerProps> = ({ startedAt }) => {
