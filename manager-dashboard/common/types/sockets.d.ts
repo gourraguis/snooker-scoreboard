@@ -1,9 +1,13 @@
+import { IBoard } from './Board'
+
 export interface ServerToClientEvents {
-  message: (message: string) => void
+  fetchBoardsList: (boards: IBoard[]) => void
+  startNewGame: (isSuccesfull: boolean) => void
 }
 
 export interface ClientToServerEvents {
-  message: (message: string) => void
+  fetchBoardsList: () => IBoard
+  startNewGame: () => boolean
 }
 
 export interface SocketData {
