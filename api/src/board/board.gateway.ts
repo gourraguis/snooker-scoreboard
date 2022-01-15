@@ -1,8 +1,8 @@
-import { Server, Socket } from 'socket.io'
-import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets'
-import { ClientToServerEvents, ServerToClientEvents, SocketData } from './common/types/sockets'
-import { IBoard } from './common/types/Board'
+import { Server } from 'socket.io'
 import * as moment from 'moment'
+import { SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets'
+import { ClientToServerEvents, ServerToClientEvents, SocketData } from '../common/types/sockets'
+import { IBoard } from '../common/types/Board'
 
 @WebSocketGateway({ cors: true, namespace: 'manager' })
 export class BoardGateway {
