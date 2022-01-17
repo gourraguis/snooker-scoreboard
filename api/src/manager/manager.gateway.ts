@@ -9,9 +9,10 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets'
-import { ClientToServerEvents, ManagerServer, ManagerSocket } from './types/Sockets'
-import { IBoard } from './types/Board'
+import { ClientToServerEvents, ManagerServer, ManagerSocket } from '../types/Sockets'
+import { IBoard } from '../types/Board'
 import { Logger } from '@nestjs/common'
+import { BoardGateway } from 'src/board/board.gateway'
 
 const boards: IBoard[] = [
   {
@@ -73,11 +74,14 @@ export class ManagerGateway implements OnGatewayInit, OnGatewayConnection, OnGat
     this.logger.log(`Client disconnected: ${client.id}`)
   }
 
+  constructor(private readonly boardGateway: BoardGateway) {}
+
   @SubscribeMessage<keyof ClientToServerEvents>('newGame')
   onNewGame(@MessageBody('boardId') boardId: string, @ConnectedSocket() client: ManagerSocket) {
     const board = boards.find(({ id }) => id === boardId)
     console.log(`client id: ${client.id}`)
     console.log(`starting new game on board ${board.name}`)
+    this.boardGateway.onStartNewGame()
     return { error: null }
   }
 

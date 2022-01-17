@@ -1,5 +1,5 @@
-import { atom } from 'recoil';
-import { IPlayer } from '../types/Player';
+import { atom } from 'recoil'
+import { IPlayer } from '../types/Player'
 
 export const playersState = atom<IPlayer[]>({
   key: 'players',
@@ -15,4 +15,4 @@ export const playersState = atom<IPlayer[]>({
       name: 'Mike Ross',
     },
   ],
-});
+})

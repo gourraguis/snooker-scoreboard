@@ -1,16 +1,16 @@
 {
-  "parser": "@typescript-eslint/parser",
-  "extends": ["next/core-web-vitals", "airbnb", "airbnb/hooks", "plugin:@typescript-eslint/recommended", "prettier"],
-  "plugins": ["prettier"],
-  "rules": {
-    "prettier/prettier": ["error"],
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".tsx"] }],
-    "react/react-in-jsx-scope": 0,
-    "react/jsx-props-no-spreading": 0,
-    "react/function-component-definition": 0,
-    "import/extensions": 0,
-    "import/prefer-default-export": 0,
-    "no-console": 0,
-    "react/button-has-type": 0
-  }
+  // "parser": "@typescript-eslint/parser",
+  // "extends": ["next/core-web-vitals", "airbnb", "airbnb/hooks", "plugin:@typescript-eslint/recommended", "prettier"],
+  // "plugins": ["prettier"],
+  // "rules": {
+  //   "prettier/prettier": ["error"],
+  //   "react/jsx-filename-extension": [1, { "extensions": [".js", ".tsx"] }],
+  //   "react/react-in-jsx-scope": 0,
+  //   "react/jsx-props-no-spreading": 0,
+  //   "react/function-component-definition": 0,
+  //   "import/extensions": 0,
+  //   "import/prefer-default-export": 0,
+  //   "no-console": 0,
+  //   "react/button-has-type": 0
+  // }
 }

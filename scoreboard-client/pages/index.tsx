@@ -1,21 +1,32 @@
-import type { NextPage } from 'next';
-import Head from 'next/head';
-import Controls from '../components/Controls';
-import Heading from '../components/Header';
-import History from '../components/History';
-import GameDetails from '../components/GameDetails';
-import PlayerCard from '../components/PlayerCard';
-import { useRecoilValue } from 'recoil';
-import { playersState } from '../atoms/userState';
-import {
-  currentTurnSelector,
-  playerPointsSelector,
-} from '../atoms/historyState';
+import type { NextPage } from 'next'
+import Head from 'next/head'
+import Controls from '../components/Controls'
+import Heading from '../components/Header'
+import History from '../components/History'
+import GameDetails from '../components/GameDetails'
+import PlayerCard from '../components/PlayerCard'
+import { useRecoilValue, useResetRecoilState } from 'recoil'
+import { playersState } from '../atoms/userState'
+import { currentTurnSelector, playerPointsSelector, playingHistoryState } from '../atoms/historyState'
+import { useEffect } from 'react'
+import { initSocket } from '../services/sockets'
 
 const Home: NextPage = () => {
-  const playerState = useRecoilValue(playersState);
-  const currentTurn = useRecoilValue(currentTurnSelector);
-  const playerPoints = useRecoilValue(playerPointsSelector);
+  const playerState = useRecoilValue(playersState)
+  const currentTurn = useRecoilValue(currentTurnSelector)
+  const playerPoints = useRecoilValue(playerPointsSelector)
+  const initHistory = useResetRecoilState(playingHistoryState)
+  const initPlayers = useResetRecoilState(playersState)
+
+  const setNewGame = () => {
+    initHistory
+    initPlayers
+    return
+  }
+
+  useEffect(() => {
+    initSocket(setNewGame)
+  }, [setNewGame])
 
   return (
     <div>
@@ -23,12 +34,10 @@ const Home: NextPage = () => {
         <title>Snooker Scoreboard</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <div className="flex flex-col mx-auto h-screen bg-background-color overflow-y-scroll">
         <div className="flex items-center justify-center">
           <Heading title={'Table 1'} />
         </div>
-
         <main className="flex flex-col justify-center">
           <div className="grid grid-cols-3 gap-28">
             <div className="ml-10">
@@ -42,17 +51,14 @@ const Home: NextPage = () => {
                 />
               ))}
             </div>
-
             <GameDetails />
-
             <History />
           </div>
-
           <Controls />
         </main>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
