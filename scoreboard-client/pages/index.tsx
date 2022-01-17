@@ -1,14 +1,14 @@
 import type { NextPage } from 'next'
+import { useRecoilValue, useResetRecoilState } from 'recoil'
+import { useEffect } from 'react'
 import Head from 'next/head'
 import Controls from '../components/Controls'
 import Heading from '../components/Header'
 import History from '../components/History'
 import GameDetails from '../components/GameDetails'
 import PlayerCard from '../components/PlayerCard'
-import { useRecoilValue, useResetRecoilState } from 'recoil'
 import { playersState } from '../atoms/userState'
 import { currentTurnSelector, playerPointsSelector, playingHistoryState } from '../atoms/historyState'
-import { useEffect } from 'react'
 import { initSocket } from '../services/sockets'
 
 const Home: NextPage = () => {

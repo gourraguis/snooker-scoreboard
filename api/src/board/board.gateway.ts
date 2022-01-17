@@ -2,11 +2,10 @@ import {
   OnGatewayConnection,
   OnGatewayDisconnect,
   OnGatewayInit,
-  SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets'
-import { ServerToClientEvents, ManagerServer, ManagerSocket } from '../types/Sockets'
+import { ManagerServer, ManagerSocket } from '../types/Sockets'
 import { Logger } from '@nestjs/common'
 
 @WebSocketGateway({ cors: true, namespace: 'board' })
@@ -26,11 +25,9 @@ export class BoardGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   handleDisconnect(client: ManagerSocket) {
     this.logger.log(`Client disconnected: ${client.id}`)
   }
-
-  @SubscribeMessage<keyof ServerToClientEvents>('startNewGame')
   onStartNewGame() {
     console.log(`starting new game on board toto`)
-    this.server.emit('startNewGame')
+    this.server.emit('newGame')
     return { error: null }
   }
 }
