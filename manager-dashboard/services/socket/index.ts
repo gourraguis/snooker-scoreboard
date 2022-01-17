@@ -1,9 +1,10 @@
 import { SetterOrUpdater } from 'recoil'
-import { io, Socket } from 'socket.io-client'
-import { IBoard } from '../../common/types/Board'
-import { ClientToServerEvents, ServerToClientEvents } from '../../common/types/sockets'
+import { io } from 'socket.io-client'
+import { IBoard } from '../../types/Board'
+import { ManagerSocket } from '../../types/Sockets'
+import { openNotification } from '../notification'
 
-const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io('localhost:5000/manager')
+const socket: ManagerSocket = io('localhost:5000/manager')
 
 socket.on('connect', () => {
   console.log('Connected to server')
@@ -14,14 +15,21 @@ socket.on('disconnect', () => {
 })
 
 export const initSocket = (setBoard: SetterOrUpdater<IBoard[]>) => {
-  socket.on('fetchBoardsList', setBoard)
-  socket.emit('fetchBoardsList')
+  socket.on('boardsList', setBoard)
 }
 
-const onStartNewGame = (isSuccesfull: boolean) => {
-  console.log(isSuccesfull)
-}
-socket.on('startNewGame', onStartNewGame)
-export const startGame = () => {
-  socket.emit('startNewGame')
+export const emitNewGame = (boardId: string) => {
+  socket.emit('newGame', { boardId }, ({ error }) => {
+    if (error) {
+      console.error(error)
+      openNotification({
+        title: 'Impossible de lancer une nouvelle partie',
+        type: 'error',
+      })
+      return
+    }
+    openNotification({
+      title: 'Une nouvelle partie a été lancé',
+    })
+  })
 }

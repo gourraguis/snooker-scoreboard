@@ -1,16 +1,16 @@
 {
 	"folders": [
 		{
-			"name": "web",
-			"path": "../web"
-		},
-		{
-			"name": "api",
-			"path": "../api"
+			"name": "scoreboard-client",
+			"path": "../scoreboard-client"
 		},
 		{
 			"name": "manager-dashboard",
 			"path": "../manager-dashboard"
+		},
+		{
+			"name": "api",
+			"path": "../api"
 		}
 	],
 	"settings": {}
