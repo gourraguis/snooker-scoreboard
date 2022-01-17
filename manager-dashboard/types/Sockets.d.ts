@@ -6,7 +6,7 @@ export interface ServerToClientEvents {
 }
 
 export interface ClientToServerEvents {
-  newGame: ({ boardId: string }, ack: (res: { success: boolean }) => void) => void
+  newGame: (req: { boardId: string }, cb: (res: { error: string }) => void) => void
 }
 
 export type ManagerSocket = Socket<ServerToClientEvents, ClientToServerEvents>

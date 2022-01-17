@@ -78,7 +78,7 @@ export class ManagerGateway implements OnGatewayInit, OnGatewayConnection, OnGat
     const board = boards.find(({ id }) => id === boardId)
     console.log(`client id: ${client.id}`)
     console.log(`starting new game on board ${board.name}`)
-    return { success: true }
+    return { error: null }
   }
 
   emitBoardsList(boardsList: IBoard[]) {

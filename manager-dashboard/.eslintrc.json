@@ -2,6 +2,7 @@
   "parser": "@typescript-eslint/parser",
   "extends": ["next/core-web-vitals", "airbnb", "airbnb/hooks", "plugin:@typescript-eslint/recommended", "prettier"],
   "plugins": ["prettier"],
+  "ignorePatterns": ["next.config.js"],
   "rules": {
     "prettier/prettier": ["error"],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".tsx"] }],
