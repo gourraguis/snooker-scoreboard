@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import { useRecoilValue, useResetRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 import { useEffect } from 'react'
 import Head from 'next/head'
 import Controls from '../components/Controls'
@@ -8,25 +8,25 @@ import History from '../components/History'
 import GameDetails from '../components/GameDetails'
 import PlayerCard from '../components/PlayerCard'
 import { playersState } from '../atoms/userState'
-import { currentTurnSelector, playerPointsSelector, playingHistoryState } from '../atoms/historyState'
+import { currentTurnSelector, playerPointsSelector, playingHistoryState, startedAtState } from '../atoms/historyState'
 import { initSocket } from '../services/sockets'
 
 const Home: NextPage = () => {
   const playerState = useRecoilValue(playersState)
   const currentTurn = useRecoilValue(currentTurnSelector)
   const playerPoints = useRecoilValue(playerPointsSelector)
-  const initHistory = useResetRecoilState(playingHistoryState)
   const initPlayers = useResetRecoilState(playersState)
+  const initHistory = useResetRecoilState(playingHistoryState)
+  const initTimer = useResetRecoilState(startedAtState)
+  // const [history, setHistory] = useRecoilState(playingHistoryState)
 
   const setNewGame = () => {
     initHistory
     initPlayers
-    return
+    initTimer
   }
 
-  useEffect(() => {
-    initSocket(setNewGame)
-  }, [setNewGame])
+  initSocket(setNewGame)
 
   return (
     <div>
