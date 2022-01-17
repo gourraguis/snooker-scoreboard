@@ -4,6 +4,6 @@ WORKDIR /usr/src/app/api
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm ci
 
 CMD ["npm", "run", "start:dev"]

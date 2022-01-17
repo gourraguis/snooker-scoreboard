@@ -4,6 +4,6 @@ WORKDIR /usr/src/app/manager-dashboard
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm ci
 
 CMD ["npm", "run", "dev"]

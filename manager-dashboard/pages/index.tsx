@@ -12,7 +12,7 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     initSocket(setBoardData)
-  }, [])
+  }, [setBoardData])
 
   return (
     <div>
@@ -22,7 +22,7 @@ const Home: NextPage = () => {
       </Head>
       <div className="flex flex-col mx-auto h-screen bg-background-color overflow-y-scroll">
         <div className="flex items-center justify-center">
-          <Heading title={'Manager Space'} />
+          <Heading title="Manager Space" />
         </div>
         <main className="flex justify-center">
           <TableCard />
