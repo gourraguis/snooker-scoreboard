@@ -1,12 +1,16 @@
 import {
+  ConnectedSocket,
+  MessageBody,
   OnGatewayConnection,
   OnGatewayDisconnect,
   OnGatewayInit,
+  SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets'
-import { ManagerServer, ManagerSocket } from '../types/Sockets'
+import { ClientToServerEvents, ManagerServer, ManagerSocket } from '../types/Sockets'
 import { Logger } from '@nestjs/common'
+import { IBoard } from 'src/types/Board'
 
 @WebSocketGateway({ cors: true, namespace: 'board' })
 export class BoardGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
@@ -26,8 +30,11 @@ export class BoardGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     this.logger.log(`Client disconnected: ${client.id}`)
   }
   onStartNewGame() {
-    console.log(`starting new game on board toto`)
     this.server.emit('newGame')
     return { error: null }
+  }
+  @SubscribeMessage<keyof ClientToServerEvents>('updateGame')
+  onUpdateGame(@MessageBody('board') board: IBoard) {
+    console.log(board)
   }
 }

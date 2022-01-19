@@ -8,6 +8,7 @@ export interface ServerToClientEvents {
 
 export interface ClientToServerEvents {
   newGame: (req: { boardId: string }, cb: (res: { error: string }) => void) => void
+  updateGame: (board: IBoard) => void
 }
 
 export interface SocketData {
