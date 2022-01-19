@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 import { useEffect } from 'react'
+import moment from 'moment'
 import Head from 'next/head'
 import Controls from '../components/Controls'
 import Heading from '../components/Header'
@@ -17,16 +18,17 @@ const Home: NextPage = () => {
   const playerPoints = useRecoilValue(playerPointsSelector)
   const initPlayers = useResetRecoilState(playersState)
   const initHistory = useResetRecoilState(playingHistoryState)
-  const initTimer = useResetRecoilState(startedAtState)
-  // const [history, setHistory] = useRecoilState(playingHistoryState)
+  const [timer, setTimer] = useRecoilState(startedAtState)
 
   const setNewGame = () => {
-    initHistory
-    initPlayers
-    initTimer
+    initHistory()
+    initPlayers()
+    setTimer(moment().toDate())
   }
 
-  initSocket(setNewGame)
+  useEffect(() => {
+    initSocket(setNewGame)
+  }, [])
 
   return (
     <div>
