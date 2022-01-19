@@ -3,6 +3,7 @@ import { IBoard } from './Board'
 
 export interface ServerToClientEvents {
   boardsList: (boards: IBoard[]) => void
+  newGame: () => void
 }
 
 export interface ClientToServerEvents {

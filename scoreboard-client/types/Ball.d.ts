@@ -9,6 +9,6 @@ export enum EBallValue {
 }
 
 export interface IBall {
-  value: EBallValue;
-  color: string;
+  value: EBallValue
+  color: string
 }
