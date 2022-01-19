@@ -88,4 +88,7 @@ export class ManagerGateway implements OnGatewayInit, OnGatewayConnection, OnGat
   emitBoardsList(boardsList: IBoard[]) {
     this.server.emit('boardsList', boardsList)
   }
+  emitUpdateGame(board: IBoard) {
+    this.server.emit('updateGame', board)
+  }
 }

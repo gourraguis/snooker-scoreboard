@@ -52,7 +52,7 @@ const Controls = () => {
         },
       ],
     }
-    emitUpdateGame({ board })
+    emitUpdateGame(board)
   }
 
   return (

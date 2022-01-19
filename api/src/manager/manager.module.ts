@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common'
 import { ManagerGateway } from './manager.gateway'
-import { BoardGateway } from '../board/board.gateway'
+import { BoardModule } from 'src/board/board.module'
 @Module({
-  providers: [ManagerGateway, BoardGateway],
+  imports: [BoardModule],
+  providers: [ManagerGateway],
 })
 export class ManagerModule {}
