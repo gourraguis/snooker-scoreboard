@@ -5,7 +5,7 @@ export interface IBoard {
   id: string
   name: string
   startedAt: Date
-  playersPoints: [number, number]
+  playersPoints: number[]
   history: ITurn[]
   players: IPlayer[]
 }
