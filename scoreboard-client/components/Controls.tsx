@@ -30,16 +30,8 @@ const Controls = () => {
       },
     ])
   }
-
-  const switchPlayer = () => {
-    const nextTurn = ((currentTurn.value + 1) % 2) as 0 | 1
-    setPlayingHistory([
-      ...playingHistory,
-      {
-        value: nextTurn,
-        scoredBalls: [],
-      },
-    ])
+  //TODO: Fix lagging points
+  const handleUpdateBoard = () => {
     const board: IBoard = {
       id: '1',
       name: 'Table 1',
@@ -60,6 +52,19 @@ const Controls = () => {
       ],
     }
     emitUpdateBoard(board)
+  }
+
+  const switchPlayer = async () => {
+    const nextTurn = ((currentTurn.value + 1) % 2) as 0 | 1
+    setPlayingHistory([
+      ...playingHistory,
+      {
+        value: nextTurn,
+        scoredBalls: [],
+      },
+    ])
+    // await new Promise((resolve) => setTimeout(resolve, 1000))
+    handleUpdateBoard()
   }
 
   return (

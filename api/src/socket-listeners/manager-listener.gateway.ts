@@ -72,7 +72,8 @@ export class ManagerListenerGateway implements OnGatewayConnection {
 
   @SubscribeMessage<ManagerClientToServerEvents>('newGame')
   onNewGame(@MessageBody('boardId') boardId: string, @ConnectedSocket() client: ManagerSocket) {
-    const managerId = client.data.managerId
+    // const managerId = client.data.managerId
+    const managerId = '1'
     if (!managerId) {
       //todo: redirect to login in case of error
       return

@@ -11,6 +11,7 @@ socket.on('connect_error', console.error)
 socket.on('disconnect', () => console.error(`socket disconnected`))
 
 export const initSocket = (setBoard: SetterOrUpdater<IBoard[]>) => {
+  // TODO: Refactor using atoms setBoards and setBoard
   socket.on('boardsList', setBoard)
   let initialBoard: IBoard[]
   socket.on('boardsList', (board) => {

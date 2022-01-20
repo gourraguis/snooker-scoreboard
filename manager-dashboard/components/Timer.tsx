@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, FunctionComponent } from 'react'
 import moment from 'moment'
-import { FunctionComponent } from 'react'
 
 interface TimerProps {
   startedAt: Date
