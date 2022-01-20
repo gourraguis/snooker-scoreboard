@@ -6,7 +6,7 @@ export interface ServerToClientEvents {
 }
 
 export interface ClientToServerEvents {
-  updateGame: (board: IBoard) => void
+  updateBoard: (board: IBoard) => void
 }
 
 export type BoardSocket = Socket<ServerToClientEvents, ClientToServerEvents>

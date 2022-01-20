@@ -1,7 +1,7 @@
 import { atom } from 'recoil'
-import { IBoard } from '../common/types/Board'
+import { IBoard } from '../types/Board'
 
-export const boardState = atom<IBoard[]>({
-  key: 'boardState',
+export const boardsState = atom<IBoard[]>({
+  key: 'boardsState',
   default: [],
 })

@@ -13,10 +13,10 @@ socket.on('disconnect', () => {
   console.error('Disconnected from server')
 })
 
-export const initSocket = (setNewGame: SetterOrUpdater<void>) => {
-  socket.on('newGame', setNewGame)
+export const initSocket = (startNewGame: SetterOrUpdater<void>) => {
+  socket.on('newGame', startNewGame)
 }
 
-export const emitUpdateGame = (board: IBoard) => {
-  socket.emit('updateGame', board)
+export const emitUpdateBoard = (board: IBoard) => {
+  socket.emit('updateBoard', board)
 }

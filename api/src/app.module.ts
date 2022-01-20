@@ -1,12 +1,8 @@
 import { Module } from '@nestjs/common'
-import { AppController } from './app.controller'
-import { AppService } from './app.service'
-import { BoardModule } from './board/board.module'
-import { ManagerModule } from './manager/manager.module'
+import { SocketEmittersModule } from './socket-emitters/socket-emitters.module'
+import { SocketListenersModule } from './socket-listeners/socket-listeners.module'
 
 @Module({
-  imports: [ManagerModule, BoardModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [SocketEmittersModule, SocketListenersModule],
 })
 export class AppModule {}

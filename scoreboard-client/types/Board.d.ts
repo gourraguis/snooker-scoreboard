@@ -1,13 +1,8 @@
-export interface EPlayer {
-  color: string
-  turn: 0 | 1
-  name: string
-  points: number
-}
+import { IPlayer } from './Player'
 
 export interface IBoard {
   id: string
   name: string
   startedAt: Date
-  players: EPlayer[]
+  players: IPlayer[]
 }

@@ -1,4 +1,4 @@
-import { IBall } from '../types/Ball';
+import { IBall } from '../types/Ball'
 
 export const balls: IBall[] = [
   {
@@ -29,4 +29,4 @@ export const balls: IBall[] = [
     value: 7,
     color: 'rgb(0 0 0)',
   },
-];
+]

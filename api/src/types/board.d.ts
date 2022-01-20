@@ -1,4 +1,4 @@
-import { IPlayer } from './Player'
+import { IPlayer } from './player'
 
 export interface IBoard {
   id: string

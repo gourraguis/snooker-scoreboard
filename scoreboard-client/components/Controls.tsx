@@ -5,14 +5,14 @@ import { balls } from '../utils/balls'
 import { IBall } from '../types/Ball'
 import { currentTurnSelector, playerPointsSelector, playingHistoryState } from '../atoms/historyState'
 import Ball from './Ball'
-import { emitUpdateGame } from '../services/sockets'
+import { emitUpdateBoard } from '../services/sockets'
 import { playersState } from '../atoms/userState'
 
 const Controls = () => {
   const [playingHistory, setPlayingHistory] = useRecoilState(playingHistoryState)
   const currentTurn = useRecoilValue(currentTurnSelector)
-  const playerPoints = useRecoilValue(playerPointsSelector)
   const playerState = useRecoilValue(playersState)
+  const playerPoints = useRecoilValue(playerPointsSelector)
 
   const scoreBall = (ball: IBall) => {
     setPlayingHistory([
@@ -52,7 +52,7 @@ const Controls = () => {
         },
       ],
     }
-    emitUpdateGame(board)
+    emitUpdateBoard(board)
   }
 
   return (

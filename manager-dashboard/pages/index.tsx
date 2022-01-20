@@ -1,18 +1,18 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useEffect } from 'react'
-import { useRecoilState } from 'recoil'
-import { boardState } from '../atoms/boardState'
+import { useSetRecoilState } from 'recoil'
+import { boardsState } from '../atoms/boardState'
 import Heading from '../components/Heading'
 import TableCard from '../components/TableCard'
 import { initSocket } from '../services/socket'
 
 const Home: NextPage = () => {
-  const [boardData, setBoardData] = useRecoilState(boardState)
+  const setBoardData = useSetRecoilState(boardsState)
 
   useEffect(() => {
     initSocket(setBoardData)
-  }, [setBoardData])
+  }, [])
 
   return (
     <div>
