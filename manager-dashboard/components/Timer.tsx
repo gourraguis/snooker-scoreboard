@@ -1,4 +1,5 @@
-import { useState, useEffect, FunctionComponent } from 'react'
+import { useInterval } from 'usehooks-ts'
+import { useState, FunctionComponent } from 'react'
 import moment from 'moment'
 
 interface TimerProps {
@@ -8,13 +9,9 @@ interface TimerProps {
 const Timer: FunctionComponent<TimerProps> = ({ startedAt }) => {
   const [timerText, setTimerText] = useState('00:00')
 
-  useEffect(() => {
-    if (startedAt) {
-      setInterval(() => {
-        setTimerText(moment(moment().diff(moment(startedAt))).format('mm:ss'))
-      }, 1000)
-    }
-  }, [startedAt])
+  useInterval(() => {
+    setTimerText(moment(moment().diff(moment(startedAt))).format('mm:ss'))
+  }, 1000)
 
   return (
     <div className="w-full flex justify-center items-center border-r-[1px] border-l-[1px] border-primary-w">
