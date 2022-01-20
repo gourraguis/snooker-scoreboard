@@ -1,5 +1,5 @@
 import { Socket } from 'socket.io-client'
-import { IBoard } from './Board'
+import { IBoard } from './board'
 
 export interface ServerToClientEvents {
   newGame: () => void

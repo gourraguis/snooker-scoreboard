@@ -1,4 +1,4 @@
-import { IBall } from '../types/Ball'
+import { IBall } from '../types/ball'
 
 export const balls: IBall[] = [
   {

@@ -1,8 +1,8 @@
 import { atom, selector } from 'recoil'
 import _ from 'underscore'
 import moment from 'moment'
-import { ITurn } from '../types/History'
-import { EBallValue, IBall } from '../types/Ball'
+import { ITurn } from '../types/history'
+import { EBallValue, IBall } from '../types/ball'
 import { balls } from '../utils/balls'
 
 export const startedAtState = atom<Date>({

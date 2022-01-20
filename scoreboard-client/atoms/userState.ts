@@ -1,5 +1,5 @@
 import { atom } from 'recoil'
-import { IPlayer } from '../types/Player'
+import { IPlayer } from '../types/player'
 
 export const playersState = atom<IPlayer[]>({
   key: 'players',

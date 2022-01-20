@@ -1,4 +1,4 @@
-import { EBallValue } from './Ball'
+import { EBallValue } from './ball'
 
 export interface ITurn {
   value: 0 | 1

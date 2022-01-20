@@ -2,17 +2,24 @@ import { RefreshIcon } from '@heroicons/react/outline'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import moment from 'moment'
 import { balls } from '../utils/balls'
-import { IBall } from '../types/Ball'
-import { currentTurnSelector, playerPointsSelector, playingHistoryState } from '../atoms/historyState'
+import { IBall } from '../types/ball'
+import {
+  currentTurnSelector,
+  playerPointsSelector,
+  playingHistoryState,
+  playingHistoryWithoutCurrentTurnSelector,
+} from '../atoms/historyState'
 import Ball from './Ball'
 import { emitUpdateBoard } from '../services/sockets'
 import { playersState } from '../atoms/userState'
+import { IBoard } from '../types/board'
 
 const Controls = () => {
   const [playingHistory, setPlayingHistory] = useRecoilState(playingHistoryState)
   const currentTurn = useRecoilValue(currentTurnSelector)
   const playerState = useRecoilValue(playersState)
   const playerPoints = useRecoilValue(playerPointsSelector)
+  const playingHistoryWithoutCurrentTurn = useRecoilValue(playingHistoryWithoutCurrentTurnSelector)
 
   const scoreBall = (ball: IBall) => {
     setPlayingHistory([
@@ -33,22 +40,22 @@ const Controls = () => {
         scoredBalls: [],
       },
     ])
-    const board = {
+    const board: IBoard = {
       id: '1',
       name: 'Table 1',
       startedAt: moment().toDate(),
+      playersPoints: playerPoints,
+      history: playingHistoryWithoutCurrentTurn,
       players: [
         {
           color: playerState[0].color,
           turn: playerState[0].turn,
           name: playerState[0].name,
-          points: playerPoints[0],
         },
         {
           color: playerState[1].color,
           turn: playerState[1].turn,
           name: playerState[1].name,
-          points: playerPoints[1],
         },
       ],
     }
