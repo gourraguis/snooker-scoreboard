@@ -1,7 +1,7 @@
 import { SetterOrUpdater } from 'recoil'
 import { io } from 'socket.io-client'
 import { openNotification } from '../notification'
-import { IBoard } from '../../types/Board'
+import { IBoard } from '../../types/board'
 import { ManagerSocket } from './types/sockets'
 
 const socket: ManagerSocket = io('http://localhost:5000/manager')
