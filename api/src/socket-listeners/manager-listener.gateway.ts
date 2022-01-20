@@ -18,18 +18,18 @@ const boards: IBoard[] = [
     id: '1',
     name: 'Table 1',
     startedAt: moment().toDate(),
+    playersPoints: [0, 0],
+    history: [],
     players: [
       {
         color: 'text-red-800',
         turn: 0,
         name: 'Harvey',
-        points: 44,
       },
       {
         color: 'text-blue-800',
         turn: 1,
         name: 'Mike Ross',
-        points: 30,
       },
     ],
   },
@@ -37,18 +37,18 @@ const boards: IBoard[] = [
     id: '2',
     name: 'Table 2',
     startedAt: moment().toDate(),
+    playersPoints: [0, 0],
+    history: [],
     players: [
       {
         color: 'text-red-800',
         turn: 0,
         name: 'Toto',
-        points: 54,
       },
       {
         color: 'text-blue-800',
         turn: 1,
         name: '7liwa',
-        points: 36,
       },
     ],
   },
