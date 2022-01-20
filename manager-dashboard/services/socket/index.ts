@@ -12,7 +12,14 @@ socket.on('disconnect', () => console.error(`socket disconnected`))
 
 export const initSocket = (setBoard: SetterOrUpdater<IBoard[]>) => {
   socket.on('boardsList', setBoard)
-  socket.on('updateBoard', console.log)
+  let initialBoard: IBoard[]
+  socket.on('boardsList', (board) => {
+    initialBoard = board
+    setBoard(board)
+  })
+  socket.on('updateBoard', (newBoard) => {
+    setBoard([...initialBoard.filter(({ id }) => id !== newBoard.id), newBoard])
+  })
 }
 
 export const emitNewGame = (boardId: string) => {
