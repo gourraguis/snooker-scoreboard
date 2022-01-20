@@ -13,8 +13,9 @@ const GameDetails = () => {
         border-primary-w bg-primary-b rounded-lg
         my-8 divide-y divide-primary-w
         "
+      suppressHydrationWarning
     >
-      <Timer />
+      {process.browser && <Timer />}
       <div className="w-full flex flex-col justify-center items-center">
         <h1 className="text-primary-w font-semibold text-4xl py-4">LAST</h1>
         {lastBall ? <Ball value={lastBall.value} showValue /> : <Ball value={0} />}

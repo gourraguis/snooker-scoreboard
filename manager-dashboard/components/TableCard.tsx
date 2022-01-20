@@ -1,12 +1,12 @@
 import { useRecoilValue } from 'recoil'
-import { boardState } from '../atoms/boardState'
+import { boardsState } from '../atoms/boardState'
 import { emitNewGame } from '../services/socket'
 import CardHeader from './CardHeader'
 import Player from './Player'
 import Timer from './Timer'
 
 const TableCard = () => {
-  const boards = useRecoilValue(boardState)
+  const boards = useRecoilValue(boardsState)
 
   return (
     <div className="flex flex-col justify-center  -center w-full mx-5 space-y-8">

@@ -1,8 +1,9 @@
 import { Socket } from 'socket.io-client'
-import { IBoard } from './Board'
+import { IBoard } from '../../../types/Board'
 
 export interface ServerToClientEvents {
   boardsList: (boards: IBoard[]) => void
+  updateBoard: (board: IBoard) => void
 }
 
 export interface ClientToServerEvents {

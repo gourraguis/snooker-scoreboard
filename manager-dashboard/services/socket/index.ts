@@ -1,21 +1,18 @@
 import { SetterOrUpdater } from 'recoil'
 import { io } from 'socket.io-client'
-import { IBoard } from '../../types/Board'
-import { ManagerSocket } from '../../types/Sockets'
 import { openNotification } from '../notification'
+import { IBoard } from '../../types/Board'
+import { ManagerSocket } from './types/sockets'
 
-const socket: ManagerSocket = io('localhost:5000/manager')
+const socket: ManagerSocket = io('http://localhost:5000/manager')
 
-socket.on('connect', () => {
-  console.log('Connected to server')
-})
-
-socket.on('disconnect', () => {
-  console.error('Disconnected from server')
-})
+socket.on('connect', () => console.log(`socket connected`))
+socket.on('connect_error', console.error)
+socket.on('disconnect', () => console.error(`socket disconnected`))
 
 export const initSocket = (setBoard: SetterOrUpdater<IBoard[]>) => {
   socket.on('boardsList', setBoard)
+  socket.on('updateBoard', console.log)
 }
 
 export const emitNewGame = (boardId: string) => {

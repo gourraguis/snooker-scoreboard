@@ -5,6 +5,11 @@ import { ITurn } from '../types/History'
 import { EBallValue, IBall } from '../types/Ball'
 import { balls } from '../utils/balls'
 
+export const startedAtState = atom<Date>({
+  key: 'startedAtState',
+  default: moment().toDate(),
+})
+
 export const playingHistoryState = atom<ITurn[]>({
   key: 'playingHistoryState',
   default: [
@@ -24,7 +29,7 @@ export const currentTurnSelector = selector<ITurn>({
   },
 })
 
-export const playingHistoryWithoutCurrentTurnSelector = selector({
+export const playingHistoryWithoutCurrentTurnSelector = selector<ITurn[]>({
   key: 'playingHistoryWithoutCurrentTurnSelector',
   get: ({ get }) => {
     const playingHistory = get(playingHistoryState)
@@ -36,7 +41,7 @@ export const lastBallSelector = selector<IBall>({
   key: 'lastBallSelector',
   get: ({ get }) => {
     const currentTurn = get(currentTurnSelector)
-    const lastBallValue: EBallValue = _.last(currentTurn.scoredBalls!)
+    const lastBallValue: EBallValue = _.last(currentTurn.scoredBalls)!
 
     return balls.find((ball) => ball.value === lastBallValue)!
   },
@@ -59,22 +64,17 @@ export const playerPointsSelector = selector<number[]>({
     const playerZeroScore = playingHistoryWithoutCurrentTurn
       .filter(({ value }) => value === 0)
       .reduce((acc, turn) => {
-        const turnScore = turn.scoredBalls.reduce((acc, val) => acc + val, 0)
+        const turnScore = turn.scoredBalls.reduce((acc2, val) => acc2 + val, 0)
         return acc + turnScore
       }, 0)
 
     const playerOneScore = playingHistoryWithoutCurrentTurn
       .filter(({ value }) => value === 1)
       .reduce((acc, turn) => {
-        const turnScore = turn.scoredBalls.reduce((acc, val) => acc + val, 0)
+        const turnScore = turn.scoredBalls.reduce((acc2, val) => acc2 + val, 0)
         return acc + turnScore
       }, 0)
 
     return [playerZeroScore, playerOneScore]
   },
-})
-
-export const startedAtState = atom<Date>({
-  key: 'startedAtState',
-  default: moment().toDate(),
 })

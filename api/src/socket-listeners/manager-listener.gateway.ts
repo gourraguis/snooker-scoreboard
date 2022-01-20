@@ -1,18 +1,17 @@
-import * as moment from 'moment'
 import {
   ConnectedSocket,
   MessageBody,
   OnGatewayConnection,
-  OnGatewayDisconnect,
-  OnGatewayInit,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets'
-import { ClientToServerEvents, ManagerServer, ManagerSocket } from '../types/Sockets'
-import { IBoard } from '../types/Board'
+import * as moment from 'moment'
 import { Logger } from '@nestjs/common'
-import { BoardGateway } from 'src/board/board.gateway'
+import { ManagerClientToServerEvents, ManagerServer, ManagerSocket } from 'src/types/manager-sockets'
+import { BoardEmitterGateway } from 'src/socket-emitters/board-emitter.gateway'
+import { IBoard } from 'src/types/board'
+import { ManagerEmmiterGateway } from 'src/socket-emitters/manager-emitter.gateway'
 
 const boards: IBoard[] = [
   {
@@ -56,36 +55,30 @@ const boards: IBoard[] = [
 ]
 
 @WebSocketGateway({ cors: true, namespace: 'manager' })
-export class ManagerGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
-  private logger: Logger = new Logger(ManagerGateway.name)
+export class ManagerListenerGateway implements OnGatewayConnection {
+  private logger: Logger = new Logger(ManagerListenerGateway.name)
   @WebSocketServer()
   server: ManagerServer
 
-  afterInit() {
-    this.logger.log('Manager gateway has initialized.')
-  }
+  constructor(
+    private readonly boardEmitterGateway: BoardEmitterGateway,
+    private readonly managerEmitterGateway: ManagerEmmiterGateway
+  ) {}
 
   handleConnection(client: ManagerSocket) {
     this.logger.log(`Client connected: ${client.id}`)
-    this.emitBoardsList(boards)
+    this.managerEmitterGateway.emitBoardsList(boards)
   }
 
-  handleDisconnect(client: ManagerSocket) {
-    this.logger.log(`Client disconnected: ${client.id}`)
-  }
-
-  constructor(private readonly boardGateway: BoardGateway) {}
-
-  @SubscribeMessage<keyof ClientToServerEvents>('newGame')
+  @SubscribeMessage<ManagerClientToServerEvents>('newGame')
   onNewGame(@MessageBody('boardId') boardId: string, @ConnectedSocket() client: ManagerSocket) {
-    const board = boards.find(({ id }) => id === boardId)
-    console.log(`client id: ${client.id}`)
-    console.log(`starting new game on board ${board.name}`)
-    this.boardGateway.onStartNewGame()
+    const managerId = client.data.managerId
+    if (!managerId) {
+      //todo: redirect to login in case of error
+      return
+    }
+    //todo: use board id to start game on the right board
+    this.boardEmitterGateway.emitStartNewGame()
     return { error: null }
-  }
-
-  emitBoardsList(boardsList: IBoard[]) {
-    this.server.emit('boardsList', boardsList)
   }
 }

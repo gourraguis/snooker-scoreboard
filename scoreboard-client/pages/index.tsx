@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil'
 import { useEffect } from 'react'
 import moment from 'moment'
 import Head from 'next/head'
@@ -16,18 +16,18 @@ const Home: NextPage = () => {
   const playerState = useRecoilValue(playersState)
   const currentTurn = useRecoilValue(currentTurnSelector)
   const playerPoints = useRecoilValue(playerPointsSelector)
+  const setTimer = useSetRecoilState(startedAtState)
   const initPlayers = useResetRecoilState(playersState)
   const initHistory = useResetRecoilState(playingHistoryState)
-  const [timer, setTimer] = useRecoilState(startedAtState)
 
-  const setNewGame = () => {
+  const startNewGame = () => {
     initHistory()
     initPlayers()
     setTimer(moment().toDate())
   }
 
   useEffect(() => {
-    initSocket(setNewGame)
+    initSocket(startNewGame)
   }, [])
 
   return (
@@ -38,7 +38,7 @@ const Home: NextPage = () => {
       </Head>
       <div className="flex flex-col mx-auto h-screen bg-background-color overflow-y-scroll">
         <div className="flex items-center justify-center">
-          <Heading title={'Table 1'} />
+          <Heading title="Table 1" />
         </div>
         <main className="flex flex-col justify-center">
           <div className="grid grid-cols-3 gap-28">
