@@ -1,4 +1,5 @@
 import { RefreshIcon } from '@heroicons/react/outline'
+import { useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { currentTurnSelector, playersScoreSelector, historyState, startedAtState } from '../atoms/history'
 import Ball from './Ball'
@@ -13,6 +14,7 @@ const Controls = () => {
   const playersScore = useRecoilValue(playersScoreSelector)
   const [history, setHistory] = useRecoilState(historyState)
   const currentTurn = useRecoilValue(currentTurnSelector)
+  const [send, setSend] = useState(false)
 
   const scoreBall = (ball: EBall) => () => {
     setHistory([
@@ -24,6 +26,20 @@ const Controls = () => {
     ])
   }
 
+  useEffect(() => {
+    setSend(false)
+    if (!send) {
+      emitUpdateBoard({
+        id: '1',
+        name: 'Table 1',
+        startedAt,
+        players,
+        playersScore,
+        history,
+      })
+    }
+  }, [send])
+
   const switchPlayer = async () => {
     setHistory([
       ...history,
@@ -32,15 +48,7 @@ const Controls = () => {
         scoredBalls: [],
       },
     ])
-
-    emitUpdateBoard({
-      id: '1',
-      name: 'Table 1',
-      startedAt,
-      players,
-      playersScore,
-      history,
-    })
+    setSend(true)
   }
 
   return (
