@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useEffect } from 'react'
-import { Row, Col, Typography, Space } from 'antd'
+import { Row, Col, Typography } from 'antd'
 import { useRecoilValue } from 'recoil'
 import { openNotification } from '../services/notification'
 import HeadingCard from '../components/HeadingCard'
