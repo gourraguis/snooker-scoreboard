@@ -7,6 +7,7 @@ import HeadingCard from '../components/HeadingCard'
 import MainCard from '../components/mainCard/MainCard'
 import { useRecoilValue } from 'recoil'
 import { dailyStats, weeklyStats } from '../atoms/globaleStats'
+import { managersStats, tablesStats } from '../atoms/mainStats'
 
 const { Title } = Typography
 
@@ -18,6 +19,8 @@ const indexStyle = {
 const Home: NextPage = () => {
   const dailyScore = useRecoilValue(dailyStats)
   const weeklyScore = useRecoilValue(weeklyStats)
+  const tablesElements = useRecoilValue(tablesStats)
+  const managersElements = useRecoilValue(managersStats)
   useEffect(() => {
     openNotification({ title: 'l9wada' })
   }, [])
@@ -37,8 +40,8 @@ const Home: NextPage = () => {
           <HeadingCard score={weeklyScore} />
         </div>
         <div>
-          <MainCard title="Tables" />
-          <MainCard title="Managers" />
+          <MainCard title="Tables" elements={tablesElements} />
+          <MainCard title="Managers" elements={managersElements} />
         </div>
       </center>
     </div>
