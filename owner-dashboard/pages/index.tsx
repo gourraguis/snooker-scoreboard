@@ -2,10 +2,10 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useEffect } from 'react'
 import { Typography } from 'antd'
+import { useRecoilValue } from 'recoil'
 import { openNotification } from '../services/notification'
 import HeadingCard from '../components/HeadingCard'
 import MainCard from '../components/mainCard/MainCard'
-import { useRecoilValue } from 'recoil'
 import { dailyStats, weeklyStats } from '../atoms/globaleStats'
 import { managersStats, tablesStats } from '../atoms/mainStats'
 
@@ -35,9 +35,9 @@ const Home: NextPage = () => {
         <div>
           <Title>Admin Space</Title>
         </div>
-        <div>
-          <HeadingCard score={dailyScore} />
-          <HeadingCard score={weeklyScore} />
+        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+          <HeadingCard title="Ce jour" score={dailyScore} />
+          <HeadingCard title="Cette Semaine" score={weeklyScore} />
         </div>
         <div>
           <MainCard title="Tables" elements={tablesElements} />

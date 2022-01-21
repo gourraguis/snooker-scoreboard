@@ -4,15 +4,14 @@ import { Typography, Card } from 'antd'
 const { Title } = Typography
 interface HeadingCardProps {
   score: number
+  title: string
 }
-const HeadingCard: FunctionComponent<HeadingCardProps> = ({ score }) => (
-  <div>
-    <Card style={{ width: '37%' }}>
-      <Title level={4}>Cette Semaine</Title>
-      <Title level={3}>{score}</Title>
-      <Title level={4}>Matches</Title>
-    </Card>
-  </div>
+const HeadingCard: FunctionComponent<HeadingCardProps> = ({ score, title }) => (
+  <Card style={{ width: '40%' }}>
+    <Title level={4}>{title}</Title>
+    <Title level={3}>{score}</Title>
+    <Title level={4}>Matches</Title>
+  </Card>
 )
 
 export default HeadingCard

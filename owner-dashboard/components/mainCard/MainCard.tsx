@@ -13,7 +13,7 @@ const MainCard: FunctionComponent<MainCardProps> = ({ title, elements }) => (
     <Card title={title} extra={<a href="#">Add</a>} style={{ width: '90%' }}>
       <div>
         {elements.map((elem) => (
-          <CardElement name={elem.name} dailyScore={elem.dailyScore} weeklyScore={elem.weeklyScore} />
+          <CardElement key={elem.name} name={elem.name} dailyScore={elem.dailyScore} weeklyScore={elem.weeklyScore} />
         ))}
       </div>
     </Card>
