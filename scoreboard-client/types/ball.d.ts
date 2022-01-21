@@ -1,4 +1,4 @@
-export enum EBallValue {
+export enum EBall {
   RED = 1,
   YELLOW = 2,
   GREEN = 3,
@@ -6,9 +6,4 @@ export enum EBallValue {
   BLUE = 5,
   PINK = 6,
   BLACK = 7,
-}
-
-export interface IBall {
-  value: EBallValue
-  color: string
 }

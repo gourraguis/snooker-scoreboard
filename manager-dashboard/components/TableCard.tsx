@@ -1,8 +1,8 @@
 import { useRecoilValue } from 'recoil'
-import { boardsState } from '../atoms/boardState'
+import { boardsState } from '../atoms/board'
 import { emitNewGame } from '../services/socket'
 import CardHeader from './CardHeader'
-import Player from './Player'
+import PlayerCard from './PlayerCard'
 import Timer from './Timer'
 
 const TableCard = () => {
@@ -14,9 +14,17 @@ const TableCard = () => {
         <div key={board.name} className="flex flex-col mx-10 w-full rounded-lg border-2 border-primary-w bg-primary-b">
           <CardHeader onNewGame={() => emitNewGame(board.id)} tableName={board.name} />
           <div className="grid grid-cols-3 border-t-2 border-primary-w">
-            <Player color={board.players[0].color} playerName={board.players[0].name} points={board.playersPoints[0]} />
+            <PlayerCard
+              color={board.players[0].color}
+              playerName={board.players[0].name}
+              points={board.playersScore[0]}
+            />
             <Timer startedAt={board.startedAt} />
-            <Player color={board.players[1].color} playerName={board.players[1].name} points={board.playersPoints[1]} />
+            <PlayerCard
+              color={board.players[1].color}
+              playerName={board.players[1].name}
+              points={board.playersScore[1]}
+            />
           </div>
         </div>
       ))}

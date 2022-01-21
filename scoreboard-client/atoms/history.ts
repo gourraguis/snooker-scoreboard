@@ -1,17 +1,16 @@
 import { atom, selector } from 'recoil'
 import _ from 'underscore'
 import moment from 'moment'
-import { ITurn } from '../types/history'
-import { EBallValue, IBall } from '../types/ball'
-import { balls } from '../utils/balls'
+import { EBall } from '../types/ball'
+import { ITurn } from '../types/turn'
 
 export const startedAtState = atom<Date>({
   key: 'startedAtState',
   default: moment().toDate(),
 })
 
-export const playingHistoryState = atom<ITurn[]>({
-  key: 'playingHistoryState',
+export const historyState = atom<ITurn[]>({
+  key: 'historyState',
   default: [
     {
       value: 0,
@@ -20,30 +19,20 @@ export const playingHistoryState = atom<ITurn[]>({
   ],
 })
 
-export const currentTurnSelector = selector<ITurn>({
-  key: 'currentTurn',
+export const previousTurns = selector<ITurn[]>({
+  key: 'previousTurns',
   get: ({ get }) => {
-    const playingHistory = get(playingHistoryState)
-
-    return _.last(playingHistory)!
-  },
-})
-
-export const playingHistoryWithoutCurrentTurnSelector = selector<ITurn[]>({
-  key: 'playingHistoryWithoutCurrentTurnSelector',
-  get: ({ get }) => {
-    const playingHistory = get(playingHistoryState)
+    const playingHistory = get(historyState)
     return playingHistory.slice(0, playingHistory.length - 1)
   },
 })
 
-export const lastBallSelector = selector<IBall>({
-  key: 'lastBallSelector',
+export const currentTurnSelector = selector<ITurn>({
+  key: 'currentTurn',
   get: ({ get }) => {
-    const currentTurn = get(currentTurnSelector)
-    const lastBallValue: EBallValue = _.last(currentTurn.scoredBalls)!
+    const playingHistory = get(historyState)
 
-    return balls.find((ball) => ball.value === lastBallValue)!
+    return _.last(playingHistory)!
   },
 })
 
@@ -56,10 +45,18 @@ export const currentScoreSelector = selector<number>({
   },
 })
 
-export const playerPointsSelector = selector<number[]>({
-  key: 'playerPointsSelector',
+export const lastBallSelector = selector<EBall>({
+  key: 'lastBallSelector',
   get: ({ get }) => {
-    const playingHistoryWithoutCurrentTurn = get(playingHistoryWithoutCurrentTurnSelector)
+    const currentTurn = get(currentTurnSelector)
+    return _.last(currentTurn.scoredBalls)!
+  },
+})
+
+export const playersScoreSelector = selector<number[]>({
+  key: 'playersScoreSelector',
+  get: ({ get }) => {
+    const playingHistoryWithoutCurrentTurn = get(previousTurns)
 
     const playerZeroScore = playingHistoryWithoutCurrentTurn
       .filter(({ value }) => value === 0)

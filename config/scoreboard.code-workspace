@@ -11,9 +11,6 @@
     {
       "name": "api",
       "path": "../api"
-    },
-    {
-      "path": ".."
     }
   ],
   "settings": {}

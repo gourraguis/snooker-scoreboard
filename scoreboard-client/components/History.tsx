@@ -1,11 +1,11 @@
 import { UserIcon } from '@heroicons/react/solid'
 import { useRecoilValue } from 'recoil'
 import classNames from 'classnames'
-import { playingHistoryWithoutCurrentTurnSelector } from '../atoms/historyState'
+import { previousTurns } from '../atoms/history'
 import Ball from './Ball'
 
 const History = () => {
-  const playingHistoryWithoutCurrentTurn = useRecoilValue(playingHistoryWithoutCurrentTurnSelector)
+  const playingHistoryWithoutCurrentTurn = useRecoilValue(previousTurns)
 
   const historyLength = playingHistoryWithoutCurrentTurn.length
   const shownHistory = playingHistoryWithoutCurrentTurn.slice(historyLength > 4 ? historyLength - 5 : 0, historyLength)
@@ -25,8 +25,8 @@ const History = () => {
             <div>
               <h3 className="text-primary-w">Marque {item.scoredBalls.reduce((a, b) => a + b, 0)} points</h3>
               <div className="flex justify-start items-center space-x-1">
-                {item.scoredBalls.map((ball, index) => (
-                  <Ball key={index} value={ball} size="sm" />
+                {item.scoredBalls.map((ball, index2) => (
+                  <Ball key={index2} value={ball} size="sm" />
                 ))}
               </div>
             </div>

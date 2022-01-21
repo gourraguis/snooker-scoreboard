@@ -18,7 +18,7 @@ const boards: IBoard[] = [
     id: '1',
     name: 'Table 1',
     startedAt: moment().toDate(),
-    playersPoints: [0, 0],
+    playersScore: [0, 0],
     history: [],
     players: [
       {
@@ -37,7 +37,7 @@ const boards: IBoard[] = [
     id: '2',
     name: 'Table 2',
     startedAt: moment().toDate(),
-    playersPoints: [0, 0],
+    playersScore: [0, 0],
     history: [],
     players: [
       {

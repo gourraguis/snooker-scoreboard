@@ -2,7 +2,7 @@ import { useState } from 'react'
 import moment from 'moment'
 import { useRecoilValue } from 'recoil'
 import { useInterval } from 'usehooks-ts'
-import { startedAtState } from '../atoms/historyState'
+import { startedAtState } from '../atoms/history'
 
 const Timer = () => {
   const startedAt = useRecoilValue(startedAtState)

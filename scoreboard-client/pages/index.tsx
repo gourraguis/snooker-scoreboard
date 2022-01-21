@@ -8,17 +8,17 @@ import Heading from '../components/Header'
 import History from '../components/History'
 import GameDetails from '../components/GameDetails'
 import PlayerCard from '../components/PlayerCard'
-import { playersState } from '../atoms/userState'
-import { currentTurnSelector, playerPointsSelector, playingHistoryState, startedAtState } from '../atoms/historyState'
+import { playersState } from '../atoms/players'
+import { currentTurnSelector, playersScoreSelector, historyState, startedAtState } from '../atoms/history'
 import { initSocket } from '../services/sockets'
 
 const Home: NextPage = () => {
   const playerState = useRecoilValue(playersState)
   const currentTurn = useRecoilValue(currentTurnSelector)
-  const playerPoints = useRecoilValue(playerPointsSelector)
+  const playersScore = useRecoilValue(playersScoreSelector)
   const setTimer = useSetRecoilState(startedAtState)
   const initPlayers = useResetRecoilState(playersState)
-  const initHistory = useResetRecoilState(playingHistoryState)
+  const initHistory = useResetRecoilState(historyState)
 
   const startNewGame = () => {
     initHistory()
@@ -48,7 +48,7 @@ const Home: NextPage = () => {
                   isCurrent={currentTurn.value === player.turn}
                   color={player.color}
                   playerName={player.name}
-                  points={playerPoints[player.turn]}
+                  points={playersScore[player.turn]}
                   key={player.turn}
                 />
               ))}

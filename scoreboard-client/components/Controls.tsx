@@ -1,76 +1,52 @@
 import { RefreshIcon } from '@heroicons/react/outline'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import moment from 'moment'
-import { balls } from '../utils/balls'
-import { IBall } from '../types/ball'
-import {
-  currentTurnSelector,
-  playerPointsSelector,
-  playingHistoryState,
-  playingHistoryWithoutCurrentTurnSelector,
-} from '../atoms/historyState'
+import { currentTurnSelector, playersScoreSelector, historyState, startedAtState } from '../atoms/history'
 import Ball from './Ball'
 import { emitUpdateBoard } from '../services/sockets'
-import { playersState } from '../atoms/userState'
-import { IBoard } from '../types/board'
+import { playersState } from '../atoms/players'
+import { EBall } from '../types/ball'
+import { balls } from '../utils/balls'
 
 const Controls = () => {
-  const [playingHistory, setPlayingHistory] = useRecoilState(playingHistoryState)
+  const startedAt = useRecoilValue(startedAtState)
+  const players = useRecoilValue(playersState)
+  const playersScore = useRecoilValue(playersScoreSelector)
+  const [history, setHistory] = useRecoilState(historyState)
   const currentTurn = useRecoilValue(currentTurnSelector)
-  const playerState = useRecoilValue(playersState)
-  const playerPoints = useRecoilValue(playerPointsSelector)
-  const playingHistoryWithoutCurrentTurn = useRecoilValue(playingHistoryWithoutCurrentTurnSelector)
 
-  const scoreBall = (ball: IBall) => {
-    setPlayingHistory([
-      ...playingHistory.slice(0, playingHistory.length - 1),
+  const scoreBall = (ball: EBall) => () => {
+    setHistory([
+      ...history.slice(0, history.length - 1),
       {
         value: currentTurn.value,
-        scoredBalls: [...currentTurn.scoredBalls, ball.value],
+        scoredBalls: [...currentTurn.scoredBalls, ball],
       },
     ])
-  }
-  //TODO: Fix lagging points
-  const handleUpdateBoard = () => {
-    const board: IBoard = {
-      id: '1',
-      name: 'Table 1',
-      startedAt: moment().toDate(),
-      playersPoints: playerPoints,
-      history: playingHistoryWithoutCurrentTurn,
-      players: [
-        {
-          color: playerState[0].color,
-          turn: playerState[0].turn,
-          name: playerState[0].name,
-        },
-        {
-          color: playerState[1].color,
-          turn: playerState[1].turn,
-          name: playerState[1].name,
-        },
-      ],
-    }
-    emitUpdateBoard(board)
   }
 
   const switchPlayer = async () => {
-    const nextTurn = ((currentTurn.value + 1) % 2) as 0 | 1
-    setPlayingHistory([
-      ...playingHistory,
+    setHistory([
+      ...history,
       {
-        value: nextTurn,
+        value: ((currentTurn.value + 1) % 2) as 0 | 1,
         scoredBalls: [],
       },
     ])
-    // await new Promise((resolve) => setTimeout(resolve, 1000))
-    handleUpdateBoard()
+
+    emitUpdateBoard({
+      id: '1',
+      name: 'Table 1',
+      startedAt,
+      players,
+      playersScore,
+      history,
+    })
   }
 
   return (
     <div className="flex justify-between items-center px-8 py-3 mx-20">
-      {balls.map((ball) => (
-        <Ball key={ball.value} value={ball.value} onClick={() => scoreBall(ball)} />
+      {balls.map((value) => (
+        <Ball key={value} value={value} onClick={scoreBall(value)} />
       ))}
       <RefreshIcon onClick={switchPlayer} className="w-14 h-14 text-white cursor-pointer" />
     </div>

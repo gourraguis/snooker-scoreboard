@@ -1,4 +1,4 @@
-export enum EBallValue {
+export enum EBall {
   RED = 1,
   YELLOW = 2,
   GREEN = 3,
@@ -10,10 +10,5 @@ export enum EBallValue {
 
 export interface ITurn {
   value: 0 | 1
-  scoredBalls: EBallValue[]
-}
-
-export interface IBall {
-  value: EBallValue
-  color: string
+  scoredBalls: EBall[]
 }
