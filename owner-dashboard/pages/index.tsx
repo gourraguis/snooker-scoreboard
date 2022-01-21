@@ -5,6 +5,8 @@ import { Typography } from 'antd'
 import { openNotification } from '../services/notification'
 import HeadingCard from '../components/HeadingCard'
 import MainCard from '../components/mainCard/MainCard'
+import { useRecoilValue } from 'recoil'
+import { dailyStats, weeklyStats } from '../atoms/globaleStats'
 
 const { Title } = Typography
 
@@ -14,6 +16,8 @@ const indexStyle = {
 }
 
 const Home: NextPage = () => {
+  const dailyScore = useRecoilValue(dailyStats)
+  const weeklyScore = useRecoilValue(weeklyStats)
   useEffect(() => {
     openNotification({ title: 'l9wada' })
   }, [])
@@ -29,8 +33,8 @@ const Home: NextPage = () => {
           <Title>Admin Space</Title>
         </div>
         <div>
-          <HeadingCard />
-          <HeadingCard />
+          <HeadingCard score={dailyScore} />
+          <HeadingCard score={weeklyScore} />
         </div>
         <div>
           <MainCard />
