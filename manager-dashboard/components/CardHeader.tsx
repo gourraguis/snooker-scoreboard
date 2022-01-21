@@ -1,11 +1,11 @@
 import { FunctionComponent } from 'react'
 
-interface HeadingProps {
+interface CardHeaderProps {
   tableName: string
   onNewGame: () => void
 }
 
-const CardHeader: FunctionComponent<HeadingProps> = ({ tableName, onNewGame }) => (
+const CardHeader: FunctionComponent<CardHeaderProps> = ({ tableName, onNewGame }) => (
   <div className="flex justify-between items-center mx-5 py-4">
     <h3 className="text-3xl font-semibold text-primary-w">{tableName}</h3>
     <button

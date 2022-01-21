@@ -1,4 +1,4 @@
-import { ITurn } from './history'
+import { ITurn } from './turn'
 import { IPlayer } from './player'
 
 export interface IBoard {

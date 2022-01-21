@@ -6,8 +6,9 @@ services:
       context: ./scoreboard-client
     ports:
       - "3010:3010"
+    depends_on:
+      - "api"
     container_name: scoreboard-client
-    tty: false
     volumes:
        - ./scoreboard-client:/usr/src/app/scoreboard-client
        - /usr/src/app/scoreboard-client/node_modules
@@ -17,8 +18,9 @@ services:
       context: ./manager-dashboard
     ports:
       - "3020:3020"
+    depends_on:
+      - "api"
     container_name: manager-dashboard
-    tty: false
     volumes:
        - ./manager-dashboard:/usr/src/app/manager-dashboard
        - /usr/src/app/manager-dashboard/node_modules
@@ -29,7 +31,6 @@ services:
     ports:
       - "5000:5000"
     container_name: api
-    tty: false
     volumes:
        - ./api:/usr/src/app/api
        - /usr/src/app/api/node_modules

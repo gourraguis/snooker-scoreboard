@@ -1,7 +1,7 @@
 import { SetterOrUpdater } from 'recoil'
 import { io } from 'socket.io-client'
-import { IBoard } from '../../types/Board'
-import { BoardSocket } from '../../types/Sockets'
+import { IBoard } from '../../types/board'
+import { BoardSocket } from '../../types/sockets'
 
 const socket: BoardSocket = io('localhost:5000/board')
 

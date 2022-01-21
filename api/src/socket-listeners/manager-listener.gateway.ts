@@ -18,18 +18,18 @@ const boards: IBoard[] = [
     id: '1',
     name: 'Table 1',
     startedAt: moment().toDate(),
+    playersScore: [0, 0],
+    history: [],
     players: [
       {
         color: 'text-red-800',
         turn: 0,
         name: 'Harvey',
-        points: 44,
       },
       {
         color: 'text-blue-800',
         turn: 1,
         name: 'Mike Ross',
-        points: 30,
       },
     ],
   },
@@ -37,18 +37,18 @@ const boards: IBoard[] = [
     id: '2',
     name: 'Table 2',
     startedAt: moment().toDate(),
+    playersScore: [0, 0],
+    history: [],
     players: [
       {
         color: 'text-red-800',
         turn: 0,
         name: 'Toto',
-        points: 54,
       },
       {
         color: 'text-blue-800',
         turn: 1,
         name: '7liwa',
-        points: 36,
       },
     ],
   },
@@ -72,7 +72,8 @@ export class ManagerListenerGateway implements OnGatewayConnection {
 
   @SubscribeMessage<ManagerClientToServerEvents>('newGame')
   onNewGame(@MessageBody('boardId') boardId: string, @ConnectedSocket() client: ManagerSocket) {
-    const managerId = client.data.managerId
+    // const managerId = client.data.managerId
+    const managerId = '1'
     if (!managerId) {
       //todo: redirect to login in case of error
       return

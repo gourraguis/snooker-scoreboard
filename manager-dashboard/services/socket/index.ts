@@ -1,7 +1,7 @@
 import { SetterOrUpdater } from 'recoil'
 import { io } from 'socket.io-client'
 import { openNotification } from '../notification'
-import { IBoard } from '../../types/Board'
+import { IBoard } from '../../types/board'
 import { ManagerSocket } from './types/sockets'
 
 const socket: ManagerSocket = io('http://localhost:5000/manager')
@@ -11,8 +11,16 @@ socket.on('connect_error', console.error)
 socket.on('disconnect', () => console.error(`socket disconnected`))
 
 export const initSocket = (setBoard: SetterOrUpdater<IBoard[]>) => {
+  // TODO: Refactor using atoms setBoards and setBoard
   socket.on('boardsList', setBoard)
-  socket.on('updateBoard', console.log)
+  let initialBoard: IBoard[]
+  socket.on('boardsList', (board) => {
+    initialBoard = board
+    setBoard(board)
+  })
+  socket.on('updateBoard', (newBoard) => {
+    setBoard([...initialBoard.filter(({ id }) => id !== newBoard.id), newBoard])
+  })
 }
 
 export const emitNewGame = (boardId: string) => {

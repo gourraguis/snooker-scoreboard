@@ -1,64 +1,52 @@
 import { RefreshIcon } from '@heroicons/react/outline'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import moment from 'moment'
-import { balls } from '../utils/balls'
-import { IBall } from '../types/Ball'
-import { currentTurnSelector, playerPointsSelector, playingHistoryState } from '../atoms/historyState'
+import { currentTurnSelector, playersScoreSelector, historyState, startedAtState } from '../atoms/history'
 import Ball from './Ball'
 import { emitUpdateBoard } from '../services/sockets'
-import { playersState } from '../atoms/userState'
+import { playersState } from '../atoms/players'
+import { EBall } from '../types/ball'
+import { balls } from '../utils/balls'
 
 const Controls = () => {
-  const [playingHistory, setPlayingHistory] = useRecoilState(playingHistoryState)
+  const startedAt = useRecoilValue(startedAtState)
+  const players = useRecoilValue(playersState)
+  const playersScore = useRecoilValue(playersScoreSelector)
+  const [history, setHistory] = useRecoilState(historyState)
   const currentTurn = useRecoilValue(currentTurnSelector)
-  const playerState = useRecoilValue(playersState)
-  const playerPoints = useRecoilValue(playerPointsSelector)
 
-  const scoreBall = (ball: IBall) => {
-    setPlayingHistory([
-      ...playingHistory.slice(0, playingHistory.length - 1),
+  const scoreBall = (ball: EBall) => () => {
+    setHistory([
+      ...history.slice(0, history.length - 1),
       {
         value: currentTurn.value,
-        scoredBalls: [...currentTurn.scoredBalls, ball.value],
+        scoredBalls: [...currentTurn.scoredBalls, ball],
       },
     ])
   }
 
-  const switchPlayer = () => {
-    const nextTurn = ((currentTurn.value + 1) % 2) as 0 | 1
-    setPlayingHistory([
-      ...playingHistory,
+  const switchPlayer = async () => {
+    setHistory([
+      ...history,
       {
-        value: nextTurn,
+        value: ((currentTurn.value + 1) % 2) as 0 | 1,
         scoredBalls: [],
       },
     ])
-    const board = {
+
+    emitUpdateBoard({
       id: '1',
       name: 'Table 1',
-      startedAt: moment().toDate(),
-      players: [
-        {
-          color: playerState[0].color,
-          turn: playerState[0].turn,
-          name: playerState[0].name,
-          points: playerPoints[0],
-        },
-        {
-          color: playerState[1].color,
-          turn: playerState[1].turn,
-          name: playerState[1].name,
-          points: playerPoints[1],
-        },
-      ],
-    }
-    emitUpdateBoard(board)
+      startedAt,
+      players,
+      playersScore,
+      history,
+    })
   }
 
   return (
     <div className="flex justify-between items-center px-8 py-3 mx-20">
-      {balls.map((ball) => (
-        <Ball key={ball.value} value={ball.value} onClick={() => scoreBall(ball)} />
+      {balls.map((value) => (
+        <Ball key={value} value={value} onClick={scoreBall(value)} />
       ))}
       <RefreshIcon onClick={switchPlayer} className="w-14 h-14 text-white cursor-pointer" />
     </div>
