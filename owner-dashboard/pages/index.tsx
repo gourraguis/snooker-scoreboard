@@ -26,8 +26,8 @@ const Home: NextPage = () => {
         <title>Owner</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div>
-        <Row style={{ marginTop: '5%' }}>
+      <div style={{ backgroundColor: '#f4f4f5' }}>
+        <Row>
           <Col span={12} offset={7}>
             <Title>Admin Space</Title>
           </Col>
