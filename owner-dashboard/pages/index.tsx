@@ -37,8 +37,8 @@ const Home: NextPage = () => {
           <HeadingCard score={weeklyScore} />
         </div>
         <div>
-          <MainCard />
-          <MainCard />
+          <MainCard title="Tables" />
+          <MainCard title="Managers" />
         </div>
       </center>
     </div>
