@@ -7,7 +7,7 @@ interface HeadingCardProps {
   title: string
 }
 const HeadingCard: FunctionComponent<HeadingCardProps> = ({ score, title }) => (
-  <Card style={{ width: '40%' }}>
+  <Card>
     <Title level={4}>{title}</Title>
     <Title level={3}>{score}</Title>
     <Title level={4}>Matches</Title>

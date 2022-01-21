@@ -10,7 +10,7 @@ interface MainCardProps {
 
 const MainCard: FunctionComponent<MainCardProps> = ({ title, elements }) => (
   <div>
-    <Card title={title} extra={<a href="#">Add</a>} style={{ width: '90%' }}>
+    <Card style={{ marginTop: '5%' }} title={title} extra={<a href="#">Add</a>}>
       <div>
         {elements.map((elem) => (
           <CardElement key={elem.name} name={elem.name} dailyScore={elem.dailyScore} weeklyScore={elem.weeklyScore} />

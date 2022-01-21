@@ -4,12 +4,11 @@ import { ICardElements } from '../../types/cardElement'
 
 const gridStyle = {
   width: '33%',
-  textAlign: 'center',
 }
 
 const CardElement: FunctionComponent<ICardElements> = ({ name, dailyScore, weeklyScore }) => (
   <div>
-    <Card>
+    <Card style={{ marginTop: '5%' }}>
       <Card.Grid hoverable={false} style={gridStyle}>
         {name}
       </Card.Grid>

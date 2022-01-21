@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useEffect } from 'react'
-import { Typography } from 'antd'
+import { Row, Col, Typography, Space } from 'antd'
 import { useRecoilValue } from 'recoil'
 import { openNotification } from '../services/notification'
 import HeadingCard from '../components/HeadingCard'
@@ -10,11 +10,6 @@ import { dailyStats, weeklyStats } from '../atoms/globaleStats'
 import { managersStats, tablesStats } from '../atoms/mainStats'
 
 const { Title } = Typography
-
-const indexStyle = {
-  width: '100%',
-  background: '#202020',
-}
 
 const Home: NextPage = () => {
   const dailyScore = useRecoilValue(dailyStats)
@@ -31,19 +26,29 @@ const Home: NextPage = () => {
         <title>Owner</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <center style={indexStyle}>
-        <div>
-          <Title>Admin Space</Title>
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-          <HeadingCard title="Ce jour" score={dailyScore} />
-          <HeadingCard title="Cette Semaine" score={weeklyScore} />
-        </div>
-        <div>
-          <MainCard title="Tables" elements={tablesElements} />
-          <MainCard title="Managers" elements={managersElements} />
-        </div>
-      </center>
+      <div>
+        <Row style={{ marginTop: '5%' }}>
+          <Col span={12} offset={7}>
+            <Title>Admin Space</Title>
+          </Col>
+        </Row>
+        <Row style={{ marginTop: '5%' }}>
+          <Col span={8} offset={2}>
+            <HeadingCard title="Ce jour" score={dailyScore} />
+          </Col>
+          <Col span={8} offset={4}>
+            <HeadingCard title="Cette Semaine" score={weeklyScore} />
+          </Col>
+        </Row>
+        <Row style={{ marginTop: '5%' }}>
+          <Col span={22} offset={1}>
+            <MainCard title="Tables" elements={tablesElements} />
+          </Col>
+          <Col span={22} offset={1}>
+            <MainCard title="Managers" elements={managersElements} />
+          </Col>
+        </Row>
+      </div>
     </div>
   )
 }
