@@ -66,6 +66,7 @@ export class ManagerListenerGateway implements OnGatewayConnection {
   ) {}
 
   handleConnection(client: ManagerSocket) {
+    this.logger.log(`NODE_ENV=${process.env.NODE_ENV}`)
     this.logger.log(`Client connected: ${client.id}`)
     this.managerEmitterGateway.emitBoardsList(boards)
   }

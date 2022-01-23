@@ -1,9 +1,10 @@
-
 version: '3'
 services:
   scoreboard-client:
     build:
       context: ./scoreboard-client
+    environment:
+      - NODE_ENV
     ports:
       - "3010:3010"
     depends_on:
@@ -16,6 +17,8 @@ services:
   manager-dashboard:
     build:
       context: ./manager-dashboard
+    environment:
+      - NODE_ENV
     ports:
       - "3020:3020"
     depends_on:
@@ -28,6 +31,8 @@ services:
   api:
     build:
       context: ./api
+    environment:
+      - NODE_ENV
     ports:
       - "5000:5000"
     container_name: api

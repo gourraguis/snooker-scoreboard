@@ -5,13 +5,8 @@ import { BoardSocket } from '../../types/sockets'
 
 const socket: BoardSocket = io('localhost:5000/board')
 
-socket.on('connect', () => {
-  console.log('Connected to server')
-})
-
-socket.on('disconnect', () => {
-  console.error('Disconnected from server')
-})
+socket.on('connect', () => console.log('Connected to server'))
+socket.on('disconnect', () => console.error('Disconnected from server'))
 
 export const initSocket = (startNewGame: SetterOrUpdater<void>) => {
   socket.on('newGame', startNewGame)

@@ -7,7 +7,6 @@ import { ManagerSocket } from './types/sockets'
 const socket: ManagerSocket = io('http://localhost:5000/manager')
 
 socket.on('connect', () => console.log(`socket connected`))
-socket.on('connect_error', console.error)
 socket.on('disconnect', () => console.error(`socket disconnected`))
 
 export const initSocket = (setBoard: SetterOrUpdater<IBoard[]>) => {
