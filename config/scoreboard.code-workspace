@@ -9,6 +9,10 @@
       "path": "../manager-dashboard"
     },
     {
+      "name": "owner-dashboard",
+      "path": "../owner-dashboard"
+    },
+    {
       "name": "api",
       "path": "../api"
     }

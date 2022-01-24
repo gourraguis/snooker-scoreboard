@@ -4,8 +4,7 @@ import { IPlayer } from './player'
 export interface IBoard {
   id: string
   name: string
-  startedAt: Date
-  playersScore: number[]
-  history: ITurn[]
   players: IPlayer[]
+  startedAt?: Date
+  history?: ITurn[]
 }

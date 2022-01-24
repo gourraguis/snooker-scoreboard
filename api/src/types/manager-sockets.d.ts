@@ -2,12 +2,12 @@ import { Server, Socket } from 'socket.io'
 import { IBoard } from './board'
 
 interface ServerToClientEvents {
-  boardsList: (boards: IBoard[]) => void
+  newBoard: (board: IBoard) => void
   updateBoard: (board: IBoard) => void
 }
 
 interface ClientToServerEvents {
-  newGame: (req: { boardId: string }, cb: (res: { error: string }) => void) => void
+  newGame: (req: { boardId: string }, cb: () => void) => void
 }
 
 interface SocketData {

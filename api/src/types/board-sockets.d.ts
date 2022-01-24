@@ -6,6 +6,7 @@ interface ServerToClientEvents {
 }
 
 interface ClientToServerEvents {
+  initBoard: (boardId: string, cb: (board: IBoard) => void) => void
   updateBoard: (board: IBoard) => void
 }
 

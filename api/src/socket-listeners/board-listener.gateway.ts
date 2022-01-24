@@ -10,6 +10,7 @@ import { IBoard } from 'src/types/board'
 import { BoardClientToServerEvents, BoardServer, BoardSocket } from '../types/board-sockets'
 import { BoardEmitterGateway } from '../socket-emitters/board-emitter.gateway'
 import { ManagerEmmiterGateway } from 'src/socket-emitters/manager-emitter.gateway'
+import { BoardService } from 'src/board/board.service'
 
 @WebSocketGateway({ cors: true, namespace: 'board' })
 export class BoardListenerGateway implements OnGatewayConnection {
@@ -17,10 +18,19 @@ export class BoardListenerGateway implements OnGatewayConnection {
   @WebSocketServer()
   server: BoardServer
 
-  constructor(private readonly managerEmmiterGateway: ManagerEmmiterGateway) {}
+  constructor(
+    private readonly managerEmmiterGateway: ManagerEmmiterGateway,
+    private readonly boardService: BoardService
+  ) {}
 
-  handleConnection(client: BoardSocket) {
-    this.logger.log(`Client connected: ${client.id}`)
+  handleConnection(boardClient: BoardSocket) {
+    this.logger.log(`Board connected: ${boardClient.id}`)
+  }
+
+  @SubscribeMessage<BoardClientToServerEvents>('initBoard')
+  onInitBoard(@MessageBody() boardId: string): IBoard {
+    const board = this.boardService.getBoard(boardId)
+    return board
   }
 
   @SubscribeMessage<BoardClientToServerEvents>('updateBoard')

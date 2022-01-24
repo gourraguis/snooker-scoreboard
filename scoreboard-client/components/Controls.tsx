@@ -1,16 +1,15 @@
 import { RefreshIcon } from '@heroicons/react/outline'
 import { useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { currentTurnSelector, playersScoreSelector, historyState, startedAtState } from '../atoms/history'
+import { currentTurnSelector, playersScoreSelector, historyState } from '../atoms/history'
 import Ball from './Ball'
 import { emitUpdateBoard } from '../services/sockets'
-import { playersState } from '../atoms/players'
 import { EBall } from '../types/ball'
 import { balls } from '../utils/balls'
+import { boardState } from '../atoms/board'
 
 const Controls = () => {
-  const startedAt = useRecoilValue(startedAtState)
-  const players = useRecoilValue(playersState)
+  const board = useRecoilValue(boardState)!
   const playersScore = useRecoilValue(playersScoreSelector)
   const [history, setHistory] = useRecoilState(historyState)
   const currentTurn = useRecoilValue(currentTurnSelector)
@@ -30,11 +29,17 @@ const Controls = () => {
     setSend(false)
     if (!send) {
       emitUpdateBoard({
-        id: '1',
-        name: 'Table 1',
-        startedAt,
-        players,
-        playersScore,
+        ...board,
+        players: [
+          {
+            ...board.players[0],
+            score: playersScore[0],
+          },
+          {
+            ...board.players[1],
+            score: playersScore[1],
+          },
+        ],
         history,
       })
     }

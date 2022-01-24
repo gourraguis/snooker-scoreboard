@@ -1,0 +1,9 @@
+.contentCentered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.space {
+  width: 100%
+}

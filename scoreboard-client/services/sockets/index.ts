@@ -1,19 +1,19 @@
 import { SetterOrUpdater } from 'recoil'
 import { io } from 'socket.io-client'
 import { IBoard } from '../../types/board'
-import { BoardSocket } from '../../types/sockets'
+import { BoardSocket } from './types/sockets'
 
 const socket: BoardSocket = io('localhost:5000/board')
 
-socket.on('connect', () => {
-  console.log('Connected to server')
-})
+export const initSocket = (startNewGame: SetterOrUpdater<void>, setBoard: SetterOrUpdater<IBoard | null>) => {
+  socket.on('connect', () => {
+    const dummyBoardId = Math.floor(Math.random() * 1000).toString()
+    socket.emit('initBoard', dummyBoardId, setBoard)
+    console.log('Connected to server')
+  })
 
-socket.on('disconnect', () => {
-  console.error('Disconnected from server')
-})
+  socket.on('disconnect', () => console.error('Disconnected from server'))
 
-export const initSocket = (startNewGame: SetterOrUpdater<void>) => {
   socket.on('newGame', startNewGame)
 }
 
