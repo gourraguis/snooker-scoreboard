@@ -16,17 +16,18 @@ export const ODMainCardContent: FunctionComponent<ICardElements> = ({ name, dail
           <Divider type="vertical" className={styles.divider} />
         </Col>
 
-        <Col span={6} className={styles.column}>
+        <Col span={7} className={styles.column}>
           <span className={styles.dailyScore}>{dailyScore} </span>
-          Matches Ce Jour
+          <span className={styles.text}>Matches Ce Jour</span>
         </Col>
 
         <Col span={2}>
           <Divider type="vertical" className={styles.divider} />
         </Col>
 
-        <Col span={6} className={styles.column}>
-          <span className={styles.weeklyScore}>{weeklyScore} </span> Matches Cette Semaine
+        <Col span={7} className={styles.column}>
+          <span className={styles.weeklyScore}>{weeklyScore} </span>
+          <span className={styles.text}>Matches Cette Semaine</span>
         </Col>
       </Row>
     </Card>

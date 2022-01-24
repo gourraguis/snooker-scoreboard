@@ -3,6 +3,10 @@
   font-weight: 500;
   margin-bottom: 0rem !important;
   min-height: 12vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .scoreBlue {
