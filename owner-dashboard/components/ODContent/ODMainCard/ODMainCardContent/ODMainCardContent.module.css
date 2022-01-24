@@ -1,0 +1,33 @@
+.card {
+  margin-top: 15px;
+  border-radius: 15px;
+}
+
+.column {
+  text-align: center;
+  /* justify-content: center;
+  vertical-align: middle; */
+}
+
+.divider {
+  height: 100%;
+}
+
+.weeklyScore {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: rgb(27, 153, 48);
+  margin-bottom: 0rem !important;
+}
+
+.dailyScore {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: rgb(21, 158, 250);
+  margin-bottom: 0rem !important;
+}
+
+.name {
+  font-size: 1rem;
+  font-weight: 500;
+}
