@@ -3,10 +3,16 @@ import '../styles/antd.less'
 import '../styles/index.css'
 import { RecoilRoot } from 'recoil'
 
+function SafeHydrate({ children }: { children: JSX.Element }) {
+  return <div suppressHydrationWarning>{typeof window === 'undefined' ? null : children}</div>
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <RecoilRoot>
-      <Component {...pageProps} />
+      <SafeHydrate>
+        <Component {...pageProps} />
+      </SafeHydrate>
     </RecoilRoot>
   )
 }
