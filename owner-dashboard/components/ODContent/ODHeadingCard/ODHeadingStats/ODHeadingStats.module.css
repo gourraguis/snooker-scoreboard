@@ -1,0 +1,20 @@
+.title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 0rem !important;
+  min-height: 12vh;
+}
+
+.scoreBlue {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: rgb(21, 158, 250);
+  margin-bottom: 0rem !important;
+}
+
+.scoreGreen {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: rgb(27, 153, 48);
+  margin-bottom: 0rem !important;
+}
