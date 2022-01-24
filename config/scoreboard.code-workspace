@@ -9,11 +9,12 @@
       "path": "../manager-dashboard"
     },
     {
-      "name": "api",
-      "path": "../api"
+      "name": "owner-dashboard",
+      "path": "../owner-dashboard"
     },
     {
-      "path": ".."
+      "name": "api",
+      "path": "../api"
     }
   ],
   "settings": {}

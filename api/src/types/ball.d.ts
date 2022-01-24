@@ -7,8 +7,3 @@ export enum EBall {
   PINK = 6,
   BLACK = 7,
 }
-
-export interface ITurn {
-  value: 0 | 1
-  scoredBalls: EBall[]
-}

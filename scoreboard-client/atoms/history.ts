@@ -1,13 +1,7 @@
 import { atom, selector } from 'recoil'
 import _ from 'underscore'
-import moment from 'moment'
 import { EBall } from '../types/ball'
 import { ITurn } from '../types/turn'
-
-export const startedAtState = atom<Date>({
-  key: 'startedAtState',
-  default: moment().toDate(),
-})
 
 export const historyState = atom<ITurn[]>({
   key: 'historyState',

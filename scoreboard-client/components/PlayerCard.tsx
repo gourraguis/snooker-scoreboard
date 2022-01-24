@@ -19,7 +19,7 @@ const PlayerCard: FunctionComponent<PlayerCardProps> = ({ isCurrent, color, poin
     )}
   >
     <div className="w-full flex flex-col justify-center items-center">
-      <UserIcon className={`w-16 h-16 my-2 ${color}`} />
+      <UserIcon className="w-16 h-16 my-2" style={{ color }} />
       <h3 className="text-primary-w font-semibold text-2xl mb-4">{playerName}</h3>
     </div>
     <div className="hidden text-blue-800" />

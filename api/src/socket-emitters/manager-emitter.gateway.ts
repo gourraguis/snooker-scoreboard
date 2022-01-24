@@ -7,8 +7,8 @@ export class ManagerEmmiterGateway {
   @WebSocketServer()
   server: ManagerServer
 
-  emitBoardsList(boardsList: IBoard[]) {
-    this.server.emit('boardsList', boardsList)
+  emitNewBoard(board: IBoard) {
+    this.server.emit('newBoard', board)
   }
 
   emitUpdateBoard(board: IBoard) {

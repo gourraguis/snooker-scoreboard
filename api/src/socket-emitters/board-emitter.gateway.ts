@@ -8,6 +8,5 @@ export class BoardEmitterGateway {
 
   emitStartNewGame() {
     this.server.emit('newGame')
-    return { error: null }
   }
 }

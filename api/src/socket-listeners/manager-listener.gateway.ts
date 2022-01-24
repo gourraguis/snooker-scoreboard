@@ -6,53 +6,10 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets'
-import * as moment from 'moment'
 import { Logger } from '@nestjs/common'
 import { ManagerClientToServerEvents, ManagerServer, ManagerSocket } from 'src/types/manager-sockets'
 import { BoardEmitterGateway } from 'src/socket-emitters/board-emitter.gateway'
-import { IBoard } from 'src/types/board'
 import { ManagerEmmiterGateway } from 'src/socket-emitters/manager-emitter.gateway'
-
-const boards: IBoard[] = [
-  {
-    id: '1',
-    name: 'Table 1',
-    startedAt: moment().toDate(),
-    playersScore: [0, 0],
-    history: [],
-    players: [
-      {
-        color: 'text-red-800',
-        turn: 0,
-        name: 'Harvey',
-      },
-      {
-        color: 'text-blue-800',
-        turn: 1,
-        name: 'Mike Ross',
-      },
-    ],
-  },
-  {
-    id: '2',
-    name: 'Table 2',
-    startedAt: moment().toDate(),
-    playersScore: [0, 0],
-    history: [],
-    players: [
-      {
-        color: 'text-red-800',
-        turn: 0,
-        name: 'Toto',
-      },
-      {
-        color: 'text-blue-800',
-        turn: 1,
-        name: '7liwa',
-      },
-    ],
-  },
-]
 
 @WebSocketGateway({ cors: true, namespace: 'manager' })
 export class ManagerListenerGateway implements OnGatewayConnection {
@@ -65,10 +22,9 @@ export class ManagerListenerGateway implements OnGatewayConnection {
     private readonly managerEmitterGateway: ManagerEmmiterGateway
   ) {}
 
-  handleConnection(client: ManagerSocket) {
+  handleConnection(ManagerClient: ManagerSocket) {
     this.logger.log(`NODE_ENV=${process.env.NODE_ENV}`)
-    this.logger.log(`Client connected: ${client.id}`)
-    this.managerEmitterGateway.emitBoardsList(boards)
+    this.logger.log(`Manager connected: ${ManagerClient.id}`)
   }
 
   @SubscribeMessage<ManagerClientToServerEvents>('newGame')
@@ -80,6 +36,7 @@ export class ManagerListenerGateway implements OnGatewayConnection {
       return
     }
     //todo: use board id to start game on the right board
+    this.logger.log(`Starting new game on board id: ${boardId}`)
     this.boardEmitterGateway.emitStartNewGame()
     return { error: null }
   }

@@ -2,10 +2,10 @@ import { useState } from 'react'
 import moment from 'moment'
 import { useRecoilValue } from 'recoil'
 import { useInterval } from 'usehooks-ts'
-import { startedAtState } from '../atoms/history'
+import { startedAtSelector } from '../atoms/board'
 
 const Timer = () => {
-  const startedAt = useRecoilValue(startedAtState)
+  const startedAt = useRecoilValue(startedAtSelector)
   const [timerText, setTimerText] = useState('00:00')
 
   useInterval(() => {

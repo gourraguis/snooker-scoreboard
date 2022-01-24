@@ -1,6 +1,6 @@
-import { useInterval } from 'usehooks-ts'
 import { useState, FunctionComponent } from 'react'
 import moment from 'moment'
+import { useInterval } from 'usehooks-ts'
 
 interface TimerProps {
   startedAt: Date
