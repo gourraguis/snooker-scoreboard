@@ -3,10 +3,10 @@ import { OwnerService } from './owner.service'
 
 @Controller('owner')
 export class OwnerController {
-  constructor(private readonly itemsService: OwnerService) {}
+  constructor(private readonly ownerService: OwnerService) {}
 
   @Post()
   create(@Body() name: string): Promise<void> {
-    return this.itemsService.create(name)
+    return this.ownerService.create(name)
   }
 }

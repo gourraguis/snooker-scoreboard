@@ -24,13 +24,13 @@ const ODTableForm: FunctionComponent<ODTableFormProps> = ({ onCancel, visible })
           <Button key="back" onClick={handleCancel}>
             Cancel
           </Button>,
-          <Button form="myForm" key="submit" htmlType="submit" type="primary">
+          <Button form="addTable" key="submit" htmlType="submit" type="primary">
             Submit
           </Button>,
         ]}
       >
         <Form
-          id="myForm"
+          id="addTable"
           name="basic"
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 16 }}

@@ -1,12 +1,11 @@
 import axios from 'axios'
+import { IManager } from '../types/manager'
 
 const url = 'http://localhost:5000'
 
-export const sendReq = async (data: string) => {
-  console.log('xx')
-
+export const createManager = async (manager: IManager) => {
   await axios
-    .post(`${url}/owner`, data)
+    .post(`${url}/owner/addManager`, manager)
     .then((res) => {
       console.log(res)
       return res

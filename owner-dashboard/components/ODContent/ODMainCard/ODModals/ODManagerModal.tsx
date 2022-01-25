@@ -1,6 +1,7 @@
 import { Button, Form, Input, Modal } from 'antd'
 import { FunctionComponent } from 'react'
-import { sendReq } from '../../../../services/owner'
+import { createManager } from '../../../../services/owner'
+import { IManager } from '../../../../types/manager'
 
 interface ODManagerModalProps {
   onCancel: () => void
@@ -11,9 +12,9 @@ const ODManagerModal: FunctionComponent<ODManagerModalProps> = ({ onCancel, visi
   const handleCancel = () => {
     onCancel()
   }
-  const onFinish = (values: string) => {
+  const onFinish = (values: IManager) => {
     console.log('Success:', values)
-    sendReq(values)
+    createManager(values)
   }
 
   return (
@@ -26,13 +27,13 @@ const ODManagerModal: FunctionComponent<ODManagerModalProps> = ({ onCancel, visi
           <Button key="back" onClick={handleCancel}>
             Cancel
           </Button>,
-          <Button form="myForm" key="submit" htmlType="submit" type="primary">
+          <Button form="addManager" key="submit" htmlType="submit" type="primary">
             Submit
           </Button>,
         ]}
       >
         <Form
-          id="myForm"
+          id="addManager"
           name="basic"
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 12 }}
