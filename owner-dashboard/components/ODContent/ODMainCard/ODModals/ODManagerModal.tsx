@@ -1,5 +1,6 @@
 import { Button, Form, Input, Modal } from 'antd'
 import { FunctionComponent } from 'react'
+import { sendReq } from '../../../../services/owner'
 
 interface ODManagerModalProps {
   onCancel: () => void
@@ -12,6 +13,7 @@ const ODManagerModal: FunctionComponent<ODManagerModalProps> = ({ onCancel, visi
   }
   const onFinish = (values: string) => {
     console.log('Success:', values)
+    sendReq(values)
   }
 
   return (
@@ -33,7 +35,7 @@ const ODManagerModal: FunctionComponent<ODManagerModalProps> = ({ onCancel, visi
           id="myForm"
           name="basic"
           labelCol={{ span: 4 }}
-          wrapperCol={{ span: 16 }}
+          wrapperCol={{ span: 12 }}
           initialValues={{ remember: true }}
           onFinish={onFinish}
           autoComplete="off"
