@@ -14,6 +14,7 @@ const ODTableForm: FunctionComponent<ODTableFormProps> = ({ onCancel, visible })
   }
   const onFinish = (values: ITable) => {
     createTable(values)
+    onCancel()
   }
 
   return (
