@@ -5,6 +5,7 @@ import { ODMainCardContent } from './ODMainCardContent/ODMainCardContent'
 
 import styles from './ODMainCard.module.css'
 import ODTableForm from './ODModals/ODTableModal'
+import ODManagerModal from './ODModals/ODManagerModal'
 
 interface ODMainCardProps {
   id: string
@@ -42,6 +43,9 @@ const ODMainCard: FunctionComponent<ODMainCardProps> = ({ id, title, elements })
       ))}
       {id === 'table' && (
         <div>{isModalVisible && <ODTableForm onCancel={handleCancel} visible={isModalVisible} />}</div>
+      )}
+      {id === 'manager' && (
+        <div>{isModalVisible && <ODManagerModal onCancel={handleCancel} visible={isModalVisible} />}</div>
       )}
     </Card>
   )
