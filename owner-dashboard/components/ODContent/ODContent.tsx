@@ -16,8 +16,8 @@ export const ODContent: FunctionComponent = () => {
     <Content>
       <Space direction="vertical" className={styles.space}>
         <ODHeadingCard />
-        <ODMainCard title="Tables" elements={tablesElements} />
-        <ODMainCard title="Managers" elements={managersElements} />
+        <ODMainCard id="table" title="Tables" elements={tablesElements} />
+        <ODMainCard id="manager" title="Managers" elements={managersElements} />
       </Space>
     </Content>
   )
