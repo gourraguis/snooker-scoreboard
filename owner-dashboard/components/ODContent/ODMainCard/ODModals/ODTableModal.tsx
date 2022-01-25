@@ -1,5 +1,7 @@
 import { Button, Form, Input, Modal } from 'antd'
 import { FunctionComponent } from 'react'
+import { createTable } from '../../../../services/owner'
+import { ITable } from '../../../../types/table'
 
 interface ODTableFormProps {
   onCancel: () => void
@@ -10,8 +12,8 @@ const ODTableForm: FunctionComponent<ODTableFormProps> = ({ onCancel, visible })
   const handleCancel = () => {
     onCancel()
   }
-  const onFinish = (values: string) => {
-    console.log('Success:', values)
+  const onFinish = (values: ITable) => {
+    createTable(values)
   }
 
   return (
