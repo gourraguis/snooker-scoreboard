@@ -2,7 +2,7 @@ import { useState } from 'react'
 import moment from 'moment'
 import { useRecoilValue } from 'recoil'
 import { useInterval } from 'usehooks-ts'
-import { startedAtSelector } from '../atoms/board'
+import { startedAtSelector } from '../atoms/game.atom'
 
 const Timer = () => {
   const startedAt = useRecoilValue(startedAtSelector)

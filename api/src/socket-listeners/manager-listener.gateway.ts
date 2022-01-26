@@ -10,6 +10,7 @@ import { Logger } from '@nestjs/common'
 import { ManagerClientToServerEvents, ManagerServer, ManagerSocket } from 'src/types/manager-sockets'
 import { BoardEmitterGateway } from 'src/socket-emitters/board-emitter.gateway'
 import { ManagerEmmiterGateway } from 'src/socket-emitters/manager-emitter.gateway'
+import { GameService } from '../game/game.service'
 
 @WebSocketGateway({ cors: true, namespace: 'manager' })
 export class ManagerListenerGateway implements OnGatewayConnection {
@@ -19,7 +20,8 @@ export class ManagerListenerGateway implements OnGatewayConnection {
 
   constructor(
     private readonly boardEmitterGateway: BoardEmitterGateway,
-    private readonly managerEmitterGateway: ManagerEmmiterGateway
+    private readonly managerEmitterGateway: ManagerEmmiterGateway,
+    private readonly gameService: GameService
   ) {}
 
   handleConnection(ManagerClient: ManagerSocket) {
@@ -27,8 +29,8 @@ export class ManagerListenerGateway implements OnGatewayConnection {
     this.logger.log(`Manager connected: ${ManagerClient.id}`)
   }
 
-  @SubscribeMessage<ManagerClientToServerEvents>('newGame')
-  onNewGame(@MessageBody('boardId') boardId: string, @ConnectedSocket() client: ManagerSocket) {
+  @SubscribeMessage<ManagerClientToServerEvents>('initGame')
+  onNewGame(@MessageBody() boardId: string, @ConnectedSocket() client: ManagerSocket) {
     // const managerId = client.data.managerId
     const managerId = '1'
     if (!managerId) {
@@ -37,7 +39,8 @@ export class ManagerListenerGateway implements OnGatewayConnection {
     }
     //todo: use board id to start game on the right board
     this.logger.log(`Starting new game on board id: ${boardId}`)
-    this.boardEmitterGateway.emitStartNewGame()
-    return { error: null }
+    const newGame = this.gameService.createGame(boardId)
+    this.boardEmitterGateway.emitStartNewGame(newGame)
+    return newGame
   }
 }

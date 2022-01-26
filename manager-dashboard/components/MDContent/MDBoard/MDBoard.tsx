@@ -1,50 +1,76 @@
-import { Card, Row, Col, Divider } from 'antd'
+import { Card, Row, Col, Divider, Empty } from 'antd'
 import { PlusOutlined, HistoryOutlined } from '@ant-design/icons'
 import { FunctionComponent } from 'react'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { IBoard } from '../../../types/board'
 import { MDTimer } from './MDTimer/MDTimer'
 
 import styles from './MDBoard.module.css'
 import { emitNewGame } from '../../../services/socket'
 import { MDPlayer } from './MDPlayer/MDPlayer'
+import { addGameAction, gameForBoardIdSelector, gamesState } from '../../../atoms/games.atom'
+import { openNotification } from '../../../services/notification'
 
 interface MDBoardProps {
   board: IBoard
 }
 
 export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
+  const game = useRecoilValue(gameForBoardIdSelector(board.id))
+  const setGames = useSetRecoilState(gamesState)
+  const addGame = addGameAction(setGames)
+
   const handleNewGame = () => {
-    console.log(`starting new game on board: ${board.name}`)
-    emitNewGame(board.id)
+    emitNewGame(board.id, (newGame) => {
+      if (!newGame) {
+        openNotification({
+          title: 'Erreur, on a pas pu lancer une nouvelle partie..',
+          type: 'error',
+        })
+      }
+
+      addGame(newGame)
+      openNotification({
+        title: 'Une nouvelle partie a été lancé',
+      })
+    })
   }
 
   const handleHistory = () => {
+    if (game) {
+      console.error(`trying to show history for a game that hasn't started`)
+      return
+    }
     console.log(`show history on board: ${board.name}`)
   }
 
   return (
     <Card
       title={board.name}
-      extra={<MDTimer startedAt={board.startedAt} />}
+      extra={<MDTimer startedAt={game?.startedAt} />}
       actions={[
-        <PlusOutlined onClick={handleNewGame} key="newGame" />,
+        <PlusOutlined onClick={handleNewGame} key="initGame" />,
         <HistoryOutlined onClick={handleHistory} key="history" />,
       ]}
       className={styles.card}
     >
-      <Row>
-        <Col span={11} className={styles.column}>
-          <MDPlayer player={board.players[0]} />
-        </Col>
+      {!game ? (
+        <Empty description="Il n'y as pas de parti sur cette table, veuillez lancer une nouvelle." />
+      ) : (
+        <Row>
+          <Col span={11} className={styles.column}>
+            <MDPlayer player={game.players[0]} />
+          </Col>
 
-        <Col span={2}>
-          <Divider type="vertical" className={styles.divider} />
-        </Col>
+          <Col span={2}>
+            <Divider type="vertical" className={styles.divider} />
+          </Col>
 
-        <Col span={11} className={styles.column}>
-          <MDPlayer player={board.players[1]} />
-        </Col>
-      </Row>
+          <Col span={11} className={styles.column}>
+            <MDPlayer player={game.players[1]} />
+          </Col>
+        </Row>
+      )}
     </Card>
   )
 }
