@@ -12,4 +12,8 @@ export class BoardService {
       name: `Table ${boardId}`,
     }
   }
+
+  async create(name: IBoard): Promise<void> {
+    this.logger.log(JSON.stringify(name, null, 2))
+  }
 }

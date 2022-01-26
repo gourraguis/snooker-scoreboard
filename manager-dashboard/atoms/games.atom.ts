@@ -12,11 +12,10 @@ export const gameForBoardIdSelector = (boardId: string) =>
     key: `gameForBoardIdSelector:${boardId}`,
     get: ({ get }) => {
       const games = get(gamesState)
-      if (!games?.length) return null
+      const boardGames = games.filter((game) => game.boardId === boardId)
+      if (!boardGames?.length) return null
 
-      return games
-        .filter((game) => game.boardId === boardId)
-        .reduce((prev, curr) => (moment(curr.startedAt).isAfter(prev.startedAt) ? curr : prev))
+      return boardGames.reduce((prev, curr) => (moment(curr.startedAt).isAfter(prev.startedAt) ? curr : prev))
     },
   })
 

@@ -7,10 +7,10 @@ const url = 'http://localhost:5000'
 
 export const createManager = async (manager: IManager) => {
   await axios
-    .post(`${url}/manager/addManager`, manager)
+    .post(`${url}/manager`, manager)
     .then((res) => {
       console.log(res)
-      openNotification({ title: 'Manager a bien été ajouté' })
+      openNotification({ title: 'Manager a été ajouté' })
     })
     .catch((err) => {
       console.log(err)
@@ -20,7 +20,7 @@ export const createManager = async (manager: IManager) => {
 
 export const createTable = async (table: ITable) => {
   await axios
-    .post(`${url}/table/addTable`, table)
+    .post(`${url}/board`, table)
     .then((res) => {
       console.log(res)
       openNotification({ title: 'Nouvelle table a été créé' })

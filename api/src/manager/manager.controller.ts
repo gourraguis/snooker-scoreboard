@@ -6,8 +6,8 @@ import { IManager } from './types'
 export class ManagerController {
   constructor(private readonly managerService: ManagerService) {}
 
-  @Post('/addManager')
-  create(@Body() name: IManager): Promise<void> {
+  @Post('')
+  createManager(@Body() name: IManager): Promise<void> {
     return this.managerService.create(name)
   }
 }

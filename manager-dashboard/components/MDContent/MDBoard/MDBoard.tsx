@@ -1,6 +1,6 @@
 import { Card, Row, Col, Divider, Empty } from 'antd'
 import { PlusOutlined, HistoryOutlined } from '@ant-design/icons'
-import { FunctionComponent } from 'react'
+import { FunctionComponent, useState } from 'react'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { IBoard } from '../../../types/board'
 import { MDTimer } from './MDTimer/MDTimer'
@@ -10,6 +10,7 @@ import { emitNewGame } from '../../../services/socket'
 import { MDPlayer } from './MDPlayer/MDPlayer'
 import { addGameAction, gameForBoardIdSelector, gamesState } from '../../../atoms/games.atom'
 import { openNotification } from '../../../services/notification'
+import MDModalHistory from './MDModalHistory/MDModalHistory'
 
 interface MDBoardProps {
   board: IBoard
@@ -19,6 +20,9 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
   const game = useRecoilValue(gameForBoardIdSelector(board.id))
   const setGames = useSetRecoilState(gamesState)
   const addGame = addGameAction(setGames)
+  const [isModalVisible, setIsModalVisible] = useState(false)
+
+  console.log(game)
 
   const handleNewGame = () => {
     emitNewGame(board.id, (newGame) => {
@@ -37,11 +41,15 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
   }
 
   const handleHistory = () => {
-    if (game) {
+    if (!game) {
       console.error(`trying to show history for a game that hasn't started`)
       return
     }
+    setIsModalVisible(true)
     console.log(`show history on board: ${board.name}`)
+  }
+  const handleCancel = () => {
+    setIsModalVisible(false)
   }
 
   return (
@@ -69,6 +77,7 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
           <Col span={11} className={styles.column}>
             <MDPlayer player={game.players[1]} />
           </Col>
+          <MDModalHistory visible={isModalVisible} onCancel={handleCancel} name={board.name} history={game!.history!} />
         </Row>
       )}
     </Card>
