@@ -1,11 +1,11 @@
 import { UserIcon } from '@heroicons/react/solid'
 import { useRecoilValue } from 'recoil'
 import classNames from 'classnames'
-import { previousTurns } from '../atoms/history'
+import { previousTurnsSelector } from '../atoms/history'
 import Ball from './Ball'
 
 const History = () => {
-  const playingHistoryWithoutCurrentTurn = useRecoilValue(previousTurns)
+  const playingHistoryWithoutCurrentTurn = useRecoilValue(previousTurnsSelector)
 
   const historyLength = playingHistoryWithoutCurrentTurn.length
   const shownHistory = playingHistoryWithoutCurrentTurn.slice(historyLength > 4 ? historyLength - 5 : 0, historyLength)

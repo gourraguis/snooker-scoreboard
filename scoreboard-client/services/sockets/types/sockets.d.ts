@@ -1,13 +1,14 @@
 import { Socket } from 'socket.io-client'
 import { IBoard } from '../../../types/board'
+import { IGame } from '../../../types/game'
 
 export interface ServerToClientEvents {
-  newGame: () => void
+  initGame: (newGame: IGame) => void
 }
 
 export interface ClientToServerEvents {
   initBoard: (boardId: string, cb: (board: IBoard) => void) => void
-  updateBoard: (board: IBoard) => void
+  updateGame: (game: IGame) => void
 }
 
 export type BoardSocket = Socket<ServerToClientEvents, ClientToServerEvents>

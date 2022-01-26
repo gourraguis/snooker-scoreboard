@@ -15,7 +15,7 @@ const GameDetails = () => {
         "
       suppressHydrationWarning
     >
-      {process.browser && <Timer />}
+      <Timer />
       <div className="w-full flex flex-col justify-center items-center">
         <h1 className="text-primary-w font-semibold text-4xl py-4">LAST</h1>
         {lastBall ? <Ball value={lastBall} showValue /> : <Ball value={0} />}

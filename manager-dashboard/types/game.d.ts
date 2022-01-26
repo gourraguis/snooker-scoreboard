@@ -1,10 +1,11 @@
 import { ITurn } from './turn'
 import { IPlayer } from './player'
 
-export interface IBoard {
+export interface IGame {
   id: string
-  name: string
+  boardId: string
   players: IPlayer[]
-  startedAt?: Date
+  startedAt: Date
+  finishedAt: Date
   history?: ITurn[]
 }

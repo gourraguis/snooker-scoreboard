@@ -6,11 +6,12 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets'
 import { Logger } from '@nestjs/common'
-import { IBoard } from 'src/types/board'
 import { BoardClientToServerEvents, BoardServer, BoardSocket } from '../types/board-sockets'
 import { BoardEmitterGateway } from '../socket-emitters/board-emitter.gateway'
-import { ManagerEmmiterGateway } from 'src/socket-emitters/manager-emitter.gateway'
-import { BoardService } from 'src/board/board.service'
+import { ManagerEmmiterGateway } from '../socket-emitters/manager-emitter.gateway'
+import { BoardService } from '../board/board.service'
+import { IBoard } from '../board/types/board'
+import { IGame } from '../game/types/game'
 
 @WebSocketGateway({ cors: true, namespace: 'board' })
 export class BoardListenerGateway implements OnGatewayConnection {
@@ -29,12 +30,13 @@ export class BoardListenerGateway implements OnGatewayConnection {
 
   @SubscribeMessage<BoardClientToServerEvents>('initBoard')
   onInitBoard(@MessageBody() boardId: string): IBoard {
-    const board = this.boardService.getBoard(boardId)
+    const board = this.boardService.findBoard(boardId)
+    this.managerEmmiterGateway.emitAddBoard(board)
     return board
   }
 
-  @SubscribeMessage<BoardClientToServerEvents>('updateBoard')
-  onUpdateBoard(@MessageBody() board: IBoard) {
-    this.managerEmmiterGateway.emitUpdateBoard(board)
+  @SubscribeMessage<BoardClientToServerEvents>('updateGame')
+  onUpdateGame(@MessageBody() game: IGame) {
+    this.managerEmmiterGateway.emitUpdateGame(game)
   }
 }

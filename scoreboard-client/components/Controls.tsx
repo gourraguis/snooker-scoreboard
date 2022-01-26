@@ -3,13 +3,13 @@ import { useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { currentTurnSelector, playersScoreSelector, historyState } from '../atoms/history'
 import Ball from './Ball'
-import { emitUpdateBoard } from '../services/sockets'
 import { EBall } from '../types/ball'
 import { balls } from '../utils/balls'
-import { boardState } from '../atoms/board'
+import { gameState } from '../atoms/game.atom'
+import { emitUpdateGame } from '../services/sockets'
 
 const Controls = () => {
-  const board = useRecoilValue(boardState)!
+  const game = useRecoilValue(gameState)!
   const playersScore = useRecoilValue(playersScoreSelector)
   const [history, setHistory] = useRecoilState(historyState)
   const currentTurn = useRecoilValue(currentTurnSelector)
@@ -28,15 +28,15 @@ const Controls = () => {
   useEffect(() => {
     setSend(false)
     if (!send) {
-      emitUpdateBoard({
-        ...board,
+      emitUpdateGame({
+        ...game,
         players: [
           {
-            ...board.players[0],
+            ...game.players[0],
             score: playersScore[0],
           },
           {
-            ...board.players[1],
+            ...game.players[1],
             score: playersScore[1],
           },
         ],

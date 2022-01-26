@@ -1,5 +1,6 @@
 import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets'
-import { IBoard } from '../types/board'
+import { IGame } from 'src/game/types/game'
+import { IBoard } from '../board/types/board'
 import { ManagerServer } from '../types/manager-sockets'
 
 @WebSocketGateway({ cors: true, namespace: 'manager' })
@@ -7,11 +8,11 @@ export class ManagerEmmiterGateway {
   @WebSocketServer()
   server: ManagerServer
 
-  emitNewBoard(board: IBoard) {
-    this.server.emit('newBoard', board)
+  emitAddBoard(board: IBoard) {
+    this.server.emit('addBoard', board)
   }
 
-  emitUpdateBoard(board: IBoard) {
-    this.server.emit('updateBoard', board)
+  emitUpdateGame(game: IGame) {
+    this.server.emit('updateGame', game)
   }
 }

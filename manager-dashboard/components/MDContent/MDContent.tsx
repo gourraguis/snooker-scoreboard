@@ -2,7 +2,7 @@ import { Layout, Empty, Space } from 'antd'
 import { FunctionComponent } from 'react'
 import { useRecoilValue } from 'recoil'
 import classNames from 'classnames'
-import { boardsState } from '../../atoms/board'
+import { boardsState } from '../../atoms/boards.atom'
 import { MDBoard } from './MDBoard/MDBoard'
 
 import styles from './MDContent.module.css'
