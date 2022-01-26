@@ -13,7 +13,11 @@ const ODManagerModal: FunctionComponent<ODManagerModalProps> = ({ onCancel, visi
     onCancel()
   }
   const onFinish = (values: IManager) => {
-    createManager(values)
+    const manager: IManager = {
+      id: '1',
+      name: values.name,
+    }
+    createManager(manager)
     onCancel()
   }
 
