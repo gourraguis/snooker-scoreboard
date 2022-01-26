@@ -1,5 +1,4 @@
 import { io } from 'socket.io-client'
-import { openNotification } from '../notification'
 import { IBoard } from '../../types/board'
 import { ManagerSocket } from './types/sockets'
 import { IGame } from '../../types/game'
