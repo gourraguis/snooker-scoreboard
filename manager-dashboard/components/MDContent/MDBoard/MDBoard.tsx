@@ -77,14 +77,9 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
           <Col span={11} className={styles.column}>
             <MDPlayer player={game.players[1]} />
           </Col>
+          <MDModalHistory visible={isModalVisible} onCancel={handleCancel} name={board.name} history={game!.history!} />
         </Row>
       )}
-      <MDModalHistory
-        visible={isModalVisible}
-        onCancel={handleCancel}
-        name={board.name}
-        history={game?.history?.slice(0, -1)}
-      />
     </Card>
   )
 }

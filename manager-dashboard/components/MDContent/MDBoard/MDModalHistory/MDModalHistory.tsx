@@ -10,7 +10,7 @@ interface MDModalHistoryProps {
   onCancel: () => void
   visible: boolean
   name: string
-  history: ITurn[] | undefined
+  history: ITurn[]
 }
 
 const MDModalHistory: FunctionComponent<MDModalHistoryProps> = ({ onCancel, visible, name, history }) => {
