@@ -19,7 +19,7 @@ const SCGameDetails = () => {
         <Row>
           <Col className={styles.center}>
             <Row>
-              <h3 className={styles.text}>Last</h3>
+              <h3 className={styles.text}>LAST</h3>
             </Row>
             <Row>{lastBall ? <SCBall value={lastBall} showValue /> : <SCBall value={0} />}</Row>
           </Col>
