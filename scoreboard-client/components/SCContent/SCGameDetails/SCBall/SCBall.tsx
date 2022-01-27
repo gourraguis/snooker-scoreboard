@@ -12,7 +12,7 @@ interface SCBallProps {
 }
 
 const sizes = {
-  sm: 12,
+  sm: 16,
   md: 50,
 }
 

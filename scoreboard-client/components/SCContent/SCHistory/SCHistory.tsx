@@ -14,14 +14,14 @@ const SCHistory = () => {
   const shownHistory = playingHistoryWithoutCurrentTurn.slice(historyLength > 4 ? historyLength - 5 : 0, historyLength)
 
   return (
-    <Card title="Historique" className={styles.card}>
+    <Card title={<h3 className={styles.title}>Historique</h3>} className={styles.card}>
       <Content className={styles.content}>
         {shownHistory.map((item, index) => (
-          <div key={index} className={styles.center}>
+          <div key={index} className={styles.wrapper}>
             <UserOutlined className={styles[`icon${item.value}`]} />
             <div>
               <h3 className={styles.text}>Marque {item.scoredBalls.reduce((a, b) => a + b, 0)} points</h3>
-              <div className={styles.center}>
+              <div className={styles.ballBox}>
                 {item.scoredBalls.map((ball, index2) => (
                   <SCBall key={index2} value={ball} size="sm" />
                 ))}
