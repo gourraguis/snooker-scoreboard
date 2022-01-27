@@ -14,6 +14,7 @@ import SCGameDetails from './SCGameDetails/SCGameDetails'
 import SCHistory from './SCHistory/SCHistory'
 
 import styles from './SCContent.module.css'
+import SCControls from './SCControls/SCControls'
 
 const SCContent = () => {
   const [board, setBoard] = useRecoilState(boardState)
@@ -64,7 +65,7 @@ const SCContent = () => {
               </Col>
               <SCHistory />
             </Row>
-            {/* <Controls /> */}
+            <SCControls />
           </Content>
         </div>
       )}
