@@ -17,6 +17,7 @@ import { gameState } from '../atoms/game.atom'
 import { IGame } from '../types/game'
 
 import styles from './index.module.css'
+import SCPlayerCard from '../components/SCPlayerCard/SCPlayerCard'
 import SCHeading from '../components/SCHeader/SCHeader'
 
 const Home: NextPage = () => {
@@ -50,6 +51,24 @@ const Home: NextPage = () => {
           <div className={styles.centerHeading}>
             <SCHeading title={board.name} />
           </div>
+          <main className="flex flex-col justify-center">
+            <div className="grid grid-cols-3 gap-28">
+              <div className="ml-10">
+                {game.players.map((player) => (
+                  <SCPlayerCard
+                    isCurrent={currentTurn.value === player.turn}
+                    color={player.turn ? 'rgb(153 27 27)' : 'rgb(250 204 21)'}
+                    playerName={player.name}
+                    points={playersScore[player.turn]}
+                    key={player.turn}
+                  />
+                ))}
+              </div>
+              {/* <GameDetails /> */}
+              {/* <History /> */}
+            </div>
+            {/* <Controls /> */}
+          </main>
         </div>
       )}
       {/* {!!board && !!game && (
