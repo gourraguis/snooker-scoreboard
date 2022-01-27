@@ -19,3 +19,7 @@
   align-items: center;
   justify-content: center;
 }
+
+.col {
+  max-height: 70vh;
+}

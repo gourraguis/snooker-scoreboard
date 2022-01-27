@@ -1,0 +1,8 @@
+.ball {
+  margin-top: 1%;
+  border-radius: 100%;
+  color: #e9d8ae;
+  font-weight: 500;
+  font-size: 2.1rem;
+  align-items: center;
+}

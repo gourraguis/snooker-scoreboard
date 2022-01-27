@@ -12,7 +12,7 @@ interface SCPlayerCardProps {
 }
 
 const SCPlayerCard: FunctionComponent<SCPlayerCardProps> = ({ isCurrent, color, points, playerName }) => (
-  <Card className={classNames(styles.card, { [styles.active]: isCurrent })}>
+  <Card bodyStyle={{ padding: '0' }} className={classNames(styles.card, { [styles.active]: isCurrent })}>
     <div className={styles.center}>
       <UserOutlined className={styles.icon} style={{ color }} />
       <h3 className={styles.text}>{playerName}</h3>
