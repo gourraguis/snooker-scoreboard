@@ -1,8 +1,11 @@
 import { UserOutlined } from '@ant-design/icons'
 import { useRecoilValue } from 'recoil'
-import classNames from 'classnames'
+import { Card } from 'antd'
+import { Content } from 'antd/lib/layout/layout'
 import { previousTurnsSelector } from '../../../atoms/history'
 import SCBall from '../SCGameDetails/SCBall/SCBall'
+
+import styles from './SCHistory.module.css'
 
 const SCHistory = () => {
   const playingHistoryWithoutCurrentTurn = useRecoilValue(previousTurnsSelector)
@@ -11,20 +14,17 @@ const SCHistory = () => {
   const shownHistory = playingHistoryWithoutCurrentTurn.slice(historyLength > 4 ? historyLength - 5 : 0, historyLength)
 
   return (
-    <div
-      className="mr-10 flex flex-col items-center border-[1px] 
-        border-primary-w bg-primary-b rounded-lg py-3 my-8 h-[28rem]"
-    >
-      <div className="w-full border-primary-w border-b-2 pb-2">
-        <h1 className="text-primary-w font-semibold text-3xl text-center">Historique</h1>
+    <Card className={styles.card}>
+      <div className={styles.header}>
+        <h1 className={styles.text}>Historique</h1>
       </div>
-      <div className="w-full ml-12 mt-8 overflow-y-auto">
+      <Content className={styles.content}>
         {shownHistory.map((item, index) => (
-          <div key={index} className="w-full flex justify-start items-center space-x-8 mb-6">
-            <UserOutlined className={classNames('w-8 h-8', item.value === 0 ? 'text-yellow-500' : 'text-red-800')} />
+          <div key={index} className={styles.center}>
+            <UserOutlined className={styles[`icon${item.value}`]} />
             <div>
-              <h3 className="text-primary-w">Marque {item.scoredBalls.reduce((a, b) => a + b, 0)} points</h3>
-              <div className="flex justify-start items-center space-x-1">
+              <h3 className={styles.text}>Marque {item.scoredBalls.reduce((a, b) => a + b, 0)} points</h3>
+              <div className={styles.center}>
                 {item.scoredBalls.map((ball, index2) => (
                   <SCBall key={index2} value={ball} size="sm" />
                 ))}
@@ -32,8 +32,8 @@ const SCHistory = () => {
             </div>
           </div>
         ))}
-      </div>
-    </div>
+      </Content>
+    </Card>
   )
 }
 
