@@ -1,0 +1,21 @@
+.contentCentered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.space {
+  width: 100%;
+}
+
+.content {
+  min-height: 100vh;
+  background-color: #202020;
+  color: #e9d8ae;
+}
+
+.centerHeading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

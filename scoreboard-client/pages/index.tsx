@@ -1,6 +1,9 @@
 import type { NextPage } from 'next'
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 import { useEffect } from 'react'
+import { Empty } from 'antd'
+import { Content } from 'antd/lib/layout/layout'
+import classNames from 'classnames'
 import Head from 'next/head'
 import Controls from '../components/Controls'
 import Heading from '../components/Header'
@@ -12,6 +15,9 @@ import { initSocket } from '../services/sockets'
 import { boardState } from '../atoms/board.atom'
 import { gameState } from '../atoms/game.atom'
 import { IGame } from '../types/game'
+
+import styles from './index.module.css'
+import SCHeading from '../components/SCHeader/SCHeader'
 
 const Home: NextPage = () => {
   const [board, setBoard] = useRecoilState(boardState)
@@ -30,14 +36,23 @@ const Home: NextPage = () => {
   }, [])
 
   return (
-    <div>
+    <Content className={styles.content}>
       <Head>
         <title>Snooker Scoreboard</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {!board && <p>BOARD IS NOT CONNECTED TO API</p>}
-      {!game && <p>GAME IS NOT STARTED</p>}
+      <div className={styles.contentCentered}>
+        {!board && <Empty description="BOARD IS NOT CONNECTED TO API" />}
+        {!!board && !game && <Empty description="GAME IS NOT STARTED" />}
+      </div>
       {!!board && !!game && (
+        <div>
+          <div className={styles.centerHeading}>
+            <SCHeading title={board.name} />
+          </div>
+        </div>
+      )}
+      {/* {!!board && !!game && (
         <div className="flex flex-col mx-auto h-screen bg-background-color overflow-y-scroll">
           <div className="flex items-center justify-center">
             <Heading title={board.name} />
@@ -61,8 +76,8 @@ const Home: NextPage = () => {
             <Controls />
           </main>
         </div>
-      )}
-    </div>
+      )} */}
+    </Content>
   )
 }
 
