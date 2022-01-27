@@ -48,8 +48,8 @@ const SCContent = () => {
             <SCHeading title={board.name} />
           </div>
           <Content>
-            <Row className={styles.center}>
-              <Col span={6} offset={2}>
+            <Row>
+              <Col span={6} offset={1}>
                 {game.players.map((player) => (
                   <SCPlayerCard
                     isCurrent={currentTurn.value === player.turn}
