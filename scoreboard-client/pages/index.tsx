@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 import { useEffect } from 'react'
-import { Empty } from 'antd'
+import { Col, Empty, Row } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import classNames from 'classnames'
 import Head from 'next/head'
@@ -51,9 +51,9 @@ const Home: NextPage = () => {
           <div className={styles.centerHeading}>
             <SCHeading title={board.name} />
           </div>
-          <main className="flex flex-col justify-center">
-            <div className="grid grid-cols-3 gap-28">
-              <div className="ml-10">
+          <Content className="flex flex-col justify-center">
+            <Row>
+              <Col span={6} offset={2}>
                 {game.players.map((player) => (
                   <SCPlayerCard
                     isCurrent={currentTurn.value === player.turn}
@@ -63,12 +63,12 @@ const Home: NextPage = () => {
                     key={player.turn}
                   />
                 ))}
-              </div>
+              </Col>
               {/* <GameDetails /> */}
               {/* <History /> */}
-            </div>
+            </Row>
             {/* <Controls /> */}
-          </main>
+          </Content>
         </div>
       )}
       {/* {!!board && !!game && (
