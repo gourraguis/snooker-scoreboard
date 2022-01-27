@@ -14,10 +14,7 @@ const SCHistory = () => {
   const shownHistory = playingHistoryWithoutCurrentTurn.slice(historyLength > 4 ? historyLength - 5 : 0, historyLength)
 
   return (
-    <Card className={styles.card}>
-      <div className={styles.header}>
-        <h1 className={styles.text}>Historique</h1>
-      </div>
+    <Card title="Historique" className={styles.card}>
       <Content className={styles.content}>
         {shownHistory.map((item, index) => (
           <div key={index} className={styles.center}>
