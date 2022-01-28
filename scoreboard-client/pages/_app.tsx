@@ -1,5 +1,5 @@
 import type { AppProps } from 'next/app'
-import '../styles/globals.css'
+import '../styles/antd.less'
 import { RecoilRoot } from 'recoil'
 
 function SafeHydrate({ children }: { children: JSX.Element }) {
@@ -8,11 +8,11 @@ function SafeHydrate({ children }: { children: JSX.Element }) {
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <SafeHydrate>
-      <RecoilRoot>
+    <RecoilRoot>
+      <SafeHydrate>
         <Component {...pageProps} />
-      </RecoilRoot>
-    </SafeHydrate>
+      </SafeHydrate>
+    </RecoilRoot>
   )
 }
 

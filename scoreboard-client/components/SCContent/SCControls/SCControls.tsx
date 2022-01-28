@@ -1,14 +1,15 @@
-import { RefreshIcon } from '@heroicons/react/outline'
 import { useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { currentTurnSelector, playersScoreSelector, historyState } from '../atoms/history'
-import Ball from './Ball'
-import { EBall } from '../types/ball'
-import { balls } from '../utils/balls'
-import { gameState } from '../atoms/game.atom'
-import { emitUpdateGame } from '../services/sockets'
+import { RedoOutlined } from '@ant-design/icons'
+import { currentTurnSelector, playersScoreSelector, historyState } from '../../../atoms/history'
+import SCBall from '../SCGameDetails/SCBall/SCBall'
+import { EBall } from '../../../types/ball'
+import { balls } from '../../../utils/balls'
+import { gameState } from '../../../atoms/game.atom'
+import { emitUpdateGame } from '../../../services/sockets'
+import styles from './SCControls.module.css'
 
-const Controls = () => {
+const SCControls = () => {
   const game = useRecoilValue(gameState)!
   const playersScore = useRecoilValue(playersScoreSelector)
   const [history, setHistory] = useRecoilState(historyState)
@@ -57,13 +58,13 @@ const Controls = () => {
   }
 
   return (
-    <div className="flex justify-between items-center px-8 py-3 mx-20">
+    <div className={styles.content}>
       {balls.map((value) => (
-        <Ball key={value} value={value} onClick={scoreBall(value)} />
+        <SCBall key={value} value={value} onClick={scoreBall(value)} />
       ))}
-      <RefreshIcon onClick={switchPlayer} className="w-14 h-14 text-white cursor-pointer" />
+      <RedoOutlined onClick={switchPlayer} className={styles.icon} />
     </div>
   )
 }
 
-export default Controls
+export default SCControls

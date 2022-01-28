@@ -1,6 +1,7 @@
+const withLess = require('next-with-less')
+
 /** @type {import('next').NextConfig} */
-module.exports = {
-  reactStrictMode: true,
+const nextConfig = withLess({
   async rewrites() {
     return [
       // Rewrite everything to `pages/index`
@@ -10,4 +11,6 @@ module.exports = {
       },
     ]
   },
-}
+})
+
+module.exports = nextConfig

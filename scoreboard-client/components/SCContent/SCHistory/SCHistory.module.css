@@ -1,0 +1,54 @@
+.card {
+  background-color: #121212;
+  border: solid 1px #e9d8ae;
+  border-radius: 0.5rem;
+  margin: 10% 0;
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+}
+
+.wrapper {
+  width: 100%;
+  display: flex;
+  margin-bottom: 10%;
+  margin-top: 2%;
+}
+
+.title {
+  color: #e9d8ae;
+  font-size: 1.4rem;
+}
+.text {
+  margin: 0;
+  font-size: 1.2rem;
+  margin-top: -10px;
+  color: #e9d8ae;
+}
+
+.ballBox {
+  display: flex;
+}
+
+.content {
+  overflow: scroll;
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon0 {
+  font-size: 40px;
+  color: rgb(250 204 21);
+  margin-right: 10%;
+}
+
+.icon1 {
+  font-size: 40px;
+  color: rgb(153 27 27);
+  margin-right: 10%;
+}

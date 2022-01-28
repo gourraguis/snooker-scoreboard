@@ -2,9 +2,11 @@ import { useState } from 'react'
 import moment from 'moment'
 import { useRecoilValue } from 'recoil'
 import { useInterval } from 'usehooks-ts'
-import { startedAtSelector } from '../atoms/game.atom'
+import { startedAtSelector } from '../../../../atoms/game.atom'
 
-const Timer = () => {
+import styles from './SCTimer.module.css'
+
+const SCTimer = () => {
   const startedAt = useRecoilValue(startedAtSelector)
   const [timerText, setTimerText] = useState('00:00')
 
@@ -13,10 +15,10 @@ const Timer = () => {
   }, 1000)
 
   return (
-    <div className="w-full flex justify-center items-center">
-      <h1 className="text-primary-w font-semibold text-5xl py-4">{timerText}</h1>
+    <div className={styles.center}>
+      <h1 className={styles.timer}>{timerText}</h1>
     </div>
   )
 }
 
-export default Timer
+export default SCTimer
