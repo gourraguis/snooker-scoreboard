@@ -16,7 +16,7 @@ const SCTimer = () => {
 
   return (
     <div className={styles.center}>
-      <h1 className={styles.timer}>{timerText}</h1>
+      <p className={styles.timer}>{timerText}</p>
     </div>
   )
 }
