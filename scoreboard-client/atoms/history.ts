@@ -26,10 +26,7 @@ export const currentTurnSelector = selector<ITurn>({
   key: 'currentTurnSelector',
   get: ({ get }) => {
     const playingHistory = get(historyState)
-    // TODO: 7tha wst return fach tsd9
-    const playingHistoryWithoutCancledTurn = playingHistory.filter(({ undoed: cancled }) => cancled === false)
-
-    return _.last(playingHistoryWithoutCancledTurn)!
+    return _.last(playingHistory.filter(({ undoed }) => undoed === false))!
   },
 })
 
@@ -53,9 +50,7 @@ export const lastBallSelector = selector<EBall>({
 export const playersScoreSelector = selector<number[]>({
   key: 'playersScoreSelector',
   get: ({ get }) => {
-    const playingHistoryWithoutCurrentTurn = get(previousTurnsSelector).filter(
-      ({ undoed: cancled }) => cancled === false
-    )
+    const playingHistoryWithoutCurrentTurn = get(previousTurnsSelector).filter(({ undoed }) => undoed === false)
 
     const playerZeroScore = playingHistoryWithoutCurrentTurn
       .filter(({ value }) => value === 0)
@@ -74,13 +69,3 @@ export const playersScoreSelector = selector<number[]>({
     return [playerZeroScore, playerOneScore]
   },
 })
-
-// export const undoScoreSelector = selector<number>({
-//   key: 'undoScoreSelector',
-//   get: ({ get }) => {
-//     const currentTurn = get(currentTurnSelector)
-//     const without = currentTurn.scoredBalls.slice(0, currentTurn.scoredBalls.length - 1)
-
-//     return without.reduce((acc, val) => acc + val, 0)
-//   },
-// })

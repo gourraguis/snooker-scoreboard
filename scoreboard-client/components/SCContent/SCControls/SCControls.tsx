@@ -36,19 +36,14 @@ const SCControls = () => {
 
     const count = historyWithoutCurrentTurn.length - 1
     const finalIndex = index >= 0 ? count - index : index
-    console.log(finalIndex)
-
-    console.log(history[finalIndex])
-
     const newHistory = [...history]
     newHistory[finalIndex] = {
-      value: newHistory[finalIndex].value,
-      scoredBalls: newHistory[finalIndex].scoredBalls,
+      value: newHistory[finalIndex]?.value,
+      scoredBalls: newHistory[finalIndex]?.scoredBalls,
       undoed: true,
     }
 
     setHistory(newHistory)
-    console.log(newHistory)
   }
 
   useEffect(() => {
@@ -80,8 +75,6 @@ const SCControls = () => {
         undoed: false,
       },
     ])
-    console.log(history)
-
     setSend(true)
   }
 
