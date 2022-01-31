@@ -52,7 +52,7 @@ const SCContent = () => {
               <Col span={6} offset={1}>
                 {game.players.map((player) => (
                   <SCPlayerCard
-                    isCurrent={currentTurn.value === player.turn}
+                    isCurrent={currentTurn?.value === player.turn}
                     color={player.turn ? 'rgb(153 27 27)' : 'rgb(250 204 21)'}
                     playerName={player.name}
                     points={playersScore[player.turn]}
