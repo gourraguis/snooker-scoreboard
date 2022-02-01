@@ -1,4 +1,4 @@
-import { Card, Row, Col, Divider, Empty } from 'antd'
+import { Card, Row, Col, Divider, Empty, Menu, Dropdown } from 'antd'
 import { PlusOutlined, HistoryOutlined } from '@ant-design/icons'
 import { FunctionComponent, useState } from 'react'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
@@ -51,13 +51,22 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
   const handleCancel = () => {
     setIsModalVisible(false)
   }
-
+  const menu = (
+    <Menu>
+      <Menu.Item onClick={handleNewGame} key="initSameGame">
+        Restart game with same players
+      </Menu.Item>
+      <Menu.Item key="initdifferentGame">Restart game with different players</Menu.Item>
+    </Menu>
+  )
   return (
     <Card
       title={board.name}
       extra={<MDTimer startedAt={game?.startedAt} />}
       actions={[
-        <PlusOutlined onClick={handleNewGame} key="initGame" />,
+        <Dropdown overlay={menu} trigger={['click']}>
+          <PlusOutlined />
+        </Dropdown>,
         <HistoryOutlined onClick={handleHistory} key="history" />,
       ]}
       className={styles.card}
