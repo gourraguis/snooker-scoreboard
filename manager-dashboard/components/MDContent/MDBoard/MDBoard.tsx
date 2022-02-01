@@ -12,6 +12,7 @@ import { addGameAction, gameForBoardIdSelector, gamesState } from '../../../atom
 import { openNotification } from '../../../services/notification'
 import MDModalHistory from './MDModalHistory/MDModalHistory'
 import MDModalNewGame from './MDModalNewGame/MDModalNewGame'
+import { IInitBoard } from '../../../types/initBoard'
 
 interface MDBoardProps {
   board: IBoard
@@ -24,17 +25,19 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
   const [isHistoryModalVisible, setIsHistoryModalVisible] = useState(false)
   const [isNewGameModalVisible, setIsNewGameModalVisible] = useState(false)
 
-  console.log(game)
-
   const handleNewGame = () => {
-    emitNewGame(board.id, (newGame) => {
+    const initBoard: IInitBoard = {
+      boardId: board.id,
+      firstPlayer: '',
+      secondPlayer: '',
+    }
+    emitNewGame(initBoard, (newGame) => {
       if (!newGame) {
         openNotification({
           title: 'Erreur, on a pas pu lancer une nouvelle partie..',
           type: 'error',
         })
       }
-
       addGame(newGame)
       openNotification({
         title: 'Une nouvelle partie a été lancé',
@@ -64,6 +67,7 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
       <Menu.Item onClick={handleNewGame} key="initSameGame">
         Restart game with same players
       </Menu.Item>
+
       <Menu.Item onClick={handleNewDiffGame} key="initDifferentGame">
         Restart game with different players
       </Menu.Item>
@@ -102,12 +106,7 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
             name={board.name}
             history={game!.history!}
           />
-          <MDModalNewGame
-            visible={isNewGameModalVisible}
-            onCancel={handleCancelNewGameModal}
-            name={board.name}
-            history={game!.history!}
-          />
+          <MDModalNewGame visible={isNewGameModalVisible} onCancel={handleCancelNewGameModal} boardId={board.id} />
         </Row>
       )}
     </Card>

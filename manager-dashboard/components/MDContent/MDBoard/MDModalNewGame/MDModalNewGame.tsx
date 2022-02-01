@@ -1,47 +1,78 @@
 import React, { FunctionComponent } from 'react'
-import { Modal } from 'antd'
-import { UserOutlined } from '@ant-design/icons'
-import { ITurn } from '../../../../types/turn'
-import { getBallColor } from '../../../../utils/balls'
-
-import styles from './MDModalNewGame.module.css'
+import { Button, Form, Input, Modal } from 'antd'
+import { useSetRecoilState } from 'recoil'
+import { emitNewGame } from '../../../../services/socket'
+import { openNotification } from '../../../../services/notification'
+import { addGameAction, gamesState } from '../../../../atoms/games.atom'
+import { IGame } from '../../../../types/game'
+import { IInitBoard } from '../../../../types/initBoard'
 
 interface MDModalNewGameProps {
   onCancel: () => void
   visible: boolean
-  name: string
-  history: ITurn[]
+  boardId: string
 }
 
-const MDModalNewGame: FunctionComponent<MDModalNewGameProps> = ({ onCancel, visible, name, history }) => {
+const MDModalNewGame: FunctionComponent<MDModalNewGameProps> = ({ onCancel, visible, boardId }) => {
+  const setGames = useSetRecoilState(gamesState)
+  const addGame = addGameAction(setGames)
+
   const handleCancel = () => {
+    onCancel()
+  }
+  const onFinish = (values: any) => {
+    const initBoard: IInitBoard = {
+      boardId,
+      firstPlayer: values.firstPlayer,
+      secondPlayer: values.secondPlayer,
+    }
+    emitNewGame(initBoard, (newGame: IGame) => {
+      if (!newGame) {
+        openNotification({
+          title: 'Erreur, on a pas pu lancer une nouvelle partie..',
+          type: 'error',
+        })
+      }
+
+      addGame(newGame)
+      openNotification({
+        title: 'Une nouvelle partie a été lancé',
+      })
+    })
     onCancel()
   }
 
   return (
     <div>
-      <Modal title={`History for ${name}`} visible={visible} onCancel={handleCancel} footer={null}>
-        {history?.map((item, index) => (
-          <div key={index} className={styles.wrapper}>
-            <UserOutlined className={styles[`icon${item.value}`]} />
-            <div>
-              <h3 className={styles.text}>Marque {item.scoredBalls.reduce((a, b) => a + b, 0)} points</h3>
-              <div className={styles.ballBox}>
-                {item.scoredBalls.map((ball, index2) => (
-                  <div
-                    key={index2}
-                    style={{
-                      backgroundColor: getBallColor(ball),
-                    }}
-                    className={styles.ball}
-                  >
-                    {}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        ))}
+      <Modal
+        title="New Game"
+        visible={visible}
+        onCancel={handleCancel}
+        footer={[
+          <Button key="back" onClick={handleCancel}>
+            Cancel
+          </Button>,
+          <Button form="addTable" key="submit" htmlType="submit" type="primary">
+            Submit
+          </Button>,
+        ]}
+      >
+        <Form
+          id="addTable"
+          name="basic"
+          labelCol={{ span: 4 }}
+          wrapperCol={{ span: 16 }}
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+          autoComplete="off"
+        >
+          <Form.Item label="Player 1" name="firstPlayer">
+            <Input />
+          </Form.Item>
+          <Form.Item label="Player 2" name="secondPlayer">
+            <Input />
+          </Form.Item>
+        </Form>
       </Modal>
     </div>
   )

@@ -11,6 +11,7 @@ import { ManagerClientToServerEvents, ManagerServer, ManagerSocket } from 'src/t
 import { BoardEmitterGateway } from 'src/socket-emitters/board-emitter.gateway'
 import { ManagerEmmiterGateway } from 'src/socket-emitters/manager-emitter.gateway'
 import { GameService } from '../game/game.service'
+import { IInitBoard } from 'src/types/initBoard'
 
 @WebSocketGateway({ cors: true, namespace: 'manager' })
 export class ManagerListenerGateway implements OnGatewayConnection {
@@ -30,7 +31,7 @@ export class ManagerListenerGateway implements OnGatewayConnection {
   }
 
   @SubscribeMessage<ManagerClientToServerEvents>('initGame')
-  onNewGame(@MessageBody() boardId: string, @ConnectedSocket() client: ManagerSocket) {
+  onNewGame(@MessageBody() board: IInitBoard, @ConnectedSocket() client: ManagerSocket) {
     // const managerId = client.data.managerId
     const managerId = '1'
     if (!managerId) {
@@ -38,8 +39,8 @@ export class ManagerListenerGateway implements OnGatewayConnection {
       return
     }
     //todo: use board id to start game on the right board
-    this.logger.log(`Starting new game on board id: ${boardId}`)
-    const newGame = this.gameService.createGame(boardId)
+    this.logger.log(`Starting new game on board id: ${board.boardId}`)
+    const newGame = this.gameService.createGame(board)
     this.boardEmitterGateway.emitStartNewGame(newGame)
     return newGame
   }

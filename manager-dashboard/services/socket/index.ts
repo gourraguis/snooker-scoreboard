@@ -2,6 +2,7 @@ import { io } from 'socket.io-client'
 import { IBoard } from '../../types/board'
 import { ManagerSocket } from './types/sockets'
 import { IGame } from '../../types/game'
+import { IInitBoard } from '../../types/initBoard'
 
 const socket: ManagerSocket = io('http://localhost:5000/manager')
 
@@ -17,6 +18,6 @@ export const initSocket = (addBoard: (board: IBoard) => void, updateGame: (game:
   })
 }
 
-export const emitNewGame = (boardId: string, addGame: (game: IGame) => void) => {
-  socket.emit('initGame', boardId, addGame)
+export const emitNewGame = (board: IInitBoard, addGame: (game: IGame) => void) => {
+  socket.emit('initGame', board, addGame)
 }
