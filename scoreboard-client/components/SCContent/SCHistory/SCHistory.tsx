@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useRecoilValue } from 'recoil'
 import { Card } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
+import classNames from 'classnames'
 import { previousTurnsSelector } from '../../../atoms/history'
 import SCBall from '../SCGameDetails/SCBall/SCBall'
 
@@ -29,7 +30,9 @@ const SCHistory = () => {
               <div key={index} className={styles.wrapper}>
                 <UserOutlined className={styles[`icon${item.value}`]} />
                 <div>
-                  <p className={styles.text}>Marque {item.scoredBalls.reduce((a, b) => a + b, 0)} points</p>
+                  <p className={classNames({ [styles.text]: !item.undoed }, { [styles.textBar]: item.undoed })}>
+                    Marque {item.scoredBalls.reduce((a, b) => a + b, 0)} points
+                  </p>
                   <div className={styles.ballBox}>
                     {item.scoredBalls.map((ball, index2) => (
                       <SCBall key={index2} value={ball} size="sm" />
