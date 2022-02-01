@@ -11,6 +11,7 @@ import { MDPlayer } from './MDPlayer/MDPlayer'
 import { addGameAction, gameForBoardIdSelector, gamesState } from '../../../atoms/games.atom'
 import { openNotification } from '../../../services/notification'
 import MDModalHistory from './MDModalHistory/MDModalHistory'
+import MDModalNewGame from './MDModalNewGame/MDModalNewGame'
 
 interface MDBoardProps {
   board: IBoard
@@ -20,7 +21,8 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
   const game = useRecoilValue(gameForBoardIdSelector(board.id))
   const setGames = useSetRecoilState(gamesState)
   const addGame = addGameAction(setGames)
-  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isHistoryModalVisible, setIsHistoryModalVisible] = useState(false)
+  const [isNewGameModalVisible, setIsNewGameModalVisible] = useState(false)
 
   console.log(game)
 
@@ -45,18 +47,26 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
       console.error(`trying to show history for a game that hasn't started`)
       return
     }
-    setIsModalVisible(true)
+    setIsHistoryModalVisible(true)
     console.log(`show history on board: ${board.name}`)
   }
-  const handleCancel = () => {
-    setIsModalVisible(false)
+  const handleCancelHistoryModal = () => {
+    setIsHistoryModalVisible(false)
+  }
+  const handleCancelNewGameModal = () => {
+    setIsNewGameModalVisible(false)
+  }
+  const handleNewDiffGame = () => {
+    setIsNewGameModalVisible(true)
   }
   const menu = (
     <Menu>
       <Menu.Item onClick={handleNewGame} key="initSameGame">
         Restart game with same players
       </Menu.Item>
-      <Menu.Item key="initdifferentGame">Restart game with different players</Menu.Item>
+      <Menu.Item onClick={handleNewDiffGame} key="initDifferentGame">
+        Restart game with different players
+      </Menu.Item>
     </Menu>
   )
   return (
@@ -86,7 +96,18 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
           <Col span={11} className={styles.column}>
             <MDPlayer player={game.players[1]} />
           </Col>
-          <MDModalHistory visible={isModalVisible} onCancel={handleCancel} name={board.name} history={game!.history!} />
+          <MDModalHistory
+            visible={isHistoryModalVisible}
+            onCancel={handleCancelHistoryModal}
+            name={board.name}
+            history={game!.history!}
+          />
+          <MDModalNewGame
+            visible={isNewGameModalVisible}
+            onCancel={handleCancelNewGameModal}
+            name={board.name}
+            history={game!.history!}
+          />
         </Row>
       )}
     </Card>
