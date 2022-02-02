@@ -1,13 +1,12 @@
-import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { useEffect } from 'react'
 import { Col, Empty, Row } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import Head from 'next/head'
-import { currentTurnSelector, playersScoreSelector, historyState } from '../../atoms/history'
+import { currentTurnSelector, historyState, playersScoreSelector } from '../../atoms/history'
 import { initSocket } from '../../services/sockets'
 import { boardState } from '../../atoms/board.atom'
 import { gameState } from '../../atoms/game.atom'
-import { IGame } from '../../types/game'
 import SCPlayerCard from './SCPlayerCard/SCPlayerCard'
 import SCHeading from './SCHeader/SCHeader'
 import SCGameDetails from './SCGameDetails/SCGameDetails'
@@ -15,21 +14,22 @@ import SCHistory from './SCHistory/SCHistory'
 
 import styles from './SCContent.module.css'
 import SCControls from './SCControls/SCControls'
+import { addGameAction, globalScoreState } from '../../atoms/globalScore.atom'
 
 const SCContent = () => {
   const [board, setBoard] = useRecoilState(boardState)
   const [game, setGame] = useRecoilState(gameState)
   const currentTurn = useRecoilValue(currentTurnSelector)
   const playersScore = useRecoilValue(playersScoreSelector)
-  const initHistory = useResetRecoilState(historyState)
-
-  const startNewGame = (newGame: IGame) => {
-    initHistory()
-    setGame(newGame)
-  }
+  const [globalScore, setGlobalScoreState] = useRecoilState(globalScoreState)
+  const setHistory = useSetRecoilState(historyState)
 
   useEffect(() => {
-    initSocket(startNewGame, setBoard)
+    console.log(globalScore)
+  }, [globalScore])
+
+  useEffect(() => {
+    initSocket(addGameAction(setGlobalScoreState, setGame, setHistory), setBoard)
   }, [])
 
   return (
