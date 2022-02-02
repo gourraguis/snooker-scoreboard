@@ -1,4 +1,4 @@
-import { Card, Row, Col, Divider, Empty } from 'antd'
+import { Card, Row, Col, Divider, Empty, Menu, Dropdown } from 'antd'
 import { PlusOutlined, HistoryOutlined } from '@ant-design/icons'
 import { FunctionComponent, useState } from 'react'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
@@ -11,6 +11,8 @@ import { MDPlayer } from './MDPlayer/MDPlayer'
 import { addGameAction, gameForBoardIdSelector, gamesState } from '../../../atoms/games.atom'
 import { openNotification } from '../../../services/notification'
 import MDModalHistory from './MDModalHistory/MDModalHistory'
+import MDModalNewGame from './MDModalNewGame/MDModalNewGame'
+import { IInitBoard } from '../../../types/initBoard'
 
 interface MDBoardProps {
   board: IBoard
@@ -20,19 +22,22 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
   const game = useRecoilValue(gameForBoardIdSelector(board.id))
   const setGames = useSetRecoilState(gamesState)
   const addGame = addGameAction(setGames)
-  const [isModalVisible, setIsModalVisible] = useState(false)
-
-  console.log(game)
+  const [isHistoryModalVisible, setIsHistoryModalVisible] = useState(false)
+  const [isNewGameModalVisible, setIsNewGameModalVisible] = useState(false)
 
   const handleNewGame = () => {
-    emitNewGame(board.id, (newGame) => {
+    const initBoard: IInitBoard = {
+      boardId: board.id,
+      firstPlayer: '',
+      secondPlayer: '',
+    }
+    emitNewGame(initBoard, (newGame) => {
       if (!newGame) {
         openNotification({
           title: 'Erreur, on a pas pu lancer une nouvelle partie..',
           type: 'error',
         })
       }
-
       addGame(newGame)
       openNotification({
         title: 'Une nouvelle partie a été lancé',
@@ -45,19 +50,37 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
       console.error(`trying to show history for a game that hasn't started`)
       return
     }
-    setIsModalVisible(true)
+    setIsHistoryModalVisible(true)
     console.log(`show history on board: ${board.name}`)
   }
-  const handleCancel = () => {
-    setIsModalVisible(false)
+  const handleCancelHistoryModal = () => {
+    setIsHistoryModalVisible(false)
   }
+  const handleCancelNewGameModal = () => {
+    setIsNewGameModalVisible(false)
+  }
+  const handleNewDiffGame = () => {
+    setIsNewGameModalVisible(true)
+  }
+  const menu = (
+    <Menu>
+      <Menu.Item onClick={handleNewGame} key="initSameGame">
+        Restart game with same players
+      </Menu.Item>
 
+      <Menu.Item onClick={handleNewDiffGame} key="initDifferentGame">
+        Restart game with different players
+      </Menu.Item>
+    </Menu>
+  )
   return (
     <Card
       title={board.name}
       extra={<MDTimer startedAt={game?.startedAt} />}
       actions={[
-        <PlusOutlined onClick={handleNewGame} key="initGame" />,
+        <Dropdown overlay={menu} trigger={['click']}>
+          <PlusOutlined />
+        </Dropdown>,
         <HistoryOutlined onClick={handleHistory} key="history" />,
       ]}
       className={styles.card}
@@ -77,9 +100,15 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
           <Col span={11} className={styles.column}>
             <MDPlayer player={game.players[1]} />
           </Col>
-          <MDModalHistory visible={isModalVisible} onCancel={handleCancel} name={board.name} history={game!.history!} />
+          <MDModalHistory
+            visible={isHistoryModalVisible}
+            onCancel={handleCancelHistoryModal}
+            name={board.name}
+            history={game!.history!}
+          />
         </Row>
       )}
+      <MDModalNewGame visible={isNewGameModalVisible} onCancel={handleCancelNewGameModal} boardId={board.id} />
     </Card>
   )
 }

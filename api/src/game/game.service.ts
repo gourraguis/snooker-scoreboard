@@ -1,28 +1,29 @@
 import { Injectable, Logger } from '@nestjs/common'
 import * as moment from 'moment'
+import { IInitBoard } from 'src/types/initBoard'
 import { IGame } from './types/game'
 
 @Injectable()
 export class GameService {
   private logger: Logger = new Logger(GameService.name)
 
-  createGame(gameId: string): IGame {
-    this.logger.log(`Fetching board id: ${gameId} from db`)
+  createGame(board: IInitBoard): IGame {
+    this.logger.log(`Fetching board id: ${board.boardId} from db`)
     return {
-      id: gameId,
-      boardId: gameId,
+      id: board.boardId,
+      boardId: board.boardId,
       startedAt: moment().toDate(),
       finishedAt: null,
       history: [],
       players: [
         {
           turn: 0,
-          name: `Harvey`,
+          name: board.firstPlayer || `Harvey`,
           score: 0,
         },
         {
           turn: 1,
-          name: `Mike Ross`,
+          name: board.secondPlayer || `Mike Ross`,
           score: 0,
         },
       ],
