@@ -25,10 +25,6 @@ const SCContent = () => {
   const setHistory = useSetRecoilState(historyState)
 
   useEffect(() => {
-    console.log(globalScore)
-  }, [globalScore])
-
-  useEffect(() => {
     initSocket(addGameAction(setGlobalScoreState, setGame, setHistory), setBoard)
   }, [])
 
@@ -56,6 +52,7 @@ const SCContent = () => {
                     color={player.turn ? 'rgb(153 27 27)' : 'rgb(250 204 21)'}
                     playerName={player.name}
                     points={playersScore[player.turn]}
+                    globalScore={globalScore[player.turn].score}
                     key={player.turn}
                   />
                 ))}
