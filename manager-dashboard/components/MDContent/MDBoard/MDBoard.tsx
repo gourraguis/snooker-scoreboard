@@ -106,9 +106,9 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
             name={board.name}
             history={game!.history!}
           />
-          <MDModalNewGame visible={isNewGameModalVisible} onCancel={handleCancelNewGameModal} boardId={board.id} />
         </Row>
       )}
+      <MDModalNewGame visible={isNewGameModalVisible} onCancel={handleCancelNewGameModal} boardId={board.id} />
     </Card>
   )
 }
