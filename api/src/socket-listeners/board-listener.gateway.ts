@@ -16,7 +16,6 @@ import { IBoard } from '../board/types/board'
 import { IGame } from '../game/types/game'
 import { Socket } from 'socket.io'
 
-let ID: string
 @WebSocketGateway({ cors: true, namespace: 'board' })
 export class BoardListenerGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private logger: Logger = new Logger(BoardEmitterGateway.name)
@@ -29,7 +28,7 @@ export class BoardListenerGateway implements OnGatewayConnection, OnGatewayDisco
   ) {}
 
   handleDisconnect(boardClient: BoardSocket) {
-    const board = this.boardService.findBoard(ID)
+    const board = this.boardService.findBoard(boardClient.data.boardId)
     this.managerEmmiterGateway.emitRemoveBoard(board)
     this.logger.log(`Board disconnected: ${boardClient.id}`)
   }
@@ -41,10 +40,6 @@ export class BoardListenerGateway implements OnGatewayConnection, OnGatewayDisco
   @SubscribeMessage<BoardClientToServerEvents>('initBoard')
   onInitBoard(@MessageBody() boardId: string, @ConnectedSocket() client: Socket): IBoard {
     client.data.boardId = boardId
-    console.log(client.data)
-    console.log(this.server.sockets)
-
-    ID = boardId
 
     const board = this.boardService.findBoard(boardId)
     this.managerEmmiterGateway.emitAddBoard(board)
