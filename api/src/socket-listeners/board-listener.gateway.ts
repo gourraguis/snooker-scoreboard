@@ -45,6 +45,7 @@ export class BoardListenerGateway implements OnGatewayConnection, OnGatewayDisco
     console.log(this.server.sockets)
 
     ID = boardId
+
     const board = this.boardService.findBoard(boardId)
     this.managerEmmiterGateway.emitAddBoard(board)
     return board
