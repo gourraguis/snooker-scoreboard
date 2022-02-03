@@ -10,9 +10,10 @@ interface SCPlayerCardProps {
   color: string
   points: number
   playerName: string
+  globalScore: number
 }
 
-const SCPlayerCard: FunctionComponent<SCPlayerCardProps> = ({ isCurrent, color, points, playerName }) => {
+const SCPlayerCard: FunctionComponent<SCPlayerCardProps> = ({ isCurrent, color, points, playerName, globalScore }) => {
   return (
     <Card bodyStyle={{ padding: '12px' }} className={classNames(styles.card, { [styles.active]: isCurrent })}>
       <div className={styles.center}>
@@ -33,6 +34,7 @@ const SCPlayerCard: FunctionComponent<SCPlayerCardProps> = ({ isCurrent, color, 
           </motion.div>
         </AnimatePresence>
       </div>
+      <p className={styles.globalScore}>{globalScore}</p>
     </Card>
   )
 }
