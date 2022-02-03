@@ -5,6 +5,7 @@ import { IInitBoard } from '../../../types/initBoard'
 
 export interface ServerToClientEvents {
   addBoard: (board: IBoard) => void
+  removeBoard: (board: IBoard) => void
   updateGame: (game: IGame) => void
 }
 

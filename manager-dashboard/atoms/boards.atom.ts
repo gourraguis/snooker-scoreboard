@@ -9,3 +9,7 @@ export const boardsState = atom<IBoard[]>({
 export const addBoardAction = (setBoards: SetterOrUpdater<IBoard[]>) => (board: IBoard) => {
   setBoards((boards) => [...boards, board])
 }
+
+export const removeBoardAction = (setBoards: SetterOrUpdater<IBoard[]>) => (board: IBoard) => {
+  setBoards((boards) => [...boards.filter(({ id }) => id !== board.id)])
+}

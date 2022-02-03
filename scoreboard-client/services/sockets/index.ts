@@ -17,7 +17,6 @@ export const initSocket = (startNewGame: (game: IGame) => void, setBoard: Setter
 
   socket.on('initGame', startNewGame)
 }
-
 export const emitUpdateGame = (game: IGame) => {
   socket.emit('updateGame', game)
 }
