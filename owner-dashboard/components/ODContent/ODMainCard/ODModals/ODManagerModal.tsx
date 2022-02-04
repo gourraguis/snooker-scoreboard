@@ -14,7 +14,7 @@ const ODManagerModal: FunctionComponent<ODManagerModalProps> = ({ onCancel, visi
   }
   const onFinish = (values: IManager) => {
     const manager: IManager = {
-      id: '1',
+      phoneNumber: values.phoneNumber,
       name: values.name,
     }
     createManager(manager)
@@ -46,6 +46,9 @@ const ODManagerModal: FunctionComponent<ODManagerModalProps> = ({ onCancel, visi
           autoComplete="off"
         >
           <Form.Item label="Name" name="name">
+            <Input />
+          </Form.Item>
+          <Form.Item label="Phone" name="phoneNumber">
             <Input />
           </Form.Item>
         </Form>

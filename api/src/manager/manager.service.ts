@@ -5,7 +5,7 @@ import { IManager } from './types'
 export class ManagerService {
   private logger: Logger = new Logger(ManagerService.name)
 
-  async create(name: IManager): Promise<void> {
-    this.logger.log(JSON.stringify(name, null, 2))
+  async create(managerData: IManager): Promise<void> {
+    this.logger.log(JSON.stringify(managerData, null, 2))
   }
 }
