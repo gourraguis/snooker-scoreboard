@@ -12,6 +12,10 @@ export class ManagerEmmiterGateway {
     this.server.emit('addBoard', board)
   }
 
+  emitRemoveBoard(board: IBoard) {
+    this.server.emit('removeBoard', board)
+  }
+
   emitUpdateGame(game: IGame) {
     this.server.emit('updateGame', game)
   }
