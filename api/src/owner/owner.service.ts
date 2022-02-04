@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common'
+import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Owner } from './entities/owner.entity'
@@ -27,6 +27,11 @@ export class OwnerService {
       name: owner.name,
       balance: owner.balance,
     }
+  }
+
+  async getAllOwners(): Promise<IOwner[]> {
+    const owner = await this.ownerRepository.find()
+    return owner
   }
 
   async createOwner(owner: IOwner): Promise<Owner> {

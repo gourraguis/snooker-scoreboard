@@ -14,6 +14,11 @@ export class OwnerController {
     return this.ownerService.getOwner(phoneNumber)
   }
 
+  @Get()
+  getAllOwners(): Promise<IOwner[]> {
+    return this.ownerService.getAllOwners()
+  }
+
   @Post()
   createOwner(@Body() owner: IOwner): Promise<Owner> {
     validatePhoneNumber(owner.phoneNumber)
