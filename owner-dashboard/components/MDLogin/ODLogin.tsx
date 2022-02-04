@@ -2,17 +2,16 @@ import { FunctionComponent } from 'react'
 import { Form, Input, Button, Layout, Card } from 'antd'
 
 import styles from './ODLogin.module.css'
+import { ILogin } from '../../types/login'
+import { loginOwner } from '../../services/owner'
 
 const { Content } = Layout
 
 export const ODLogin: FunctionComponent = () => {
-  const onFinish = (values: any) => {
-    console.log('Success:', values)
+  const onFinish = (values: ILogin) => {
+    loginOwner(values)
   }
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo)
-  }
   return (
     <Content className={styles.content}>
       <Card title="Login Form" bordered={false} style={{ width: 300 }}>
@@ -21,7 +20,6 @@ export const ODLogin: FunctionComponent = () => {
           wrapperCol={{ span: 24 }}
           initialValues={{ remember: true }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
           <Form.Item name="phoneNumber" rules={[{ required: true, message: 'Please input your phone number!' }]}>
