@@ -1,15 +1,18 @@
 import { FunctionComponent } from 'react'
 import { Form, Input, Button, Layout, Card } from 'antd'
 
+import { useSetRecoilState } from 'recoil'
 import styles from './ODLogin.module.css'
 import { ILogin } from '../../types/login'
 import { loginOwner } from '../../services/owner'
+import { authState } from '../../atoms/authState'
 
 const { Content } = Layout
 
 export const ODLogin: FunctionComponent = () => {
+  const setAuth = useSetRecoilState(authState)
   const onFinish = (values: ILogin) => {
-    loginOwner(values)
+    loginOwner(values, setAuth)
   }
 
   return (

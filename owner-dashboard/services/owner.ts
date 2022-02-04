@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { SetterOrUpdater } from 'recoil'
 import { ILogin } from '../types/login'
 import { IManager } from '../types/manager'
 import { ITable } from '../types/table'
@@ -31,14 +32,27 @@ export const createTable = async (table: ITable) => {
     })
 }
 
-export const loginOwner = async (loginData: ILogin) => {
+export const loginOwner = async (loginData: ILogin, setAuth: SetterOrUpdater<boolean>) => {
   await axios
     .get(`${url}/owner/${loginData.phoneNumber}`)
     .then((res) => {
-      console.log(res)
+      localStorage.setItem('token', res.data.phoneNumber)
       openNotification({ title: `Hello ${res.data.name}` })
+      setAuth(true)
     })
     .catch((err) => {
       console.log(err)
+    })
+}
+
+export const checkOwnerAuth = async (setIsAuth: SetterOrUpdater<boolean>) => {
+  const token = localStorage.getItem('token')
+  await axios
+    .get(`${url}/owner/${token}`)
+    .then(() => {
+      setIsAuth(true)
+    })
+    .catch(() => {
+      setIsAuth(false)
     })
 }

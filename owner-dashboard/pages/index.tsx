@@ -1,16 +1,25 @@
 import { Layout } from 'antd'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { useState } from 'react'
+import { useEffect } from 'react'
+import { useRecoilState } from 'recoil'
 import { ODHeader } from '../components/ODHeader/ODHeader'
 import { ODFooter } from '../components/ODFooter/ODFooter'
 import { ODContent } from '../components/ODContent/ODContent'
 import { ODLogin } from '../components/MDLogin/ODLogin'
+import { authState } from '../atoms/authState'
+import { checkOwnerAuth } from '../services/owner'
 
 const Home: NextPage = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isAuth, setIsAuth] = useRecoilState(authState)
 
-  if (!isAuthenticated)
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (!token) return
+    checkOwnerAuth(setIsAuth)
+  }, [])
+
+  if (!isAuth)
     return (
       <>
         <Head>
@@ -26,16 +35,20 @@ const Home: NextPage = () => {
     )
   return (
     <div>
-      <Head>
-        <title>Owner Dashboard</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      {isAuth && (
+        <div>
+          <Head>
+            <title>Owner Dashboard</title>
+            <link rel="icon" href="/favicon.ico" />
+          </Head>
 
-      <Layout style={{ minHeight: '100vh' }}>
-        <ODHeader />
-        <ODContent />
-        <ODFooter />
-      </Layout>
+          <Layout style={{ minHeight: '100vh' }}>
+            <ODHeader />
+            <ODContent />
+            <ODFooter />
+          </Layout>
+        </div>
+      )}
     </div>
   )
 }
