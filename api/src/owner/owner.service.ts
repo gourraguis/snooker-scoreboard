@@ -20,7 +20,7 @@ export class OwnerService {
       phoneNumber: phoneNumber,
     })
     if (!owner) {
-      throw new NotFoundException('There is owner with this number')
+      throw new NotFoundException('There is no owner with this phone number')
     }
     return {
       phoneNumber: owner.phoneNumber,
@@ -35,7 +35,9 @@ export class OwnerService {
   }
 
   async createOwner(owner: IOwner): Promise<Owner> {
-    const existingOwner = await this.getOwner(owner.phoneNumber)
+    const existingOwner = await this.ownerRepository.findOne({
+      phoneNumber: owner.phoneNumber,
+    })
     if (existingOwner) {
       throw new ConflictException('An owner with this phone number already exists')
     }
@@ -52,7 +54,7 @@ export class OwnerService {
       phoneNumber: phoneNumber,
     })
     if (!owner) {
-      throw new NotFoundException('There is owner with this number')
+      throw new NotFoundException('There is no owner with this phone number')
     }
     const generatedOtp = generateNewOtp()
     owner.otp = generatedOtp
