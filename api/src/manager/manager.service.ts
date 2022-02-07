@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, Logger } from '@nestjs/common'
+import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Manager } from './entities/manager.entity'
@@ -15,6 +15,28 @@ export class ManagerService {
 
   async getAllManagers(): Promise<IManager[]> {
     const managers = await this.managerRepository.find()
+    return managers
+  }
+
+  async getManager(id: string): Promise<IManager> {
+    const manager = await this.managerRepository.findOne({
+      id: id,
+    })
+    if (!manager) {
+      throw new NotFoundException('There is no manager with this phone number')
+    }
+    return {
+      id: manager.id,
+      name: manager.name,
+      owner: manager.owner,
+    }
+  }
+
+  async getManagersWithTheSameOwner(owner: string): Promise<IManager[]> {
+    const managers = await this.managerRepository.find({ where: { owner: owner } })
+    if (!managers) {
+      throw new NotFoundException('There is no managers with this owner')
+    }
     return managers
   }
 

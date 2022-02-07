@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, BadRequestException } from '@nestjs/common'
+import { Controller, Post, Body, Get, BadRequestException, Param } from '@nestjs/common'
 import { validatePhoneNumber } from 'src/owner/utils'
 import { Manager } from './entities/manager.entity'
 import { ManagerService } from './manager.service'
@@ -11,6 +11,18 @@ export class ManagerController {
   @Get()
   getAllManagers(): Promise<IManager[]> {
     return this.managerService.getAllManagers()
+  }
+
+  @Get(':id')
+  getManager(@Param('id') id: string) {
+    validatePhoneNumber(id)
+    return this.managerService.getManager(id)
+  }
+
+  @Get('/byOwner/:owner')
+  getManagersWithTheSameOwner(@Param('owner') owner: string): Promise<IManager[]> {
+    validatePhoneNumber(owner)
+    return this.managerService.getManagersWithTheSameOwner(owner)
   }
 
   @Post()
