@@ -1,4 +1,5 @@
 export interface IManager {
-  phoneNumber: string
+  id: string
   name: string
+  owner: string
 }

@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm'
 
 @Entity()
-export class Owner {
+export class Manager {
   @PrimaryColumn()
   id: string
 
@@ -9,5 +9,5 @@ export class Owner {
   name: string
 
   @Column()
-  manager: string
+  owner: string
 }

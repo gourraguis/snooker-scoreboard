@@ -13,9 +13,11 @@ const ODManagerModal: FunctionComponent<ODManagerModalProps> = ({ onCancel, visi
     onCancel()
   }
   const onFinish = (values: IManager) => {
+    const token = localStorage.getItem('token')
     const manager: IManager = {
-      phoneNumber: values.phoneNumber,
+      id: values.id,
       name: values.name,
+      owner: token,
     }
     createManager(manager)
     onCancel()
@@ -48,7 +50,7 @@ const ODManagerModal: FunctionComponent<ODManagerModalProps> = ({ onCancel, visi
           <Form.Item label="Name" name="name">
             <Input />
           </Form.Item>
-          <Form.Item label="Phone" name="phoneNumber">
+          <Form.Item label="Phone" name="id">
             <Input />
           </Form.Item>
         </Form>
