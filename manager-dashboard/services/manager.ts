@@ -9,8 +9,6 @@ export const loginManager = async (loginData: ILogin, setAuth: SetterOrUpdater<b
   await axios
     .get(`${url}/manager/${loginData.phoneNumber}`)
     .then((res) => {
-      console.log(res.data)
-
       localStorage.setItem('token', res.data.id)
       openNotification({ title: `Hello ${res.data.name}` })
       setAuth(true)
