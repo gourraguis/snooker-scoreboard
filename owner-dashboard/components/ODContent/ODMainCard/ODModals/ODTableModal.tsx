@@ -13,9 +13,12 @@ const ODTableForm: FunctionComponent<ODTableFormProps> = ({ onCancel, visible })
     onCancel()
   }
   const onFinish = (values: ITable) => {
+    const token = localStorage.getItem('token')
+    const BoardId = Math.floor(Math.random() * 1000).toString()
     const table: ITable = {
-      id: '1',
+      id: BoardId,
       name: values.name,
+      owner: token,
     }
     createTable(table)
     onCancel()
