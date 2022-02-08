@@ -6,7 +6,7 @@ import { useRecoilState } from 'recoil'
 import { ODHeader } from '../components/ODHeader/ODHeader'
 import { ODFooter } from '../components/ODFooter/ODFooter'
 import { ODContent } from '../components/ODContent/ODContent'
-import { ODLogin } from '../components/MDLogin/ODLogin'
+import { ODLogin } from '../components/ODLogin/ODLogin'
 import { authState } from '../atoms/authState'
 import { checkOwnerAuth } from '../services/owner'
 
