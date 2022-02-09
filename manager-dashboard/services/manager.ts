@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { SetterOrUpdater } from 'recoil'
+import { IBoard } from '../types/board'
 import { ILogin } from '../types/login'
 import { openNotification } from './notification'
 
@@ -27,5 +28,26 @@ export const checkManagerAuth = async (setIsAuth: SetterOrUpdater<boolean>) => {
     })
     .catch(() => {
       setIsAuth(false)
+    })
+}
+
+export const getBoards = async (setBoards: SetterOrUpdater<IBoard[]>) => {
+  const token = localStorage.getItem('token')
+  let ownerId = ''
+  await axios
+    .get(`${url}/manager/${token}`)
+    .then((res) => {
+      ownerId = res.data.owner
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  await axios
+    .get(`${url}/board/byOwner/${ownerId}`)
+    .then((res) => {
+      setBoards(res.data)
+    })
+    .catch((err) => {
+      console.log(err)
     })
 }

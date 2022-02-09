@@ -1,5 +1,7 @@
+/* eslint-disable no-plusplus */
 import axios from 'axios'
 import { SetterOrUpdater } from 'recoil'
+import { ICardElements } from '../types/cardElement'
 import { ILogin } from '../types/login'
 import { IManager } from '../types/manager'
 import { ITable } from '../types/table'
@@ -20,12 +22,54 @@ export const createManager = async (manager: IManager) => {
     })
 }
 
+export const getManagers = async (setManagersElements: SetterOrUpdater<ICardElements[]>) => {
+  const token = localStorage.getItem('token')
+  let elements: ICardElements[] = []
+  await axios
+    .get(`${url}/manager/byOwner/${token}`)
+    .then((res) => {
+      for (let index = 0; index < res.data.length; index++) {
+        const newElem = {
+          name: res.data[index].name,
+          dailyScore: 10,
+          weeklyScore: 70,
+        }
+        elements = [...elements, newElem]
+      }
+      setManagersElements(elements)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+}
+
 export const createTable = async (table: ITable) => {
   await axios
     .post(`${url}/board`, table)
     .then((res) => {
       console.log(res)
       openNotification({ title: 'Nouvelle table a été créé' })
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+}
+
+export const getTables = async (setTablesElements: SetterOrUpdater<ICardElements[]>) => {
+  const token = localStorage.getItem('token')
+  let elements: ICardElements[] = []
+  await axios
+    .get(`${url}/board/byOwner/${token}`)
+    .then((res) => {
+      for (let index = 0; index < res.data.length; index++) {
+        const newElem = {
+          name: res.data[index].name,
+          dailyScore: 10,
+          weeklyScore: 70,
+        }
+        elements = [...elements, newElem]
+      }
+      setTablesElements(elements)
     })
     .catch((err) => {
       console.log(err)

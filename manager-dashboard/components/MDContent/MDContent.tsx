@@ -1,17 +1,19 @@
-import { Layout, Empty, Space } from 'antd'
-import { FunctionComponent } from 'react'
-import { useRecoilValue } from 'recoil'
 import classNames from 'classnames'
+import { Layout, Empty, Space } from 'antd'
+import { FunctionComponent, useEffect } from 'react'
+import { useRecoilState } from 'recoil'
 import { boardsState } from '../../atoms/boards.atom'
 import { MDBoard } from './MDBoard/MDBoard'
-
+import { getBoards } from '../../services/manager'
 import styles from './MDContent.module.css'
 
 const { Content } = Layout
 
 export const MDContent: FunctionComponent = () => {
-  const boards = useRecoilValue(boardsState)
-  // const boards: any = []
+  const [boards, setBoards] = useRecoilState(boardsState)
+  useEffect(() => {
+    getBoards(setBoards)
+  }, [])
 
   return (
     <Content className={classNames({ [styles.contentCentered]: !boards.length })}>
