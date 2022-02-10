@@ -35,7 +35,7 @@ export class ManagerController {
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string) {
+  deleteManager(@Param('id') id: string) {
     return this.managerService.deleteManager(id)
   }
 }

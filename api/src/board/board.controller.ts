@@ -28,7 +28,7 @@ export class BoardController {
   }
 
   @Put()
-  update(@Body() board: IBoard): Promise<Board> {
+  updateBoard(@Body() board: IBoard): Promise<Board> {
     return this.boardService.updateBoard(board)
   }
 }
