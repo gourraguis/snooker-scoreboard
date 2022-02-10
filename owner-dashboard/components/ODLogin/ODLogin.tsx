@@ -14,8 +14,7 @@ export const ODLogin: FunctionComponent = () => {
   const router = useRouter()
   const setAuth = useSetRecoilState(authState)
   const onFinish = (values: ILogin) => {
-    loginOwner(values, setAuth)
-    router.push('/')
+    loginOwner(values, setAuth, router)
   }
 
   return (

@@ -30,7 +30,7 @@ const Home: NextPage = () => {
   return (
     <div>
       {isAuth && (
-        <div>
+        <>
           <Head>
             <title>Owner Dashboard</title>
             <link rel="icon" href="/favicon.ico" />
@@ -40,7 +40,7 @@ const Home: NextPage = () => {
             <ODContent />
             <ODFooter />
           </Layout>
-        </div>
+        </>
       )}
     </div>
   )

@@ -92,13 +92,14 @@ export const getTables = async (setTablesElements: SetterOrUpdater<ICardElements
     })
 }
 
-export const loginOwner = async (loginData: ILogin, setAuth: SetterOrUpdater<boolean>) => {
+export const loginOwner = async (loginData: ILogin, setAuth: SetterOrUpdater<boolean>, router: NextRouter) => {
   await axios
     .get(`${url}/owner/${loginData.phoneNumber}`)
     .then((res) => {
       localStorage.setItem('token', res.data.phoneNumber)
       openNotification({ title: `Hello ${res.data.name}` })
       setAuth(true)
+      router.push('/')
     })
     .catch((err) => {
       console.log(err)
@@ -107,15 +108,6 @@ export const loginOwner = async (loginData: ILogin, setAuth: SetterOrUpdater<boo
 
 export const checkOwnerAuth = async (setIsAuth: SetterOrUpdater<boolean>, router: NextRouter) => {
   const token = localStorage.getItem('token')
-  // await axios
-  //   .get(`${url}/owner/${token}`)
-  //   .then(() => {
-  //     setIsAuth(true)
-  //   })
-  //   .catch(() => {
-  //     setIsAuth(false)
-  //   })
-
   try {
     const res = await axios.get(`${url}/owner/${token}`)
     if (res) setIsAuth(true)
