@@ -1,12 +1,26 @@
-import { Row, Col, Divider, Card } from 'antd'
+import { EllipsisOutlined } from '@ant-design/icons'
+import { Row, Col, Divider, Card, Dropdown, Menu } from 'antd'
 import { FunctionComponent } from 'react'
 import { ICardElements } from '../../../../types/cardElement'
 
 import styles from './ODMainCardContent.module.css'
 
+const menu = (
+  <Menu>
+    <Menu.Item key="delete">Delete</Menu.Item>
+  </Menu>
+)
+
 export const ODMainCardContent: FunctionComponent<ICardElements> = ({ name, dailyScore, weeklyScore }) => {
   return (
-    <Card className={styles.card}>
+    <Card className={styles.card} bodyStyle={{ paddingTop: '18px' }}>
+      <Row className={styles.ellips}>
+        <Dropdown overlay={menu} placement="bottomRight" trigger={['click']}>
+          <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+            <EllipsisOutlined key="ellipsis" />
+          </a>
+        </Dropdown>
+      </Row>
       <Row>
         <Col span={6} className={styles.column}>
           <h3 className={styles.name}>{name}</h3>
