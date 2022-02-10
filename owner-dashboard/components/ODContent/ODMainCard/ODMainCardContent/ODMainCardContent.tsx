@@ -2,14 +2,15 @@ import { EllipsisOutlined } from '@ant-design/icons'
 import { Row, Col, Divider, Card, Dropdown, Menu } from 'antd'
 import { FunctionComponent } from 'react'
 import { useRecoilState } from 'recoil'
-import { managersStats } from '../../../../atoms/mainStats'
-import { deleteManager } from '../../../../services/owner'
+import { managersStats, tablesStats } from '../../../../atoms/mainStats'
+import { deleteManager, deleteTable } from '../../../../services/owner'
 import { ICardElements } from '../../../../types/cardElement'
 
 import styles from './ODMainCardContent.module.css'
 
 export const ODMainCardContent: FunctionComponent<ICardElements> = ({ id, name, dailyScore, weeklyScore }) => {
   const [managersElements, setManagersElements] = useRecoilState(managersStats)
+  const [tablesElements, setTablesElements] = useRecoilState(tablesStats)
 
   const isPhoneNumber = (phoneNumber: string): boolean => {
     const phoneRegex = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/
@@ -22,6 +23,7 @@ export const ODMainCardContent: FunctionComponent<ICardElements> = ({ id, name, 
   // eslint-disable-next-line @typescript-eslint/no-shadow
   const deleteElem = (id: string) => {
     if (isPhoneNumber(id)) deleteManager(managersElements, id, setManagersElements)
+    else deleteTable(tablesElements, id, setTablesElements)
   }
   const menu = (
     <Menu>

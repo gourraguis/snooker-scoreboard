@@ -130,14 +130,36 @@ export const deleteManager = async (
   try {
     const res = await axios.delete(`${url}/manager/${id}`)
     if (res) {
-      console.log(res.data)
-
-      console.log(managersElements)
-
       const newManagersElements = managersElements.filter((element) => element.id !== id)
-      console.log(newManagersElements)
-
       setManagersElements(newManagersElements)
+    }
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export const deleteTable = async (
+  tablesElements: ICardElements[],
+  id: string,
+  setTablesElements: SetterOrUpdater<ICardElements[]>
+) => {
+  try {
+    const res = await axios.get(`${url}/board/${id}`)
+    if (res) {
+      const board = {
+        id: res.data.id,
+        name: res.data.name,
+        owner: '',
+      }
+      try {
+        const put = await axios.put(`${url}/board`, board)
+        if (put) {
+          const newTablesElements = tablesElements.filter((element) => element.id !== id)
+          setTablesElements(newTablesElements)
+        }
+      } catch (err) {
+        console.log(err)
+      }
     }
   } catch (err) {
     console.log(err)
