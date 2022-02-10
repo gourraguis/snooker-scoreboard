@@ -5,13 +5,20 @@ import { ICardElements } from '../../../../types/cardElement'
 
 import styles from './ODMainCardContent.module.css'
 
-const menu = (
-  <Menu>
-    <Menu.Item key="delete">Delete</Menu.Item>
-  </Menu>
-)
+export const ODMainCardContent: FunctionComponent<ICardElements> = ({ id, name, dailyScore, weeklyScore }) => {
+  // eslint-disable-next-line @typescript-eslint/no-shadow
+  const deleteElem = (id: string) => {
+    console.log(id)
+  }
 
-export const ODMainCardContent: FunctionComponent<ICardElements> = ({ name, dailyScore, weeklyScore }) => {
+  const menu = (
+    <Menu>
+      <Menu.Item key="delete" onClick={() => deleteElem(id)}>
+        Delete
+      </Menu.Item>
+    </Menu>
+  )
+
   return (
     <Card className={styles.card} bodyStyle={{ paddingTop: '18px' }}>
       <Row className={styles.ellips}>

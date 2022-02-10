@@ -18,6 +18,7 @@ export const createManager = async (
   try {
     const res = await axios.post(`${url}/manager`, manager)
     const newElem: ICardElements = {
+      id: res.data.id,
       name: res.data.name,
       dailyScore: 10,
       weeklyScore: 70,
@@ -38,6 +39,7 @@ export const getManagers = async (setManagersElements: SetterOrUpdater<ICardElem
     .then((res) => {
       for (let index = 0; index < res.data.length; index++) {
         const newElem = {
+          id: res.data[index].id,
           name: res.data[index].name,
           dailyScore: 10,
           weeklyScore: 70,
@@ -59,6 +61,7 @@ export const createTable = async (
   try {
     const res = await axios.post(`${url}/board`, table)
     const newElem: ICardElements = {
+      id: res.data.id,
       name: res.data.name,
       dailyScore: 10,
       weeklyScore: 70,
@@ -79,6 +82,7 @@ export const getTables = async (setTablesElements: SetterOrUpdater<ICardElements
     .then((res) => {
       for (let index = 0; index < res.data.length; index++) {
         const newElem = {
+          id: res.data[index].id,
           name: res.data[index].name,
           dailyScore: 10,
           weeklyScore: 70,

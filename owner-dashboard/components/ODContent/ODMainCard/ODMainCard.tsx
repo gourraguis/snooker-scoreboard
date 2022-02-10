@@ -36,6 +36,7 @@ const ODMainCard: FunctionComponent<ODMainCardProps> = ({ id, title, elements })
       {elements.map((elem) => (
         <ODMainCardContent
           key={elem.name}
+          id={elem.id}
           name={elem.name}
           dailyScore={elem.dailyScore}
           weeklyScore={elem.weeklyScore}
