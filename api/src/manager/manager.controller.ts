@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, BadRequestException, Param } from '@nestjs/common'
+import { Controller, Post, Body, Get, BadRequestException, Param, Delete } from '@nestjs/common'
 import { validatePhoneNumber } from 'src/owner/utils'
 import { Manager } from './entities/manager.entity'
 import { ManagerService } from './manager.service'
@@ -32,5 +32,10 @@ export class ManagerController {
       throw new BadRequestException("Please provide the manager's name")
     }
     return this.managerService.createManager(manager)
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: string) {
+    return this.managerService.deleteManager(id)
   }
 }

@@ -1,6 +1,6 @@
 import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+import { DeleteResult, Repository } from 'typeorm'
 import { Manager } from './entities/manager.entity'
 import { IManager } from './types'
 
@@ -54,5 +54,9 @@ export class ManagerService {
     newManager.name = manager.name
     newManager.owner = manager.owner
     return this.managerRepository.save(newManager)
+  }
+
+  async deleteManager(id: string): Promise<DeleteResult> {
+    return await this.managerRepository.delete({ id: id })
   }
 }
