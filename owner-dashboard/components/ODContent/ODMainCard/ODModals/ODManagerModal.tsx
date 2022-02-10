@@ -22,7 +22,7 @@ const ODManagerModal: FunctionComponent<ODManagerModalProps> = ({ onCancel, visi
       name: values.name,
       owner: token,
     }
-    createManager(newManager, setManagersElements, managersElements)
+    createManager(newManager, managersElements, setManagersElements)
     onCancel()
   }
 

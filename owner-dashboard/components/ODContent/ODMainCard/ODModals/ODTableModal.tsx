@@ -1,5 +1,7 @@
 import { Button, Form, Input, Modal } from 'antd'
 import { FunctionComponent } from 'react'
+import { useRecoilState } from 'recoil'
+import { tablesStats } from '../../../../atoms/mainStats'
 import { createTable } from '../../../../services/owner'
 import { ITable } from '../../../../types/table'
 
@@ -9,18 +11,19 @@ interface ODTableFormProps {
 }
 
 const ODTableForm: FunctionComponent<ODTableFormProps> = ({ onCancel, visible }) => {
+  const [tablesElements, setTablesElements] = useRecoilState(tablesStats)
   const handleCancel = () => {
     onCancel()
   }
   const onFinish = (values: ITable) => {
     const token = localStorage.getItem('token')
     const BoardId = Math.floor(Math.random() * 1000).toString()
-    const table: ITable = {
+    const newTable: ITable = {
       id: BoardId,
       name: values.name,
       owner: token,
     }
-    createTable(table)
+    createTable(newTable, tablesElements, setTablesElements)
     onCancel()
   }
 

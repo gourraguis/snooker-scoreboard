@@ -11,12 +11,11 @@ const url = 'http://localhost:5000'
 
 export const createManager = async (
   manager: IManager,
-  setManagersElements: SetterOrUpdater<ICardElements[]>,
-  managersElements: ICardElements[]
+  managersElements: ICardElements[],
+  setManagersElements: SetterOrUpdater<ICardElements[]>
 ) => {
   try {
     const res = await axios.post(`${url}/manager`, manager)
-    console.log(res.data)
     const newElem: ICardElements = {
       name: res.data.name,
       dailyScore: 10,
@@ -51,16 +50,24 @@ export const getManagers = async (setManagersElements: SetterOrUpdater<ICardElem
     })
 }
 
-export const createTable = async (table: ITable) => {
-  await axios
-    .post(`${url}/board`, table)
-    .then((res) => {
-      console.log(res)
-      openNotification({ title: 'Nouvelle table a été créé' })
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+export const createTable = async (
+  table: ITable,
+  tablesElements: ICardElements[],
+  setTablesElements: SetterOrUpdater<ICardElements[]>
+) => {
+  try {
+    const res = await axios.post(`${url}/board`, table)
+    const newElem: ICardElements = {
+      name: res.data.name,
+      dailyScore: 10,
+      weeklyScore: 70,
+    }
+    setTablesElements([...tablesElements, newElem])
+    openNotification({ title: 'Nouvelle table a été créé' })
+  } catch (err) {
+    console.log(err)
+    openNotification({ title: 'Table na pas pu etre ajouté', type: 'error' })
+  }
 }
 
 export const getTables = async (setTablesElements: SetterOrUpdater<ICardElements[]>) => {
