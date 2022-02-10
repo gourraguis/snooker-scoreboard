@@ -121,3 +121,25 @@ export const checkOwnerAuth = async (setIsAuth: SetterOrUpdater<boolean>, router
     router.push('/login')
   }
 }
+
+export const deleteManager = async (
+  managersElements: ICardElements[],
+  id: string,
+  setManagersElements: SetterOrUpdater<ICardElements[]>
+) => {
+  try {
+    const res = await axios.delete(`${url}/manager/${id}`)
+    if (res) {
+      console.log(res.data)
+
+      console.log(managersElements)
+
+      const newManagersElements = managersElements.filter((element) => element.id !== id)
+      console.log(newManagersElements)
+
+      setManagersElements(newManagersElements)
+    }
+  } catch (err) {
+    console.log(err)
+  }
+}

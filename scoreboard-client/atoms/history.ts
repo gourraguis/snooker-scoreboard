@@ -34,7 +34,6 @@ export const currentScoreSelector = selector<number>({
   key: 'currentScoreSelector',
   get: ({ get }) => {
     const currentTurn = get(currentTurnSelector)
-
     return currentTurn.scoredBalls.reduce((acc, val) => acc + val, 0)
   },
 })
