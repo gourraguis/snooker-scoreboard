@@ -8,6 +8,8 @@ export class Board {
   @Column()
   name: string
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   owner: string
 }
