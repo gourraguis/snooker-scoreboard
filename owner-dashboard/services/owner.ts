@@ -1,5 +1,6 @@
 /* eslint-disable no-plusplus */
 import axios from 'axios'
+import { NextRouter } from 'next/router'
 import { SetterOrUpdater } from 'recoil'
 import { ICardElements } from '../types/cardElement'
 import { ILogin } from '../types/login'
@@ -104,14 +105,23 @@ export const loginOwner = async (loginData: ILogin, setAuth: SetterOrUpdater<boo
     })
 }
 
-export const checkOwnerAuth = async (setIsAuth: SetterOrUpdater<boolean>) => {
+export const checkOwnerAuth = async (setIsAuth: SetterOrUpdater<boolean>, router: NextRouter) => {
   const token = localStorage.getItem('token')
-  await axios
-    .get(`${url}/owner/${token}`)
-    .then(() => {
-      setIsAuth(true)
-    })
-    .catch(() => {
-      setIsAuth(false)
-    })
+  // await axios
+  //   .get(`${url}/owner/${token}`)
+  //   .then(() => {
+  //     setIsAuth(true)
+  //   })
+  //   .catch(() => {
+  //     setIsAuth(false)
+  //   })
+
+  try {
+    const res = await axios.get(`${url}/owner/${token}`)
+    if (res) setIsAuth(true)
+  } catch (err) {
+    console.log(err)
+    setIsAuth(false)
+    router.push('/login')
+  }
 }

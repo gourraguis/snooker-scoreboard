@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { FunctionComponent } from 'react'
 import { Form, Input, Button, Layout, Card } from 'antd'
 
@@ -10,9 +11,11 @@ import { authState } from '../../atoms/authState'
 const { Content } = Layout
 
 export const ODLogin: FunctionComponent = () => {
+  const router = useRouter()
   const setAuth = useSetRecoilState(authState)
   const onFinish = (values: ILogin) => {
     loginOwner(values, setAuth)
+    router.push('/')
   }
 
   return (
