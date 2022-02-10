@@ -9,10 +9,20 @@ import { openNotification } from './notification'
 
 const url = 'http://localhost:5000'
 
-export const createManager = async (manager: IManager) => {
+export const createManager = async (
+  manager: IManager,
+  setManagersElements: SetterOrUpdater<ICardElements[]>,
+  managersElements: ICardElements[]
+) => {
   try {
     const res = await axios.post(`${url}/manager`, manager)
     console.log(res.data)
+    const newElem: ICardElements = {
+      name: res.data.name,
+      dailyScore: 10,
+      weeklyScore: 70,
+    }
+    setManagersElements([...managersElements, newElem])
     openNotification({ title: 'Manager a été ajouté' })
   } catch (err) {
     console.log(err)

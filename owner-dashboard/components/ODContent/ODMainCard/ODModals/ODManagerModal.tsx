@@ -1,5 +1,7 @@
 import { Button, Form, Input, Modal } from 'antd'
 import { FunctionComponent } from 'react'
+import { useRecoilState } from 'recoil'
+import { managersStats } from '../../../../atoms/mainStats'
 import { createManager } from '../../../../services/owner'
 import { IManager } from '../../../../types/manager'
 
@@ -9,18 +11,18 @@ interface ODManagerModalProps {
 }
 
 const ODManagerModal: FunctionComponent<ODManagerModalProps> = ({ onCancel, visible }) => {
+  const [managersElements, setManagersElements] = useRecoilState(managersStats)
   const handleCancel = () => {
     onCancel()
   }
   const onFinish = async (values: IManager) => {
     const token = localStorage.getItem('token')
-    const manager: IManager = {
+    const newManager: IManager = {
       id: values.id,
       name: values.name,
       owner: token,
     }
-    const newMnager = await createManager(manager)
-    // Todo: add manager f UI
+    createManager(newManager, setManagersElements, managersElements)
     onCancel()
   }
 
