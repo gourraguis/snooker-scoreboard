@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param } from '@nestjs/common'
+import { Controller, Post, Body, Get, Param, Put } from '@nestjs/common'
 import { BoardService } from './board.service'
 import { Board } from './entities/board.entity'
 import { IBoard } from './types/board'
@@ -25,5 +25,10 @@ export class BoardController {
   @Post()
   createBoard(@Body() board: IBoard): Promise<Board> {
     return this.boardService.createBoard(board)
+  }
+
+  @Put()
+  update(@Body() board: IBoard): Promise<Board> {
+    return this.boardService.updateBoard(board)
   }
 }

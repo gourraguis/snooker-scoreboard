@@ -64,4 +64,8 @@ export class BoardService {
     newBoard.owner = board.owner
     return this.boardRepository.save(newBoard)
   }
+
+  async updateBoard(board: IBoard): Promise<Board> {
+    return await this.boardRepository.save(board)
+  }
 }
