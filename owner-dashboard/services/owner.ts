@@ -96,14 +96,26 @@ export const getTables = async (setTablesElements: SetterOrUpdater<ICardElements
     })
 }
 
-export const loginOwner = async (loginData: ILogin, setAuth: SetterOrUpdater<boolean>, router: NextRouter) => {
+export const loginOwner = async (loginData: ILogin, setIsModalVisible: SetterOrUpdater<boolean>) => {
   await axios
-    .get(`${url}/owner/${loginData.phoneNumber}`)
+    .get(`${url}/owner/login/${loginData.phoneNumber}`)
+    .then(() => {
+      setIsModalVisible(true)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+}
+
+export const checkOtp = async (otp: string, setAuth: SetterOrUpdater<boolean>, router: NextRouter) => {
+  await axios
+    .get(`${url}/owner/loginOtp/${otp}`)
     .then((res) => {
       localStorage.setItem('token', res.data.phoneNumber)
-      openNotification({ title: `Hello ${res.data.name}` })
+      localStorage.setItem('accToken', res.data.accToken)
       setAuth(true)
       router.push('/')
+      openNotification({ title: `Hello ${res.data.name}` })
     })
     .catch((err) => {
       console.log(err)
@@ -111,9 +123,13 @@ export const loginOwner = async (loginData: ILogin, setAuth: SetterOrUpdater<boo
 }
 
 export const checkOwnerAuth = async (setIsAuth: SetterOrUpdater<boolean>, router: NextRouter) => {
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem('accToken')
   try {
-    const res = await axios.get(`${url}/owner/${token}`)
+    const res = await axios.get(`${url}/owner/auth/checkAuth`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
     if (res) setIsAuth(true)
   } catch (err) {
     console.log(err)

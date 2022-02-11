@@ -1,20 +1,23 @@
-import { useRouter } from 'next/router'
 import { FunctionComponent } from 'react'
 import { Form, Input, Button, Layout, Card } from 'antd'
 
-import { useSetRecoilState } from 'recoil'
+import { useRecoilState } from 'recoil'
 import styles from './ODLogin.module.css'
 import { ILogin } from '../../types/login'
 import { loginOwner } from '../../services/owner'
-import { authState } from '../../atoms/authState'
+import { otpModalState } from '../../atoms/authState'
+import ODOtpModal from './ODOtpModal'
 
 const { Content } = Layout
 
 export const ODLogin: FunctionComponent = () => {
-  const router = useRouter()
-  const setAuth = useSetRecoilState(authState)
+  const [isModalVisible, setIsModalVisible] = useRecoilState(otpModalState)
+
+  const handleCancel = () => {
+    setIsModalVisible(false)
+  }
   const onFinish = (values: ILogin) => {
-    loginOwner(values, setAuth, router)
+    loginOwner(values, setIsModalVisible)
   }
 
   return (
@@ -38,6 +41,7 @@ export const ODLogin: FunctionComponent = () => {
           </Form.Item>
         </Form>
       </Card>
+      {isModalVisible && <ODOtpModal onCancel={handleCancel} visible={isModalVisible} />}
     </Content>
   )
 }

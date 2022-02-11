@@ -32,7 +32,7 @@ export const encodeOtp = (decodedOtp: number): string => {
 }
 
 export const decodeOtp = (codedOtp) => {
-  if (!!codedOtp) {
+  if (!codedOtp) {
     return null
   }
   if ('string' != typeof codedOtp) {

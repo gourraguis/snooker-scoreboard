@@ -14,6 +14,22 @@ export class OwnerController {
     return this.ownerService.getOwner(phoneNumber)
   }
 
+  @Get('login/:phoneNumber')
+  loginOwner(@Param('phoneNumber') phoneNumber: string) {
+    validatePhoneNumber(phoneNumber)
+    return this.ownerService.generateOtp(phoneNumber)
+  }
+
+  @Get('auth/checkAuth')
+  checkAuth() {
+    return this.ownerService.checkAuth()
+  }
+
+  @Get('loginOtp/:otp')
+  checkOtp(@Param('otp') otp: number) {
+    return this.ownerService.checkOtp(otp)
+  }
+
   @Get()
   getAllOwners(): Promise<IOwner[]> {
     return this.ownerService.getAllOwners()
