@@ -12,6 +12,8 @@ const { Content } = Layout
 
 export const ODLogin: FunctionComponent = () => {
   const [otpVerif, setOtpVerif] = useRecoilState(otpModalState)
+  const setAuth = useSetRecoilState(authState)
+  const router = useRouter()
 
   const handleCancel = () => {
     setOtpVerif(false)
@@ -20,11 +22,8 @@ export const ODLogin: FunctionComponent = () => {
     loginOwner(values, setOtpVerif)
   }
 
-  const router = useRouter()
-  const setAuth = useSetRecoilState(authState)
-
   const onFinishOtp = (values: { code: string }) => {
-    checkOtp(values.code, setAuth, router)
+    checkOtp(values.code, setAuth, setOtpVerif, router)
   }
 
   return (

@@ -70,9 +70,7 @@ export class OwnerService {
   }
 
   async checkOtp(otp: number) {
-    console.log(otp)
     const decodedOtp = decodeOtp(otp)
-    console.log(decodedOtp)
     const owner = await this.ownerRepository.findOne({
       otp: decodedOtp,
     })
@@ -80,7 +78,6 @@ export class OwnerService {
       throw new NotFoundException('Otp in invalid !')
     }
     const token = await this.jwtService.signAsync({ phone: owner.phoneNumber })
-    // console.log(await this.jwtService.verifyAsync(token))
     const data = {
       accToken: token,
       phoneNumber: owner.phoneNumber,

@@ -96,18 +96,23 @@ export const getTables = async (setTablesElements: SetterOrUpdater<ICardElements
     })
 }
 
-export const loginOwner = async (loginData: ILogin, setIsModalVisible: SetterOrUpdater<boolean>) => {
+export const loginOwner = async (loginData: ILogin, setOtpVerif: SetterOrUpdater<boolean>) => {
   await axios
     .get(`${url}/owner/login/${loginData.phoneNumber}`)
     .then(() => {
-      setIsModalVisible(true)
+      setOtpVerif(true)
     })
     .catch((err) => {
       console.log(err)
     })
 }
 
-export const checkOtp = async (otp: string, setAuth: SetterOrUpdater<boolean>, router: NextRouter) => {
+export const checkOtp = async (
+  otp: string,
+  setAuth: SetterOrUpdater<boolean>,
+  setOtpVerif: SetterOrUpdater<boolean>,
+  router: NextRouter
+) => {
   await axios
     .get(`${url}/owner/loginOtp/${otp}`)
     .then((res) => {
@@ -115,6 +120,7 @@ export const checkOtp = async (otp: string, setAuth: SetterOrUpdater<boolean>, r
       localStorage.setItem('accToken', res.data.accToken)
       setAuth(true)
       router.push('/')
+      setOtpVerif(false)
       openNotification({ title: `Hello ${res.data.name}` })
     })
     .catch((err) => {
