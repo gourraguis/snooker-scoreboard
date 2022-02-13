@@ -1,9 +1,11 @@
-import { BadRequestException, ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common'
+import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Owner } from './entities/owner.entity'
 import { IOwner } from './types/IOwner'
-import { encodeOtp, generateNewOtp } from './utils'
+import { decodeOtp, encodeOtp, generateNewOtp } from './utils'
+// import * as jwt from 'express-jwt';
+import { JwtService } from '@nestjs/jwt'
 
 @Injectable()
 export class OwnerService {
@@ -12,7 +14,8 @@ export class OwnerService {
 
   constructor(
     @InjectRepository(Owner)
-    private readonly ownerRepository: Repository<Owner>
+    private readonly ownerRepository: Repository<Owner>,
+    private jwtService: JwtService
   ) {}
 
   async getOwner(phoneNumber: string): Promise<IOwner> {
@@ -20,7 +23,7 @@ export class OwnerService {
       phoneNumber: phoneNumber,
     })
     if (!owner) {
-      throw new NotFoundException('There is owner with this number')
+      throw new NotFoundException('There is no owner with this phone number !!')
     }
     return {
       phoneNumber: owner.phoneNumber,
@@ -29,8 +32,15 @@ export class OwnerService {
     }
   }
 
+  async getAllOwners(): Promise<IOwner[]> {
+    const owner = await this.ownerRepository.find()
+    return owner
+  }
+
   async createOwner(owner: IOwner): Promise<Owner> {
-    const existingOwner = await this.getOwner(owner.phoneNumber)
+    const existingOwner = await this.ownerRepository.findOne({
+      phoneNumber: owner.phoneNumber,
+    })
     if (existingOwner) {
       throw new ConflictException('An owner with this phone number already exists')
     }
@@ -47,14 +57,40 @@ export class OwnerService {
       phoneNumber: phoneNumber,
     })
     if (!owner) {
-      throw new NotFoundException('There is owner with this number')
+      throw new NotFoundException('There is no owner with this phone number')
     }
     const generatedOtp = generateNewOtp()
     owner.otp = generatedOtp
     await this.ownerRepository.save(owner)
 
+    this.sendSms(encodeOtp(generatedOtp))
     return {
       otp: encodeOtp(generatedOtp),
     }
+  }
+
+  async checkOtp(otp: number) {
+    const decodedOtp = decodeOtp(otp)
+    const owner = await this.ownerRepository.findOne({
+      otp: decodedOtp,
+    })
+    if (!owner) {
+      throw new NotFoundException('Otp in invalid !')
+    }
+    const token = await this.jwtService.signAsync({ phone: owner.phoneNumber })
+    const data = {
+      accToken: token,
+      phoneNumber: owner.phoneNumber,
+      name: owner.name,
+    }
+    return data
+  }
+
+  async checkAuth() {
+    console.log('ok')
+  }
+
+  async sendSms(otp: string) {
+    console.log('send sms:', otp)
   }
 }

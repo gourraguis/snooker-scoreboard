@@ -6,7 +6,9 @@ import { IInitBoard } from '../../types/initBoard'
 
 const socket: ManagerSocket = io('http://localhost:5000/manager')
 
-socket.on('connect', () => console.log(`socket connected`))
+socket.on('connect', () => {
+  console.log('Manager Socket Connected to server')
+})
 socket.on('disconnect', () => console.error(`socket disconnected`))
 
 export const initSocket = (

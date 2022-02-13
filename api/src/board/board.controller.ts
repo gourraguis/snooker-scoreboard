@@ -1,13 +1,34 @@
-import { Controller, Post, Body } from '@nestjs/common'
+import { Controller, Post, Body, Get, Param, Put } from '@nestjs/common'
 import { BoardService } from './board.service'
+import { Board } from './entities/board.entity'
 import { IBoard } from './types/board'
 
 @Controller('board')
 export class BoardController {
   constructor(private readonly boardService: BoardService) {}
 
-  @Post('')
-  createBoard(@Body() name: IBoard): Promise<void> {
-    return this.boardService.create(name)
+  @Get()
+  getAllBoards(): Promise<IBoard[]> {
+    return this.boardService.getAllBoards()
+  }
+
+  @Get(':id')
+  getBaord(@Param('id') id: string) {
+    return this.boardService.getBaord(id)
+  }
+
+  @Get('/byOwner/:owner')
+  getBaordsWithTheSameOwner(@Param('owner') owner: string): Promise<IBoard[]> {
+    return this.boardService.getBaordsWithTheSameOwner(owner)
+  }
+
+  @Post()
+  createBoard(@Body() board: IBoard): Promise<Board> {
+    return this.boardService.createBoard(board)
+  }
+
+  @Put()
+  updateBoard(@Body() board: IBoard): Promise<Board> {
+    return this.boardService.updateBoard(board)
   }
 }

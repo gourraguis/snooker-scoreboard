@@ -1,6 +1,5 @@
 import type { AppProps } from 'next/app'
 import '../styles/antd.less'
-import '../styles/index.css'
 import { RecoilRoot } from 'recoil'
 
 function SafeHydrate({ children }: { children: JSX.Element }) {
