@@ -3,9 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Owner } from './entities/owner.entity'
 import { IOwner } from './types/IOwner'
-import { decodeOtp, encodeOtp, generateNewOtp } from './utils'
-// import * as jwt from 'express-jwt';
-import { JwtService } from '@nestjs/jwt'
+import { encodeOtp, generateNewOtp } from './utils'
 
 @Injectable()
 export class OwnerService {
@@ -14,8 +12,7 @@ export class OwnerService {
 
   constructor(
     @InjectRepository(Owner)
-    private readonly ownerRepository: Repository<Owner>,
-    private jwtService: JwtService
+    private readonly ownerRepository: Repository<Owner>
   ) {}
 
   async getOwner(phoneNumber: string): Promise<IOwner> {
@@ -67,27 +64,6 @@ export class OwnerService {
     return {
       otp: encodeOtp(generatedOtp),
     }
-  }
-
-  async checkOtp(otp: number) {
-    const decodedOtp = decodeOtp(otp)
-    const owner = await this.ownerRepository.findOne({
-      otp: decodedOtp,
-    })
-    if (!owner) {
-      throw new NotFoundException('Otp in invalid !')
-    }
-    const token = await this.jwtService.signAsync({ phone: owner.phoneNumber })
-    const data = {
-      accToken: token,
-      phoneNumber: owner.phoneNumber,
-      name: owner.name,
-    }
-    return data
-  }
-
-  async checkAuth() {
-    console.log('ok')
   }
 
   async sendSms(otp: string) {

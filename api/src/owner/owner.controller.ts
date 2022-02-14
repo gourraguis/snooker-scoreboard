@@ -1,4 +1,5 @@
-import { Controller, Post, Body, BadRequestException, Get, Param, Put } from '@nestjs/common'
+import { Controller, Post, Body, BadRequestException, Get, Param, Put, UseGuards } from '@nestjs/common'
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'
 import { Owner } from './entities/owner.entity'
 import { OwnerService } from './owner.service'
 import { IOwner } from './types/IOwner'
@@ -20,16 +21,7 @@ export class OwnerController {
     return this.ownerService.generateOtp(phoneNumber)
   }
 
-  @Get('auth/checkAuth')
-  checkAuth() {
-    return this.ownerService.checkAuth()
-  }
-
-  @Get('loginOtp/:otp')
-  checkOtp(@Param('otp') otp: number) {
-    return this.ownerService.checkOtp(otp)
-  }
-
+  // @UseGuards(JwtAuthGuard)
   @Get()
   getAllOwners(): Promise<IOwner[]> {
     return this.ownerService.getAllOwners()
