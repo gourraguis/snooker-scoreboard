@@ -3,6 +3,7 @@ import { JwtModule } from '@nestjs/jwt'
 import { PassportModule } from '@nestjs/passport'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { AuthModule } from './auth/auth.module'
+import { jwtConstants } from './auth/constants'
 import { BoardModule } from './board/board.module'
 import { ConfigModule } from './config/config.module'
 import { ConfigService } from './config/config.service'
@@ -26,8 +27,8 @@ import { SocketListenersModule } from './socket-listeners/socket-listeners.modul
     BoardModule,
     PassportModule,
     JwtModule.register({
-      secret: 'test',
-      signOptions: { expiresIn: '1d' },
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: '2 days' },
     }),
   ],
 })
