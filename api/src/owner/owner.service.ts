@@ -34,6 +34,10 @@ export class OwnerService {
     return owner
   }
 
+  async findOwnerByCondition(condition) {
+    return this.ownerRepository.findOne(condition)
+  }
+
   async createOwner(owner: IOwner): Promise<Owner> {
     const existingOwner = await this.ownerRepository.findOne({
       phoneNumber: owner.phoneNumber,
@@ -65,7 +69,6 @@ export class OwnerService {
       otp: encodeOtp(generatedOtp),
     }
   }
-
   async sendSms(otp: string) {
     console.log('send sms:', otp)
   }

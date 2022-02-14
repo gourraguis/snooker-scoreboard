@@ -1,21 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { InjectRepository } from '@nestjs/typeorm'
-import { Owner } from 'src/owner/entities/owner.entity'
+import { OwnerService } from 'src/owner/owner.service'
 import { decodeOtp } from 'src/owner/utils'
-import { Repository } from 'typeorm'
 
 @Injectable()
 export class AuthService {
-  constructor(
-    @InjectRepository(Owner)
-    private readonly ownerRepository: Repository<Owner>,
-    private jwtService: JwtService
-  ) {}
+  constructor(private ownerService: OwnerService, private jwtService: JwtService) {}
 
   async checkOtp(otp: number) {
     const decodedOtp = decodeOtp(otp)
-    const owner = await this.ownerRepository.findOne({
+    const owner = await this.ownerService.findOwnerByCondition({
       otp: decodedOtp,
     })
     if (!owner) {

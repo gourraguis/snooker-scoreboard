@@ -21,7 +21,7 @@ export class OwnerController {
     return this.ownerService.generateOtp(phoneNumber)
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get()
   getAllOwners(): Promise<IOwner[]> {
     return this.ownerService.getAllOwners()
