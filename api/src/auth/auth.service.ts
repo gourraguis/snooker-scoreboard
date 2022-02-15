@@ -17,14 +17,13 @@ export class AuthService {
     }
 
     const access_token = await this.jwtService.signAsync({ phone: owner.phoneNumber })
-    console.log(access_token)
 
     const data = {
       accToken: access_token,
       phoneNumber: owner.phoneNumber,
       name: owner.name,
     }
-    console.log(this.jwtService.decode(access_token))
+    // console.log(this.jwtService.decode(access_token))
     return data
   }
 }
