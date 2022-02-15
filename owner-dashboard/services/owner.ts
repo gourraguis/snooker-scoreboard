@@ -64,8 +64,13 @@ export const createManager = async (
   managersElements: ICardElements[],
   setManagersElements: SetterOrUpdater<ICardElements[]>
 ) => {
+  const token = localStorage.getItem('accToken')
   try {
-    const res = await axios.post(`${url}/manager`, manager)
+    const res = await axios.post(`${url}/manager`, manager, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
     const newElem: ICardElements = {
       id: res.data.id,
       name: res.data.name,
@@ -83,8 +88,13 @@ export const createManager = async (
 export const getManagers = async (setManagersElements: SetterOrUpdater<ICardElements[]>) => {
   const phoneNumber = localStorage.getItem('phoneNumber')
   let elements: ICardElements[] = []
+  const token = localStorage.getItem('accToken')
   await axios
-    .get(`${url}/manager/byOwner/${phoneNumber}`)
+    .get(`${url}/manager/byOwner/${phoneNumber}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
     .then((res) => {
       for (let index = 0; index < res.data.length; index++) {
         const newElem = {
@@ -107,8 +117,13 @@ export const createTable = async (
   tablesElements: ICardElements[],
   setTablesElements: SetterOrUpdater<ICardElements[]>
 ) => {
+  const token = localStorage.getItem('accToken')
   try {
-    const res = await axios.post(`${url}/board`, table)
+    const res = await axios.post(`${url}/board`, table, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
     const newElem: ICardElements = {
       id: res.data.id,
       name: res.data.name,
@@ -126,8 +141,13 @@ export const createTable = async (
 export const getTables = async (setTablesElements: SetterOrUpdater<ICardElements[]>) => {
   const phoneNumber = localStorage.getItem('phoneNumber')
   let elements: ICardElements[] = []
+  const token = localStorage.getItem('accToken')
   await axios
-    .get(`${url}/board/byOwner/${phoneNumber}`)
+    .get(`${url}/board/byOwner/${phoneNumber}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
     .then((res) => {
       for (let index = 0; index < res.data.length; index++) {
         const newElem = {
@@ -150,8 +170,13 @@ export const deleteManager = async (
   id: string,
   setManagersElements: SetterOrUpdater<ICardElements[]>
 ) => {
+  const token = localStorage.getItem('accToken')
   try {
-    const res = await axios.delete(`${url}/manager/${id}`)
+    const res = await axios.delete(`${url}/manager/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
     if (res) {
       const newManagersElements = managersElements.filter((element) => element.id !== id)
       setManagersElements(newManagersElements)
@@ -166,8 +191,13 @@ export const deleteTable = async (
   id: string,
   setTablesElements: SetterOrUpdater<ICardElements[]>
 ) => {
+  const token = localStorage.getItem('accToken')
   try {
-    const res = await axios.get(`${url}/board/${id}`)
+    const res = await axios.get(`${url}/board/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
     if (res) {
       const board = {
         id: res.data.id,
@@ -175,7 +205,11 @@ export const deleteTable = async (
         owner: '',
       }
       try {
-        const put = await axios.put(`${url}/board`, board)
+        const put = await axios.put(`${url}/board`, board, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         if (put) {
           const newTablesElements = tablesElements.filter((element) => element.id !== id)
           setTablesElements(newTablesElements)
