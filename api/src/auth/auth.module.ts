@@ -3,7 +3,6 @@ import { JwtModule } from '@nestjs/jwt'
 import { PassportModule } from '@nestjs/passport'
 import { AuthService } from './auth.service'
 import { jwtConstants } from './constants'
-import { LocalStrategy } from './local.strategy'
 import { AuthController } from './auth.controller'
 import { JwtStrategy } from './jwt.strategy'
 import { TypeOrmModule } from '@nestjs/typeorm'
@@ -21,7 +20,7 @@ import { Owner } from 'src/owner/entities/owner.entity'
       signOptions: { expiresIn: '2 days' },
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy, OwnerService],
+  providers: [AuthService, JwtStrategy, OwnerService],
   controllers: [AuthController],
 })
 export class AuthModule {}

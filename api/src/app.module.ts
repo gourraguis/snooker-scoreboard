@@ -9,7 +9,6 @@ import { OwnerModule } from './owner/owner.module'
 import { SocketEmittersModule } from './socket-emitters/socket-emitters.module'
 import { SocketListenersModule } from './socket-listeners/socket-listeners.module'
 import { AuthModule } from './auth/auth.module'
-import { AppController } from './app.controller'
 
 @Module({
   imports: [
@@ -26,6 +25,5 @@ import { AppController } from './app.controller'
     PassportModule,
     AuthModule,
   ],
-  controllers: [AppController],
 })
 export class AppModule {}
