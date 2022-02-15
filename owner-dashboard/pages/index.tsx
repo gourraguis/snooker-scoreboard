@@ -19,8 +19,8 @@ const Home: NextPage = () => {
   }
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    if (!token) {
+    const accToken = localStorage.getItem('accToken')
+    if (!accToken) {
       router.push('/login')
       return
     }

@@ -9,6 +9,7 @@ import { validatePhoneNumber } from './utils'
 export class OwnerController {
   constructor(private readonly ownerService: OwnerService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get(':phoneNumber')
   getOwner(@Param('phoneNumber') phoneNumber: string) {
     validatePhoneNumber(phoneNumber)
