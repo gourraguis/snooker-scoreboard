@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common'
+import { Controller, Get, Query } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { JwtService } from '@nestjs/jwt'
 
@@ -6,9 +6,8 @@ import { JwtService } from '@nestjs/jwt'
 export class AuthController {
   constructor(private authService: AuthService, private jwtService: JwtService) {}
 
-  // todo use query ?param1=ddd&param2=ddd
-  @Get('loginOtp/:otp')
-  checkOtp(@Param('otp') otp: number) {
-    return this.authService.checkOtp(otp)
+  @Get('loginOtp/')
+  checkOtp(@Query() query) {
+    return this.authService.checkOtp(query.phoneNumber, query.otp)
   }
 }

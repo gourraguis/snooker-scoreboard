@@ -7,9 +7,10 @@ import { decodeOtp } from 'src/owner/utils'
 export class AuthService {
   constructor(private ownerService: OwnerService, private jwtService: JwtService) {}
 
-  async checkOtp(otp: number) {
+  async checkOtp(phoneNumber: string, otp: number) {
     const decodedOtp = decodeOtp(otp)
     const owner = await this.ownerService.findOwnerByCondition({
+      phoneNumber,
       otp: decodedOtp,
     })
     if (!owner) {

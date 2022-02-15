@@ -15,6 +15,7 @@ export const loginOwner = async (loginData: ILogin, setOtpVerif: SetterOrUpdater
     .get(`${url}/owner/login/${loginData.phoneNumber}`)
     .then(() => {
       setOtpVerif(true)
+      localStorage.setItem('phoneNumber', loginData.phoneNumber.toString())
     })
     .catch((err) => {
       console.log(err)
@@ -27,10 +28,10 @@ export const checkOtp = async (
   setOtpVerif: SetterOrUpdater<boolean>,
   router: NextRouter
 ) => {
+  const phoneNumber = localStorage.getItem('phoneNumber')
   await axios
-    .get(`${url}/auth/loginOtp/${otp}`)
+    .get(`${url}/auth/loginOtp`, { params: { phoneNumber, otp } })
     .then((res) => {
-      localStorage.setItem('phoneNumber', res.data.phoneNumber)
       localStorage.setItem('accToken', res.data.accToken)
       setAuth(true)
       router.push('/')
