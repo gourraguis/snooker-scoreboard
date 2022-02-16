@@ -79,7 +79,7 @@ const SCControls = () => {
             score: playersScore[1],
           },
         ],
-        history,
+        history: historyWithoutCurrentTurn,
       })
     }
   }, [send])
