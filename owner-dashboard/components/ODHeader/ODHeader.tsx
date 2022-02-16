@@ -13,7 +13,7 @@ export const ODHeader: FunctionComponent = () => {
   const [isAuth, setIsAuth] = useRecoilState(authState)
   const router = useRouter()
   const handleLogout = () => {
-    localStorage.removeItem('token')
+    localStorage.removeItem('phoneNumber')
     localStorage.removeItem('accToken')
     setIsAuth(false)
     router.push('/login')

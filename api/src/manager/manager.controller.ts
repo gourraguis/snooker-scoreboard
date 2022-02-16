@@ -1,4 +1,5 @@
-import { Controller, Post, Body, Get, BadRequestException, Param, Delete } from '@nestjs/common'
+import { Controller, Post, Body, Get, BadRequestException, Param, Delete, UseGuards } from '@nestjs/common'
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'
 import { validatePhoneNumber } from 'src/owner/utils'
 import { Manager } from './entities/manager.entity'
 import { ManagerService } from './manager.service'
@@ -13,18 +14,21 @@ export class ManagerController {
     return this.managerService.getAllManagers()
   }
 
+  // @UseGuards(JwtAuthGuard)
   @Get(':id')
   getManager(@Param('id') id: string) {
     validatePhoneNumber(id)
     return this.managerService.getManager(id)
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('/byOwner/:owner')
   getManagersWithTheSameOwner(@Param('owner') owner: string): Promise<IManager[]> {
     validatePhoneNumber(owner)
     return this.managerService.getManagersWithTheSameOwner(owner)
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   createManager(@Body() manager: IManager): Promise<Manager> {
     validatePhoneNumber(manager.id)
@@ -34,6 +38,7 @@ export class ManagerController {
     return this.managerService.createManager(manager)
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   deleteManager(@Param('id') id: string) {
     return this.managerService.deleteManager(id)
