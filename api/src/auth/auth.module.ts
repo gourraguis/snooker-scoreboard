@@ -5,10 +5,10 @@ import { AuthService } from './auth.service'
 import { jwtConstants } from './constants'
 import { AuthController } from './auth.controller'
 import { JwtStrategy } from './jwt.strategy'
-import { TypeOrmModule } from '@nestjs/typeorm'
 import { OwnerModule } from 'src/owner/owner.module'
 import { OwnerService } from 'src/owner/owner.service'
 import { Owner } from 'src/owner/entities/owner.entity'
+import { TypeOrmModule } from '@nestjs/typeorm'
 
 @Module({
   imports: [

@@ -14,17 +14,16 @@ export class AuthService {
       otp: decodedOtp,
     })
     if (!owner) {
-      throw new NotFoundException('Otp in invalid !')
+      throw new NotFoundException('Otp is invalid !')
     }
 
-    const access_token = await this.jwtService.signAsync({ phone: owner.phoneNumber })
+    const access_token = await this.jwtService.signAsync({ phoneNumber: owner.phoneNumber, otp: owner.otp })
 
     const data = {
       accToken: access_token,
       phoneNumber: owner.phoneNumber,
       name: owner.name,
     }
-    // console.log(this.jwtService.decode(access_token))
     return data
   }
 }
