@@ -19,7 +19,6 @@ export class BoardController {
     return this.boardService.getBaord(id)
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('/byOwner/:owner')
   getBaordsWithTheSameOwner(@Param('owner') owner: string): Promise<IBoard[]> {
     return this.boardService.getBaordsWithTheSameOwner(owner)
