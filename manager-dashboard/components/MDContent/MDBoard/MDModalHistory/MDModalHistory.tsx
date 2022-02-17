@@ -21,27 +21,29 @@ const MDModalHistory: FunctionComponent<MDModalHistoryProps> = ({ onCancel, visi
   return (
     <div>
       <Modal title={`History for ${name}`} visible={visible} onCancel={handleCancel} footer={null}>
-        {history?.map((item, index) => (
-          <div key={index} className={styles.wrapper}>
-            <UserOutlined className={styles[`icon${item.value}`]} />
-            <div>
-              <h3 className={styles.text}>Marque {item.scoredBalls.reduce((a, b) => a + b, 0)} points</h3>
-              <div className={styles.ballBox}>
-                {item.scoredBalls.map((ball, index2) => (
-                  <div
-                    key={index2}
-                    style={{
-                      backgroundColor: getBallColor(ball),
-                    }}
-                    className={styles.ball}
-                  >
-                    {}
-                  </div>
-                ))}
+        <div className={styles.modal}>
+          {history?.map((item, index) => (
+            <div key={index} className={styles.wrapper}>
+              <UserOutlined className={styles[`icon${item.value}`]} />
+              <div>
+                <h3 className={styles.text}>Marque {item.scoredBalls.reduce((a, b) => a + b, 0)} points</h3>
+                <div className={styles.ballBox}>
+                  {item.scoredBalls.map((ball, index2) => (
+                    <div
+                      key={index2}
+                      style={{
+                        backgroundColor: getBallColor(ball),
+                      }}
+                      className={styles.ball}
+                    >
+                      {}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </Modal>
     </div>
   )

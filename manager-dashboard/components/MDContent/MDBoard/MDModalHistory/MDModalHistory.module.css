@@ -32,3 +32,9 @@
   font-size: 1rem;
   margin-top: -10px;
 }
+
+.modal {
+  padding-top: 10px;
+  max-height: 50vh;
+  overflow-y: scroll;
+}
