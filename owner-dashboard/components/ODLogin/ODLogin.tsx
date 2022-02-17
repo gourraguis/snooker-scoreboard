@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { FunctionComponent, useEffect, useState } from 'react'
+import { FunctionComponent, useState } from 'react'
 import { Form, Input, Button, Layout, Card } from 'antd'
 
 import { useRecoilState, useSetRecoilState } from 'recoil'
@@ -23,9 +23,6 @@ export const ODLogin: FunctionComponent = () => {
     await loginOwner(values, setOtpVerif, setMsgErr)
     console.log(msgErr)
   }
-  useEffect(() => {
-    console.log(msgErr)
-  }, [msgErr])
 
   const onFinishOtp = (values: { code: string }) => {
     checkOtp(values.code, setAuth, setOtpVerif, router, setMsgErr)
