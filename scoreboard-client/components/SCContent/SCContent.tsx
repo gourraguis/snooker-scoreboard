@@ -1,5 +1,5 @@
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Col, Empty, Row } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import Head from 'next/head'
@@ -23,10 +23,17 @@ const SCContent = () => {
   const playersScore = useRecoilValue(playersScoreSelector)
   const [globalScore, setGlobalScoreState] = useRecoilState(globalScoreState)
   const setHistory = useSetRecoilState(historyState)
+  const [showGlobalScore, setShowGlobalScore] = useState(false)
 
   useEffect(() => {
     initSocket(addGameAction(setGlobalScoreState, setGame, setHistory), setBoard)
   }, [])
+
+  useEffect(() => {
+    const found = globalScore.find((element) => element.score > 0)
+    if (!found) setShowGlobalScore(false)
+    else setShowGlobalScore(true)
+  }, [globalScore])
 
   return (
     <Content className={styles.content}>
@@ -53,6 +60,7 @@ const SCContent = () => {
                     playerName={player.name}
                     points={playersScore[player.turn]}
                     globalScore={globalScore[player.turn].score}
+                    showGlobalScore={showGlobalScore}
                     key={player.turn}
                   />
                 ))}

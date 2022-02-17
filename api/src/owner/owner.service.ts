@@ -70,6 +70,6 @@ export class OwnerService {
     }
   }
   async sendSms(otp: string) {
-    console.log('send sms:', otp)
+    console.log('Send SMS:', otp)
   }
 }
