@@ -89,7 +89,6 @@ export const createManager = async (
     setManagersElements([...managersElements, newElem])
     openNotification({ title: 'Manager a été ajouté' })
   } catch (err) {
-    console.log(err)
     openNotification({ title: 'Manager na pas pu etre ajouté', type: 'error' })
   }
 }
@@ -117,7 +116,7 @@ export const getManagers = async (setManagersElements: SetterOrUpdater<ICardElem
       setManagersElements(elements)
     })
     .catch((err) => {
-      console.log(err)
+      openNotification({ title: `${err.response.data.message}`, type: 'error' })
     })
 }
 
@@ -142,7 +141,6 @@ export const createTable = async (
     setTablesElements([...tablesElements, newElem])
     openNotification({ title: 'Nouvelle table a été créé' })
   } catch (err) {
-    console.log(err)
     openNotification({ title: 'Table na pas pu etre ajouté', type: 'error' })
   }
 }
@@ -170,7 +168,7 @@ export const getTables = async (setTablesElements: SetterOrUpdater<ICardElements
       setTablesElements(elements)
     })
     .catch((err) => {
-      console.log(err)
+      openNotification({ title: `${err.response.data.message}`, type: 'error' })
     })
 }
 
