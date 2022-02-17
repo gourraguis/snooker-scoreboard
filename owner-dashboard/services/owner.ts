@@ -1,6 +1,7 @@
 /* eslint-disable no-plusplus */
 import axios from 'axios'
 import { NextRouter } from 'next/router'
+import { Dispatch, SetStateAction } from 'react'
 import { SetterOrUpdater } from 'recoil'
 import { ICardElements } from '../types/cardElement'
 import { ILogin } from '../types/login'
@@ -10,15 +11,20 @@ import { openNotification } from './notification'
 
 const url = 'http://localhost:5000'
 
-export const loginOwner = async (loginData: ILogin, setOtpVerif: SetterOrUpdater<boolean>) => {
+export const loginOwner = async (
+  loginData: ILogin,
+  setOtpVerif: SetterOrUpdater<boolean>,
+  setMsgErr: Dispatch<SetStateAction<string>>
+) => {
   await axios
     .get(`${url}/owner/login/${loginData.phoneNumber}`)
     .then(() => {
       setOtpVerif(true)
       localStorage.setItem('phoneNumber', loginData.phoneNumber.toString())
+      setMsgErr('')
     })
     .catch((err) => {
-      console.log(err)
+      setMsgErr(err.response.data.message)
     })
 }
 
@@ -26,7 +32,8 @@ export const checkOtp = async (
   otp: string,
   setAuth: SetterOrUpdater<boolean>,
   setOtpVerif: SetterOrUpdater<boolean>,
-  router: NextRouter
+  router: NextRouter,
+  setMsgErr: Dispatch<SetStateAction<string>>
 ) => {
   const phoneNumber = localStorage.getItem('phoneNumber')
   await axios
@@ -37,9 +44,10 @@ export const checkOtp = async (
       router.push('/')
       setOtpVerif(false)
       openNotification({ title: `Hello ${res.data.name}` })
+      setMsgErr('')
     })
     .catch((err) => {
-      console.log(err)
+      setMsgErr(err.response.data.message)
     })
 }
 

@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { FunctionComponent } from 'react'
+import { FunctionComponent, useEffect, useState } from 'react'
 import { Form, Input, Button, Layout, Card } from 'antd'
 
 import { useRecoilState, useSetRecoilState } from 'recoil'
@@ -14,16 +14,21 @@ export const ODLogin: FunctionComponent = () => {
   const [otpVerif, setOtpVerif] = useRecoilState(otpModalState)
   const setAuth = useSetRecoilState(authState)
   const router = useRouter()
+  const [msgErr, setMsgErr] = useState('')
 
   const handleCancel = () => {
     setOtpVerif(false)
   }
-  const onFinish = (values: ILogin) => {
-    loginOwner(values, setOtpVerif)
+  const onFinish = async (values: ILogin) => {
+    await loginOwner(values, setOtpVerif, setMsgErr)
+    console.log(msgErr)
   }
+  useEffect(() => {
+    console.log(msgErr)
+  }, [msgErr])
 
   const onFinishOtp = (values: { code: string }) => {
-    checkOtp(values.code, setAuth, setOtpVerif, router)
+    checkOtp(values.code, setAuth, setOtpVerif, router, setMsgErr)
   }
 
   return (
@@ -37,10 +42,10 @@ export const ODLogin: FunctionComponent = () => {
             onFinish={onFinish}
             autoComplete="off"
           >
-            <Form.Item name="phoneNumber" rules={[{ required: true, message: 'Please input your phone number!' }]}>
+            <Form.Item name="phoneNumber">
               <Input placeholder="Phone Number!" />
             </Form.Item>
-
+            {msgErr && <p className={styles.err}>{msgErr}</p>}
             <Form.Item wrapperCol={{ span: 24 }}>
               <Button type="primary" htmlType="submit">
                 Login
@@ -61,7 +66,7 @@ export const ODLogin: FunctionComponent = () => {
             <Form.Item name="code">
               <Input placeholder="Code!" />
             </Form.Item>
-
+            {msgErr && <p className={styles.err}>{msgErr}</p>}
             <Form.Item wrapperCol={{ span: 24 }}>
               <Button type="primary" htmlType="submit">
                 Login
