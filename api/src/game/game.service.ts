@@ -29,4 +29,7 @@ export class GameService {
       ],
     }
   }
+  saveGame(game: IGame) {
+    console.log(game)
+  }
 }
