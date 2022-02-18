@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common'
+import { Controller, Post, Body, Get, Param } from '@nestjs/common'
 import { GameService } from './game.service'
 import { IGameDB } from './types/game'
 
@@ -9,5 +9,15 @@ export class GameController {
   @Post()
   saveGame(@Body() game: IGameDB): Promise<IGameDB> {
     return this.gameService.saveGame(game)
+  }
+
+  @Get('manager/:managerId')
+  ManagerGames(@Param('managerId') managerId: string): Promise<IGameDB[]> {
+    return this.gameService.getManagerGames(managerId)
+  }
+
+  @Get('board/:boardId')
+  BoardGames(@Param('boardId') boardId: string): Promise<IGameDB[]> {
+    return this.gameService.getBoardGames(boardId)
   }
 }

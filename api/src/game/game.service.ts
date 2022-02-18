@@ -41,4 +41,12 @@ export class GameService {
     console.log(game)
     return this.gameRepository.save(game)
   }
+
+  async getManagerGames(managerId) {
+    return this.gameRepository.find({ managerId })
+  }
+
+  async getBoardGames(boardId) {
+    return this.gameRepository.find({ boardId })
+  }
 }
