@@ -12,10 +12,10 @@ export class Game {
   managerId: string
 
   @Column()
-  player1: string
+  winner: string
 
   @Column()
-  player2: string
+  loser: string
 
   @Column()
   startedAt: Date
