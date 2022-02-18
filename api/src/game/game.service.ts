@@ -4,7 +4,7 @@ import * as moment from 'moment'
 import { IInitBoard } from 'src/types/initBoard'
 import { Repository } from 'typeorm'
 import { Game } from './entities/game.entity'
-import { IGame } from './types/game'
+import { IGame, IGameDB } from './types/game'
 
 @Injectable()
 export class GameService {
@@ -37,7 +37,8 @@ export class GameService {
       ],
     }
   }
-  saveGame(game: IGame) {
+  async saveGame(game: IGameDB): Promise<IGameDB> {
     console.log(game)
+    return this.gameRepository.save(game)
   }
 }
