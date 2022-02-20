@@ -27,13 +27,13 @@ export class BoardListenerGateway implements OnGatewayConnection, OnGatewayDisco
     private readonly boardService: BoardService
   ) {}
 
-  handleDisconnect(boardClient: BoardSocket) {
+  public handleDisconnect(boardClient: BoardSocket) {
     const board = this.boardService.findBoard(boardClient.data.boardId)
     this.managerEmmiterGateway.emitRemoveBoard(board)
     this.logger.log(`Board disconnected: ${boardClient.id}`)
   }
 
-  handleConnection(boardClient: BoardSocket) {
+  public handleConnection(boardClient: BoardSocket) {
     this.logger.log(`Board connected: ${boardClient.id}`)
   }
 

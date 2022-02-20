@@ -13,12 +13,12 @@ export class ManagerService {
     private readonly managerRepository: Repository<Manager>
   ) {}
 
-  async getAllManagers(): Promise<IManager[]> {
+  public async getManagers(): Promise<IManager[]> {
     const managers = await this.managerRepository.find()
     return managers
   }
 
-  async getManager(id: string): Promise<IManager> {
+  public async getManager(id: string): Promise<IManager> {
     const manager = await this.managerRepository.findOne({
       id: id,
     })
@@ -32,7 +32,7 @@ export class ManagerService {
     }
   }
 
-  async getManagersWithTheSameOwner(owner: string): Promise<IManager[]> {
+  public async getOwnerManagers(owner: string): Promise<IManager[]> {
     const managers = await this.managerRepository.find({ where: { owner: owner } })
     if (!managers) {
       throw new NotFoundException('There is no managers with this owner')
@@ -40,7 +40,7 @@ export class ManagerService {
     return managers
   }
 
-  async createManager(manager: IManager): Promise<Manager> {
+  public async createManager(manager: IManager): Promise<Manager> {
     this.logger.log(JSON.stringify(manager, null, 2))
     const existingManager = await this.managerRepository.findOne({
       id: manager.id,
@@ -56,7 +56,7 @@ export class ManagerService {
     return this.managerRepository.save(newManager)
   }
 
-  async deleteManager(id: string): Promise<DeleteResult> {
+  public async deleteManager(id: string): Promise<DeleteResult> {
     return await this.managerRepository.delete({ id: id })
   }
 }

@@ -13,7 +13,7 @@ export class BoardService {
     private readonly boardRepository: Repository<Board>
   ) {}
 
-  findBoard(boardId: string): IBoard {
+  public findBoard(boardId: string): IBoard {
     this.logger.log(`Fetching board id: ${boardId} from db`)
     return {
       id: boardId,
@@ -22,26 +22,26 @@ export class BoardService {
     }
   }
 
-  async getAllBoards(): Promise<IBoard[]> {
+  public async getBoards(): Promise<IBoard[]> {
     const baords = await this.boardRepository.find()
     return baords
   }
 
-  async getBaord(id: string): Promise<IBoard> {
-    const baord = await this.boardRepository.findOne({
+  public async getBoard(id: string): Promise<IBoard> {
+    const board = await this.boardRepository.findOne({
       id: id,
     })
-    if (!baord) {
+    if (!board) {
       throw new NotFoundException('There is no baord with this id')
     }
     return {
-      id: baord.id,
-      name: baord.name,
-      owner: baord.owner,
+      id: board.id,
+      name: board.name,
+      owner: board.owner,
     }
   }
 
-  async getBaordsWithTheSameOwner(owner: string): Promise<IBoard[]> {
+  public async getOwnerBoards(owner: string): Promise<IBoard[]> {
     const baords = await this.boardRepository.find({ where: { owner: owner } })
     if (!baords) {
       throw new NotFoundException('There is no baords with this owner')
@@ -49,8 +49,7 @@ export class BoardService {
     return baords
   }
 
-  async createBoard(board: IBoard): Promise<Board> {
-    this.logger.log(JSON.stringify(board, null, 2))
+  public async createBoard(board: IBoard): Promise<Board> {
     const existingBaord = await this.boardRepository.findOne({
       id: board.id,
     })
@@ -65,7 +64,7 @@ export class BoardService {
     return this.boardRepository.save(newBoard)
   }
 
-  async updateBoard(board: IBoard): Promise<Board> {
+  public async updateBoard(board: IBoard): Promise<Board> {
     return await this.boardRepository.save(board)
   }
 }

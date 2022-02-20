@@ -15,7 +15,7 @@ export class OwnerService {
     private readonly ownerRepository: Repository<Owner>
   ) {}
 
-  async getOwner(phoneNumber: string): Promise<IOwner> {
+  public async getOwner(phoneNumber: string): Promise<IOwner> {
     const owner = await this.ownerRepository.findOne({
       phoneNumber: phoneNumber,
     })
@@ -29,16 +29,17 @@ export class OwnerService {
     }
   }
 
-  async getAllOwners(): Promise<IOwner[]> {
+  public async getOwners(): Promise<IOwner[]> {
     const owner = await this.ownerRepository.find()
     return owner
   }
 
-  async findOwnerByCondition(condition) {
+  public async findOwnerByCondition(condition) {
+    //todo: remove this method and replace it
     return this.ownerRepository.findOne(condition)
   }
 
-  async createOwner(owner: IOwner): Promise<Owner> {
+  public async createOwner(owner: IOwner): Promise<Owner> {
     const existingOwner = await this.ownerRepository.findOne({
       phoneNumber: owner.phoneNumber,
     })
@@ -53,7 +54,7 @@ export class OwnerService {
     return this.ownerRepository.save(newOnwer)
   }
 
-  async generateOtp(phoneNumber: string): Promise<{ otp: string }> {
+  public async generateOtp(phoneNumber: string): Promise<{ otp: string }> {
     const owner = await this.ownerRepository.findOne({
       phoneNumber: phoneNumber,
     })
@@ -69,7 +70,8 @@ export class OwnerService {
       otp: encodeOtp(generatedOtp),
     }
   }
-  async sendSms(otp: string) {
+
+  public async sendSms(otp: string) {
     console.log('Send SMS:', otp)
   }
 }

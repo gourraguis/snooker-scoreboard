@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
-import { BoardModule } from 'src/board/board.module'
-import { SocketEmittersModule } from 'src/socket-emitters/socket-emitters.module'
+import { BoardModule } from '../board/board.module'
 import { GameModule } from '../game/game.module'
+import { SocketEmittersModule } from '../socket-emitters/socket-emitters.module'
 import { BoardListenerGateway } from './board-listener.gateway'
 import { ManagerListenerGateway } from './manager-listener.gateway'
 

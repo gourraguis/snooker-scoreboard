@@ -1,5 +1,4 @@
 import {
-  ConnectedSocket,
   MessageBody,
   OnGatewayConnection,
   SubscribeMessage,
@@ -7,11 +6,10 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets'
 import { Logger } from '@nestjs/common'
-import { ManagerClientToServerEvents, ManagerServer, ManagerSocket } from 'src/types/manager-sockets'
-import { BoardEmitterGateway } from 'src/socket-emitters/board-emitter.gateway'
-import { ManagerEmmiterGateway } from 'src/socket-emitters/manager-emitter.gateway'
 import { GameService } from '../game/game.service'
-import { IInitBoard } from 'src/types/initBoard'
+import { BoardEmitterGateway } from '../socket-emitters/board-emitter.gateway'
+import { ManagerClientToServerEvents, ManagerServer, ManagerSocket } from '../types/manager-sockets'
+import { IInitBoard } from '../types/initBoard'
 
 @WebSocketGateway({ cors: true, namespace: 'manager' })
 export class ManagerListenerGateway implements OnGatewayConnection {
@@ -19,19 +17,15 @@ export class ManagerListenerGateway implements OnGatewayConnection {
   @WebSocketServer()
   server: ManagerServer
 
-  constructor(
-    private readonly boardEmitterGateway: BoardEmitterGateway,
-    private readonly managerEmitterGateway: ManagerEmmiterGateway,
-    private readonly gameService: GameService
-  ) {}
+  constructor(private readonly boardEmitterGateway: BoardEmitterGateway, private readonly gameService: GameService) {}
 
-  handleConnection(ManagerClient: ManagerSocket) {
+  public handleConnection(ManagerClient: ManagerSocket) {
     this.logger.log(`NODE_ENV=${process.env.NODE_ENV}`)
     this.logger.log(`Manager connected: ${ManagerClient.id}`)
   }
 
   @SubscribeMessage<ManagerClientToServerEvents>('initGame')
-  onNewGame(@MessageBody() board: IInitBoard, @ConnectedSocket() client: ManagerSocket) {
+  onNewGame(@MessageBody() board: IInitBoard) {
     // const managerId = client.data.managerId
     const managerId = '1'
     if (!managerId) {

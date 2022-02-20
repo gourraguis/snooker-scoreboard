@@ -59,4 +59,8 @@ export class ConfigService {
       },
     }
   }
+
+  public getJwtSecret() {
+    return this.get('JWT_SECRET')
+  }
 }

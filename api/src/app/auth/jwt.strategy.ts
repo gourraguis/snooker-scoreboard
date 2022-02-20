@@ -1,8 +1,8 @@
 import { ExtractJwt, Strategy } from 'passport-jwt'
 import { PassportStrategy } from '@nestjs/passport'
 import { Injectable, UnauthorizedException } from '@nestjs/common'
-import { jwtConstants } from './constants'
-import { OwnerService } from 'src/owner/owner.service'
+import { OwnerService } from '../owner/owner.service'
+import { ConfigService } from '../../config/config.service'
 
 interface Payload {
   phoneNumber: string
@@ -13,15 +13,15 @@ interface Payload {
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private ownerService: OwnerService) {
+  constructor(private configService: ConfigService, private ownerService: OwnerService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: jwtConstants.secret,
+      secretOrKey: configService.getJwtSecret(),
     })
   }
 
-  async validate(payload: Payload) {
+  public async validate(payload: Payload) {
     const user = await this.ownerService.findOwnerByCondition({
       phoneNumber: payload.phoneNumber,
       otp: payload.otp,

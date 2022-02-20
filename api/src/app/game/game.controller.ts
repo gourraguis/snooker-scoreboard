@@ -12,12 +12,12 @@ export class GameController {
   }
 
   @Get('manager/:managerId')
-  ManagerGames(@Param('managerId') managerId: string): Promise<IGameDB[]> {
+  getManagerGames(@Param('managerId') managerId: string): Promise<IGameDB[]> {
     return this.gameService.getManagerGames(managerId)
   }
 
   @Get('board/:boardId')
-  BoardGames(@Param('boardId') boardId: string): Promise<IGameDB[]> {
+  getBoardGames(@Param('boardId') boardId: string): Promise<IGameDB[]> {
     return this.gameService.getBoardGames(boardId)
   }
 }

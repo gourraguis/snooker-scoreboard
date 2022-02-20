@@ -6,7 +6,7 @@ import { JwtService } from '@nestjs/jwt'
 export class AuthController {
   constructor(private authService: AuthService, private jwtService: JwtService) {}
 
-  @Get('loginOtp/')
+  @Get('loginOtp')
   checkOtp(@Query() query) {
     return this.authService.checkOtp(query.phoneNumber, query.otp)
   }

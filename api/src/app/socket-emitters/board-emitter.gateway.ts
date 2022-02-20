@@ -7,7 +7,7 @@ export class BoardEmitterGateway {
   @WebSocketServer()
   server: BoardServer
 
-  emitStartNewGame(newGame: IGame) {
+  public emitStartNewGame(newGame: IGame) {
     this.server.emit('initGame', newGame)
   }
 }
