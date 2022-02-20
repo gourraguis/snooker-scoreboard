@@ -1,7 +1,9 @@
 import axios from 'axios'
+import moment from 'moment'
 import { NextRouter } from 'next/router'
 import { SetterOrUpdater } from 'recoil'
 import { IBoard } from '../types/board'
+import { IGame } from '../types/game'
 import { ILogin } from '../types/login'
 import { openNotification } from './notification'
 
@@ -48,6 +50,30 @@ export const getBoards = async (setBoards: SetterOrUpdater<IBoard[]>) => {
     .get(`${url}/board/byOwner/${ownerId}`)
     .then((res) => {
       setBoards(res.data)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+}
+
+export const saveGame = async (game: IGame) => {
+  const token = localStorage.getItem('token')
+  const winnerScore = Math.max(game.players[0].score!, game.players[1].score!)
+  const winner = game.players.find((elem) => elem.score === winnerScore)
+  const loser = game.players.find((elem) => elem.name !== winner!.name)
+
+  const dbGame = {
+    boardId: game.boardId,
+    managerId: token,
+    winner: winner!.name,
+    loser: loser!.name,
+    startedAt: game.startedAt,
+    finishedAt: moment().format('LLLL'),
+  }
+  await axios
+    .post(`${url}/game`, dbGame)
+    .then((res) => {
+      console.log(res)
     })
     .catch((err) => {
       console.log(err)

@@ -13,6 +13,7 @@ import { openNotification } from '../../../services/notification'
 import MDModalHistory from './MDModalHistory/MDModalHistory'
 import MDModalNewGame from './MDModalNewGame/MDModalNewGame'
 import { IInitBoard } from '../../../types/initBoard'
+import { saveGame } from '../../../services/manager'
 
 interface MDBoardProps {
   board: IBoard
@@ -24,6 +25,7 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
   const addGame = addGameAction(setGames)
   const [isHistoryModalVisible, setIsHistoryModalVisible] = useState(false)
   const [isNewGameModalVisible, setIsNewGameModalVisible] = useState(false)
+  const oldGame = useRecoilValue(gamesState)
 
   const handleNewGame = () => {
     const initBoard: IInitBoard = {
@@ -31,6 +33,8 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
       firstPlayer: '',
       secondPlayer: '',
     }
+    if (oldGame.length > 0) saveGame(oldGame[oldGame.length - 1])
+
     emitNewGame(initBoard, (newGame) => {
       if (!newGame) {
         openNotification({

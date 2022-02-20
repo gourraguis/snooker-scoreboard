@@ -10,3 +10,13 @@ export interface IGame {
   // history is not persistent. We only use it for current games but don't save it on DB
   history?: ITurn[]
 }
+
+export interface IGameDB {
+  id: string
+  boardId: string
+  managerId: string
+  winner: string
+  loser: string
+  startedAt: Date
+  finishedAt: Date
+}
