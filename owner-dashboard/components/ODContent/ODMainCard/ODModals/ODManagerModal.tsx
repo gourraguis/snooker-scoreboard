@@ -46,7 +46,6 @@ const ODManagerModal: FunctionComponent<ODManagerModalProps> = ({ onCancel, visi
           name="basic"
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 12 }}
-          initialValues={{ remember: true }}
           onFinish={onFinish}
           autoComplete="off"
         >

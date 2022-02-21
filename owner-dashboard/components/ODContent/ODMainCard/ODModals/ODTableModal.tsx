@@ -3,7 +3,7 @@ import { FunctionComponent } from 'react'
 import { useRecoilState } from 'recoil'
 import { tablesStats } from '../../../../atoms/mainStats'
 import { createBoard } from '../../../../services/owner-api'
-import { IBoard } from '../../../../types/table'
+import { IBoard } from '../../../../types/board'
 
 interface ODTableFormProps {
   onCancel: () => void
@@ -47,7 +47,6 @@ const ODTableForm: FunctionComponent<ODTableFormProps> = ({ onCancel, visible })
           name="basic"
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 16 }}
-          initialValues={{ remember: true }}
           onFinish={onFinish}
           autoComplete="off"
         >

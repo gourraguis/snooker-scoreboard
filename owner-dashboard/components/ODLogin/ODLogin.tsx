@@ -44,7 +44,7 @@ export const ODLogin: FunctionComponent = () => {
             transition={{ duration: 0.55 }}
           >
             <Card title="Veuillez insérer le code" bordered={false} style={{ width: 300 }}>
-              <Form name="otpForm" wrapperCol={{ span: 22 }} initialValues={{ remember: true }} onFinish={onOtpSubmit}>
+              <Form name="otpForm" wrapperCol={{ span: 22 }} onFinish={onOtpSubmit}>
                 <Form.Item
                   name="otp"
                   rules={[{ required: true, message: `Veuillez entrer votre code  d'authentification` }]}
