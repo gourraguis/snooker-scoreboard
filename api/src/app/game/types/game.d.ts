@@ -14,6 +14,7 @@ export interface IGame {
 export interface IGameDB {
   id: string
   boardId: string
+  ownerId: string
   managerId: string
   winner: string
   loser: string

@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity()
 export class Game {
@@ -12,6 +12,9 @@ export class Game {
   managerId: string
 
   @Column()
+  ownerId: string
+
+  @Column()
   winner: string
 
   @Column()
@@ -20,6 +23,6 @@ export class Game {
   @Column()
   startedAt: Date
 
-  @CreateDateColumn()
+  @Column()
   finishedAt: Date
 }

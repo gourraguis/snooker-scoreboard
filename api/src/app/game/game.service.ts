@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common'
+import { Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import * as moment from 'moment'
 import { Repository } from 'typeorm'
@@ -49,5 +49,14 @@ export class GameService {
 
   public async getBoardGames(boardId) {
     return this.gameRepository.find({ boardId })
+  }
+
+  public async getBoards(phoneNumber: string) {
+    const boards = await this.gameRepository.find({ where: { owner: phoneNumber } })
+    if (!boards) {
+      throw new NotFoundException('There is no boards')
+    }
+    console.log(boards)
+    return boards
   }
 }
