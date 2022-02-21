@@ -24,8 +24,14 @@ export class GameController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('boards')
-  getGames(@AuthenticatedUser('phoneNumber') phoneNumber: string): Promise<IGameDB[]> {
-    return this.gameService.getGames(phoneNumber)
+  @Get('weeklyGames')
+  getWeeklyGames(@AuthenticatedUser('phoneNumber') phoneNumber: string): Promise<IGameDB[]> {
+    return this.gameService.getWeeklyGames(phoneNumber)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('monthlyGames')
+  getMonthlyGames(@AuthenticatedUser('phoneNumber') phoneNumber: string): Promise<IGameDB[]> {
+    return this.gameService.getMonthlyGames(phoneNumber)
   }
 }

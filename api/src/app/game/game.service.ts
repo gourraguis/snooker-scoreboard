@@ -1,7 +1,7 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import * as moment from 'moment'
-import { Repository } from 'typeorm'
+import { Between, Repository } from 'typeorm'
 import { IInitBoard } from '../types/initBoard'
 import { Game } from './entities/game.entity'
 import { IGame, IGameDB } from './types/game'
@@ -51,10 +51,35 @@ export class GameService {
     return this.gameRepository.find({ boardId })
   }
 
-  public async getGames(phoneNumber: string) {
-    const boards = await this.gameRepository.find({ where: { ownerId: phoneNumber } })
+  public async getWeeklyGames(phoneNumber: string) {
+    const date = new Date()
+    date.setDate(date.getDate() - 7)
+
+    const boards = await this.gameRepository.find({
+      where: {
+        ownerId: phoneNumber,
+        startedAt: Between(date, new Date()),
+      },
+    })
     if (!boards) {
-      throw new NotFoundException('There is no boards')
+      throw new NotFoundException('There is no games this week')
+    }
+    console.log(boards)
+    return boards
+  }
+
+  public async getMonthlyGames(phoneNumber: string) {
+    const date = new Date()
+    date.setMonth(date.getMonth() - 1)
+
+    const boards = await this.gameRepository.find({
+      where: {
+        ownerId: phoneNumber,
+        startedAt: Between(date, new Date()),
+      },
+    })
+    if (!boards) {
+      throw new NotFoundException('There is no games this month')
     }
     console.log(boards)
     return boards
