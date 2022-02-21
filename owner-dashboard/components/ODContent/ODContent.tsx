@@ -2,7 +2,7 @@ import { Layout, Space } from 'antd'
 import { FunctionComponent, useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import { managersStats, tablesStats } from '../../atoms/mainStats'
-import { getManagers, getTables } from '../../services/owner'
+import { getManagers, getBoards } from '../../services/owner-api'
 
 import styles from './ODContent.module.css'
 import { ODHeadingCard } from './ODHeadingCard/ODHeadingCard'
@@ -15,7 +15,7 @@ export const ODContent: FunctionComponent = () => {
   const [managersElements, setManagersElements] = useRecoilState(managersStats)
 
   useEffect(() => {
-    getTables(setTablesElements)
+    getBoards(setTablesElements)
     getManagers(setManagersElements)
   }, [])
 

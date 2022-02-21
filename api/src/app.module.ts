@@ -1,18 +1,17 @@
 import { Module } from '@nestjs/common'
 import { PassportModule } from '@nestjs/passport'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { BoardModule } from './board/board.module'
+import { AuthModule } from './app/auth/auth.module'
+import { BoardModule } from './app/board/board.module'
+import { ManagerModule } from './app/manager/manager.module'
+import { OwnerModule } from './app/owner/owner.module'
+import { SocketEmittersModule } from './app/socket-emitters/socket-emitters.module'
+import { SocketListenersModule } from './app/socket-listeners/socket-listeners.module'
 import { ConfigModule } from './config/config.module'
 import { ConfigService } from './config/config.service'
-import { ManagerModule } from './manager/manager.module'
-import { OwnerModule } from './owner/owner.module'
-import { SocketEmittersModule } from './socket-emitters/socket-emitters.module'
-import { SocketListenersModule } from './socket-listeners/socket-listeners.module'
-import { AuthModule } from './auth/auth.module'
 
 @Module({
   imports: [
-    OwnerModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -20,6 +19,7 @@ import { AuthModule } from './auth/auth.module'
     }),
     SocketEmittersModule,
     SocketListenersModule,
+    OwnerModule,
     ManagerModule,
     BoardModule,
     PassportModule,

@@ -4,26 +4,27 @@ import { Button, Layout, Typography } from 'antd'
 
 import { useRecoilState } from 'recoil'
 import styles from './ODHeader.module.css'
-import { authState } from '../../atoms/authState'
+import { ownerState } from '../../atoms/ownerState'
 
 const { Header } = Layout
 const { Title } = Typography
 
 export const ODHeader: FunctionComponent = () => {
-  const [isAuth, setIsAuth] = useRecoilState(authState)
+  const [owner, setOwner] = useRecoilState(ownerState)
   const router = useRouter()
+
   const handleLogout = () => {
-    localStorage.removeItem('phoneNumber')
-    localStorage.removeItem('accToken')
-    setIsAuth(false)
+    localStorage.removeItem('jwtToken')
+    setOwner(null)
     router.push('/login')
   }
+
   return (
     <Header className={styles.header}>
       <Title level={2} className={styles.title}>
         Owner Dashboard
       </Title>
-      {isAuth && (
+      {!!owner && (
         <Button className={styles.button} onClick={handleLogout}>
           Logout
         </Button>
