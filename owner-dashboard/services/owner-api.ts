@@ -4,7 +4,7 @@ import { SetterOrUpdater } from 'recoil'
 import { ICardElements } from '../types/cardElement'
 import { IManager } from '../types/manager'
 import { IOwner } from '../types/owner'
-import { IBoard } from '../types/table'
+import { IBoard } from '../types/board'
 import { openNotification } from './notification'
 
 const url = 'http://localhost:5000'
