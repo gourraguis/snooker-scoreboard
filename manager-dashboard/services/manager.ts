@@ -1,5 +1,4 @@
 import axios from 'axios'
-import moment from 'moment'
 import { NextRouter } from 'next/router'
 import { SetterOrUpdater } from 'recoil'
 import { IBoard } from '../types/board'
@@ -47,7 +46,7 @@ export const getBoards = async (setBoards: SetterOrUpdater<IBoard[]>) => {
       console.log(err)
     })
   await axios
-    .get(`${url}/board/byOwner/${ownerId}`)
+    .get(`${url}/board/all/${ownerId}`)
     .then((res) => {
       setBoards(res.data)
     })
@@ -68,7 +67,6 @@ export const saveGame = async (game: IGame) => {
     winner: winner!.name,
     loser: loser!.name,
     startedAt: game.startedAt,
-    finishedAt: moment().format('LLLL'),
   }
   await axios
     .post(`${url}/game`, dbGame)
