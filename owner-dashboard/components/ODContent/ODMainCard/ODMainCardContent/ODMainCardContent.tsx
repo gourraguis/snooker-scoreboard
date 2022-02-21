@@ -3,7 +3,7 @@ import { Row, Col, Divider, Card, Dropdown, Menu } from 'antd'
 import { FunctionComponent } from 'react'
 import { useRecoilState } from 'recoil'
 import { managersStats, tablesStats } from '../../../../atoms/mainStats'
-import { deleteManager, deleteTable } from '../../../../services/owner-api'
+import { deleteManager, deleteBoard } from '../../../../services/owner-api'
 import { ICardElements } from '../../../../types/cardElement'
 
 import styles from './ODMainCardContent.module.css'
@@ -23,7 +23,7 @@ export const ODMainCardContent: FunctionComponent<ICardElements> = ({ id, name, 
   // eslint-disable-next-line @typescript-eslint/no-shadow
   const deleteElem = (id: string) => {
     if (isPhoneNumber(id)) deleteManager(managersElements, id, setManagersElements)
-    else deleteTable(tablesElements, id, setTablesElements)
+    else deleteBoard(tablesElements, id, setTablesElements)
   }
   const menu = (
     <Menu>

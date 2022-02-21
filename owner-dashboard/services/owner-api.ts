@@ -64,23 +64,6 @@ export const getCurrentOwner = async (): Promise<IOwner | null> => {
   }
 }
 
-// export const checkOwnerAuth = async (setIsAuth: SetterOrUpdater<boolean>, router: NextRouter) => {
-//   const token = localStorage.getItem('jwtToken')
-//   const phoneNumber = localStorage.getItem('phoneNumber')
-//   try {
-//     const res = await axios.get(`${API_ENDPOINT}owner/${phoneNumber}`, {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     })
-//     if (res) setIsAuth(true)
-//   } catch (err) {
-//     console.log(err)
-//     setIsAuth(false)
-//     router.push('/login')
-//   }
-// }
-
 export const createManager = async (
   manager: IManager,
   managersElements: ICardElements[],
@@ -204,7 +187,7 @@ export const deleteManager = async (
   }
 }
 
-export const deleteTable = async (
+export const deleteBoard = async (
   tablesElements: ICardElements[],
   id: string,
   setTablesElements: SetterOrUpdater<ICardElements[]>
