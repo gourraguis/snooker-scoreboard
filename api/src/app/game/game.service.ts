@@ -51,8 +51,8 @@ export class GameService {
     return this.gameRepository.find({ boardId })
   }
 
-  public async getBoards(phoneNumber: string) {
-    const boards = await this.gameRepository.find({ where: { owner: phoneNumber } })
+  public async getGames(phoneNumber: string) {
+    const boards = await this.gameRepository.find({ where: { ownerId: phoneNumber } })
     if (!boards) {
       throw new NotFoundException('There is no boards')
     }
