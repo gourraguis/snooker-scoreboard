@@ -55,12 +55,7 @@ export const ODLogin: FunctionComponent = () => {
                   <Button type="primary" htmlType="submit" loading={isFetching}>
                     Se connecter
                   </Button>
-                  <Button
-                    type="primary"
-                    style={{ margin: '0 29px' }}
-                    onClick={() => setFormPhoneNumber('')}
-                    loading={isFetching}
-                  >
+                  <Button type="primary" style={{ margin: '0 29px' }} onClick={() => setFormPhoneNumber('')}>
                     Changer le numéro de téléphone
                   </Button>
                 </Form.Item>
