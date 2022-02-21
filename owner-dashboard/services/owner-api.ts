@@ -141,10 +141,11 @@ export const getManagers = async (setManagersElements: SetterOrUpdater<ICardElem
 }
 
 export const getBoards = async (setTablesElements: SetterOrUpdater<ICardElements[]>) => {
+  const onwer = await getCurrentOwner()
   let elements: ICardElements[] = []
   const token = localStorage.getItem('jwtToken')
   await axios
-    .get(`${API_ENDPOINT}board/all`, {
+    .get(`${API_ENDPOINT}board/all/${onwer?.phoneNumber}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
