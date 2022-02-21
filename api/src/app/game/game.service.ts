@@ -55,33 +55,31 @@ export class GameService {
     const date = new Date()
     date.setDate(date.getDate() - 7)
 
-    const boards = await this.gameRepository.find({
+    const games = await this.gameRepository.find({
       where: {
         ownerId: phoneNumber,
         startedAt: Between(date, new Date()),
       },
     })
-    if (!boards) {
+    if (!games) {
       throw new NotFoundException('There is no games this week')
     }
-    console.log(boards)
-    return boards
+    return games.length
   }
 
-  public async getMonthlyGames(phoneNumber: string) {
+  public async getDailyGames(phoneNumber: string) {
     const date = new Date()
-    date.setMonth(date.getMonth() - 1)
+    date.setDate(date.getDate() - 1)
 
-    const boards = await this.gameRepository.find({
+    const games = await this.gameRepository.find({
       where: {
         ownerId: phoneNumber,
         startedAt: Between(date, new Date()),
       },
     })
-    if (!boards) {
-      throw new NotFoundException('There is no games this month')
+    if (!games) {
+      throw new NotFoundException('There is no games this day')
     }
-    console.log(boards)
-    return boards
+    return games.length
   }
 }

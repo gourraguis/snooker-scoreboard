@@ -224,3 +224,33 @@ export const deleteBoard = async (
     console.log(err)
   }
 }
+
+export const getWeeklyGames = async (): Promise<number> => {
+  try {
+    const token = localStorage.getItem('jwtToken')
+    const { data: weeklyScore } = await axios.get<number>(`${API_ENDPOINT}game/weeklyGames`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    console.log(weeklyScore)
+    return weeklyScore
+  } catch (err) {
+    return 0
+  }
+}
+
+export const getDailyGames = async (): Promise<number> => {
+  try {
+    const token = localStorage.getItem('jwtToken')
+    const { data: monthlyGames } = await axios.get<number>(`${API_ENDPOINT}game/dailyGames`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    console.log(monthlyGames)
+    return monthlyGames
+  } catch (err) {
+    return 0
+  }
+}
