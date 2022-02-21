@@ -1,44 +1,36 @@
-import { Controller, Post, Body, BadRequestException, Get, Param, Put, UseGuards } from '@nestjs/common'
+import { Controller, Post, Body, BadRequestException, Get, Param, Put, UseGuards, Query } from '@nestjs/common'
+import { ConfigService } from '../../config/config.service'
+import { AuthenticatedUser } from '../auth/authenticated-user.decorator'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard'
 import { Owner } from './entities/owner.entity'
 import { OwnerService } from './owner.service'
-import { IOwner } from './types/IOwner'
 import { validatePhoneNumber } from './utils'
 
 @Controller('owner')
 export class OwnerController {
-  constructor(private readonly ownerService: OwnerService) {}
+  constructor(private configService: ConfigService, private readonly ownerService: OwnerService) {}
 
-  @UseGuards(JwtAuthGuard)
-  @Get(':phoneNumber')
-  getOwner(@Param('phoneNumber') phoneNumber: string) {
-    validatePhoneNumber(phoneNumber)
-    return this.ownerService.getOwner(phoneNumber)
-  }
-
-  @Get('login/:phoneNumber')
-  loginOwner(@Param('phoneNumber') phoneNumber: string) {
-    validatePhoneNumber(phoneNumber)
+  @Put('otp')
+  generateOtp(@Query('phoneNumber') phoneNumber: string) {
     return this.ownerService.generateOtp(phoneNumber)
   }
 
-  @Get()
-  getOwners(): Promise<IOwner[]> {
-    return this.ownerService.getOwners()
+  @Get('')
+  @UseGuards(JwtAuthGuard)
+  getCurrentOwner(@AuthenticatedUser() owner: Owner) {
+    return owner
   }
 
   @Post()
-  createOwner(@Body() owner: IOwner): Promise<Owner> {
+  createOwner(@Body('owner') owner: Partial<Owner>, @Body('secret') secret: string) {
     validatePhoneNumber(owner.phoneNumber)
     if (!owner.name) {
       throw new BadRequestException("Please provide the owner's name")
     }
-    return this.ownerService.createOwner(owner)
-  }
+    if (secret !== this.configService.getCreateOwnerSecret()) {
+      throw new BadRequestException('invalid create owner secret')
+    }
 
-  @Put('otp')
-  generateOtp(@Body('phoneNumber') phoneNumber: string) {
-    validatePhoneNumber(phoneNumber)
-    return this.ownerService.generateOtp(phoneNumber)
+    return this.ownerService.createOwner(owner)
   }
 }

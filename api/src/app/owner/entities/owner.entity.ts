@@ -11,7 +11,7 @@ export class Owner {
   @Column({
     nullable: true,
   })
-  otp: number
+  otp: string
 
   @Column()
   balance: number

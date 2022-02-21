@@ -1,27 +1,28 @@
-import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common'
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Owner } from './entities/owner.entity'
 import { IOwner } from './types/IOwner'
-import { encodeOtp, generateNewOtp } from './utils'
+import { generateNewOtp } from './utils'
 
 @Injectable()
 export class OwnerService {
   private defaultBalance = 300
-  private logger: Logger = new Logger(OwnerService.name)
 
   constructor(
     @InjectRepository(Owner)
     private readonly ownerRepository: Repository<Owner>
   ) {}
 
-  public async getOwner(phoneNumber: string): Promise<IOwner> {
+  public async getOwner(phoneNumber: string, otp: string): Promise<IOwner> {
     const owner = await this.ownerRepository.findOne({
-      phoneNumber: phoneNumber,
+      phoneNumber,
+      otp,
     })
     if (!owner) {
-      throw new NotFoundException('There is no owner with this phone number !!')
+      throw new BadRequestException(`Votre numéro de téléphone ou votre code d'authentification est invalide`)
     }
+
     return {
       phoneNumber: owner.phoneNumber,
       name: owner.name,
@@ -29,17 +30,7 @@ export class OwnerService {
     }
   }
 
-  public async getOwners(): Promise<IOwner[]> {
-    const owner = await this.ownerRepository.find()
-    return owner
-  }
-
-  public async findOwnerByCondition(condition) {
-    //todo: remove this method and replace it
-    return this.ownerRepository.findOne(condition)
-  }
-
-  public async createOwner(owner: IOwner): Promise<Owner> {
+  public async createOwner(owner: Partial<Owner>): Promise<IOwner> {
     const existingOwner = await this.ownerRepository.findOne({
       phoneNumber: owner.phoneNumber,
     })
@@ -47,31 +38,34 @@ export class OwnerService {
       throw new ConflictException('An owner with this phone number already exists')
     }
 
-    const newOnwer = new Owner()
-    newOnwer.phoneNumber = owner.phoneNumber
-    newOnwer.name = owner.name
-    newOnwer.balance = this.defaultBalance
-    return this.ownerRepository.save(newOnwer)
+    const newOwner = new Owner()
+    newOwner.phoneNumber = owner.phoneNumber
+    newOwner.name = owner.name
+    newOwner.balance = this.defaultBalance
+    await this.ownerRepository.save(newOwner)
+
+    return {
+      phoneNumber: owner.phoneNumber,
+      name: owner.name,
+      balance: owner.balance,
+    }
   }
 
-  public async generateOtp(phoneNumber: string): Promise<{ otp: string }> {
+  public async generateOtp(phoneNumber: string): Promise<void> {
     const owner = await this.ownerRepository.findOne({
       phoneNumber: phoneNumber,
     })
     if (!owner) {
       throw new NotFoundException('There is no owner with this phone number')
     }
-    const generatedOtp = generateNewOtp()
-    owner.otp = generatedOtp
+
+    owner.otp = generateNewOtp()
     await this.ownerRepository.save(owner)
 
-    this.sendSms(encodeOtp(generatedOtp))
-    return {
-      otp: encodeOtp(generatedOtp),
-    }
+    await this.sendSms(owner.otp)
   }
 
-  public async sendSms(otp: string) {
+  private async sendSms(otp: string) {
     console.log('Send SMS:', otp)
   }
 }

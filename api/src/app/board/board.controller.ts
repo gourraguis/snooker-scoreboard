@@ -1,4 +1,5 @@
 import { Controller, Post, Body, Get, Param, Put, UseGuards } from '@nestjs/common'
+import { AuthenticatedUser } from '../auth/authenticated-user.decorator'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard'
 import { BoardService } from './board.service'
 import { Board } from './entities/board.entity'
@@ -19,9 +20,9 @@ export class BoardController {
     return this.boardService.getBoard(id)
   }
 
-  @Get('/byOwner/:owner')
-  getOwnerBoards(@Param('owner') owner: string): Promise<IBoard[]> {
-    return this.boardService.getOwnerBoards(owner)
+  @Get('all')
+  getOwnerBoards(@AuthenticatedUser('phoneNumber') phoneNumber: string): Promise<IBoard[]> {
+    return this.boardService.getOwnerBoards(phoneNumber)
   }
 
   @UseGuards(JwtAuthGuard)

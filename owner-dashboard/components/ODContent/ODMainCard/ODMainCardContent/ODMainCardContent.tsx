@@ -3,7 +3,7 @@ import { Row, Col, Divider, Card, Dropdown, Menu } from 'antd'
 import { FunctionComponent } from 'react'
 import { useRecoilState } from 'recoil'
 import { managersStats, tablesStats } from '../../../../atoms/mainStats'
-import { deleteManager, deleteTable } from '../../../../services/owner'
+import { deleteManager, deleteTable } from '../../../../services/owner-api'
 import { ICardElements } from '../../../../types/cardElement'
 
 import styles from './ODMainCardContent.module.css'

@@ -32,8 +32,8 @@ export class ManagerService {
     }
   }
 
-  public async getOwnerManagers(owner: string): Promise<IManager[]> {
-    const managers = await this.managerRepository.find({ where: { owner: owner } })
+  public async getOwnerManagers(phoneNumber: string): Promise<IManager[]> {
+    const managers = await this.managerRepository.find({ where: { owner: phoneNumber } })
     if (!managers) {
       throw new NotFoundException('There is no managers with this owner')
     }

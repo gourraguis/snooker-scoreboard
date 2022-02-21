@@ -6,6 +6,7 @@ import { ODHeader } from '../components/ODHeader/ODHeader'
 import { ODLogin } from '../components/ODLogin/ODLogin'
 
 const login: NextPage = () => {
+  // todo: check if user is logged in, and redirect him
   return (
     <>
       <Head>

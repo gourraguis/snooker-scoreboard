@@ -3,10 +3,9 @@ import { PassportStrategy } from '@nestjs/passport'
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { OwnerService } from '../owner/owner.service'
 import { ConfigService } from '../../config/config.service'
+import { Owner } from '../owner/entities/owner.entity'
 
-interface Payload {
-  phoneNumber: string
-  otp: string
+interface Payload extends Owner {
   iat: number
   exp: number
 }
@@ -22,14 +21,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   public async validate(payload: Payload) {
-    const user = await this.ownerService.findOwnerByCondition({
-      phoneNumber: payload.phoneNumber,
-      otp: payload.otp,
-    })
+    console.log(payload)
+    const { phoneNumber, otp } = payload
+    const owner = await this.ownerService.getOwner(phoneNumber, otp)
+    console.log(payload)
 
-    if (!user) {
+    if (!owner) {
       throw new UnauthorizedException()
     }
-    return user
+    return owner
   }
 }

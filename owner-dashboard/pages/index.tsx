@@ -7,42 +7,44 @@ import { useRecoilState } from 'recoil'
 import { ODHeader } from '../components/ODHeader/ODHeader'
 import { ODFooter } from '../components/ODFooter/ODFooter'
 import { ODContent } from '../components/ODContent/ODContent'
-import { authState } from '../atoms/authState'
-import { checkOwnerAuth } from '../services/owner'
+import { getCurrentOwner } from '../services/owner-api'
+import { ownerState } from '../atoms/ownerState'
 
 const Home: NextPage = () => {
   const router = useRouter()
-  const [isAuth, setIsAuth] = useRecoilState(authState)
+  const [owner, setOwner] = useRecoilState(ownerState)
 
-  const checker = async () => {
-    await checkOwnerAuth(setIsAuth, router)
-  }
+  const fetchCurrentOwner = async () => {
+    const currentOwner = await getCurrentOwner()
 
-  useEffect(() => {
-    const accToken = localStorage.getItem('accToken')
-    if (!accToken) {
+    if (!currentOwner) {
       router.push('/login')
       return
     }
-    checker()
+    console.log(currentOwner)
+    setOwner(currentOwner)
+  }
+
+  useEffect(() => {
+    fetchCurrentOwner()
   }, [])
 
+  if (!owner) {
+    return null
+  }
+
   return (
-    <div>
-      {isAuth && (
-        <>
-          <Head>
-            <title>Owner Dashboard</title>
-            <link rel="icon" href="/favicon.ico" />
-          </Head>
-          <Layout style={{ minHeight: '100vh' }}>
-            <ODHeader />
-            <ODContent />
-            <ODFooter />
-          </Layout>
-        </>
-      )}
-    </div>
+    <>
+      <Head>
+        <title>Owner Dashboard</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <Layout style={{ minHeight: '100vh' }}>
+        <ODHeader />
+        <ODContent />
+        <ODFooter />
+      </Layout>
+    </>
   )
 }
 

@@ -63,4 +63,8 @@ export class ConfigService {
   public getJwtSecret() {
     return this.get('JWT_SECRET')
   }
+
+  public getCreateOwnerSecret() {
+    return this.get('CREATE_OWNER_SECRET')
+  }
 }

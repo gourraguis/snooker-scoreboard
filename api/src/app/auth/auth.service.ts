@@ -1,29 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { OwnerService } from '../owner/owner.service'
-import { decodeOtp } from '../owner/utils'
 
 @Injectable()
 export class AuthService {
   constructor(private ownerService: OwnerService, private jwtService: JwtService) {}
 
-  public async checkOtp(phoneNumber: string, otp: number) {
-    const decodedOtp = decodeOtp(otp)
-    const owner = await this.ownerService.findOwnerByCondition({
+  public async checkOtp(phoneNumber: string, otp: string): Promise<string> {
+    await this.ownerService.getOwner(phoneNumber, otp)
+    return this.jwtService.signAsync({
       phoneNumber,
-      otp: decodedOtp,
+      otp,
     })
-    if (!owner) {
-      throw new NotFoundException('Otp is invalid !')
-    }
-
-    const access_token = await this.jwtService.signAsync({ phoneNumber: owner.phoneNumber, otp: owner.otp })
-
-    const data = {
-      accToken: access_token,
-      phoneNumber: owner.phoneNumber,
-      name: owner.name,
-    }
-    return data
   }
 }

@@ -2,7 +2,7 @@ import { Button, Form, Input, Modal } from 'antd'
 import { FunctionComponent } from 'react'
 import { useRecoilState } from 'recoil'
 import { managersStats } from '../../../../atoms/mainStats'
-import { createManager } from '../../../../services/owner'
+import { createManager } from '../../../../services/owner-api'
 import { IManager } from '../../../../types/manager'
 
 interface ODManagerModalProps {

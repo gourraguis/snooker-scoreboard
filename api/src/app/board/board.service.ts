@@ -41,12 +41,12 @@ export class BoardService {
     }
   }
 
-  public async getOwnerBoards(owner: string): Promise<IBoard[]> {
-    const baords = await this.boardRepository.find({ where: { owner: owner } })
-    if (!baords) {
+  public async getOwnerBoards(phoneNumber: string): Promise<IBoard[]> {
+    const boards = await this.boardRepository.find({ where: { owner: phoneNumber } })
+    if (!boards) {
       throw new NotFoundException('There is no baords with this owner')
     }
-    return baords
+    return boards
   }
 
   public async createBoard(board: IBoard): Promise<Board> {

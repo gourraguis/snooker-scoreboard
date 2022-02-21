@@ -1,4 +1,5 @@
 import { Controller, Post, Body, Get, BadRequestException, Param, Delete, UseGuards } from '@nestjs/common'
+import { AuthenticatedUser } from '../auth/authenticated-user.decorator'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard'
 import { validatePhoneNumber } from '../owner/utils'
 import { Manager } from './entities/manager.entity'
@@ -14,18 +15,17 @@ export class ManagerController {
     return this.managerService.getManagers()
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('all')
+  getOwnerManagers(@AuthenticatedUser('phoneNumber') phoneNumber: string): Promise<IManager[]> {
+    return this.managerService.getOwnerManagers(phoneNumber)
+  }
+
   // @UseGuards(JwtAuthGuard)
   @Get(':id')
   getManager(@Param('id') id: string) {
     validatePhoneNumber(id)
     return this.managerService.getManager(id)
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('/byOwner/:owner')
-  getOwnerManagers(@Param('owner') owner: string): Promise<IManager[]> {
-    validatePhoneNumber(owner)
-    return this.managerService.getOwnerManagers(owner)
   }
 
   @UseGuards(JwtAuthGuard)
