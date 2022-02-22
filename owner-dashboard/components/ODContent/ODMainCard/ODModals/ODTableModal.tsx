@@ -16,12 +16,11 @@ const ODTableForm: FunctionComponent<ODTableFormProps> = ({ onCancel, visible })
     onCancel()
   }
   const onFinish = (values: IBoard) => {
-    const phoneNumber = localStorage.getItem('phoneNumber')
     const BoardId = Math.floor(Math.random() * 1000).toString()
     const newTable: IBoard = {
       id: BoardId,
       name: values.name,
-      owner: phoneNumber,
+      owner: '',
     }
     createBoard(newTable, tablesElements, setTablesElements)
     onCancel()

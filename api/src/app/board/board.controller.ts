@@ -28,8 +28,8 @@ export class BoardController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  createBoard(@Body() board: IBoard): Promise<Board> {
-    return this.boardService.createBoard(board)
+  createBoard(@AuthenticatedUser('phoneNumber') ownerId: string, @Body() board: IBoard): Promise<Board> {
+    return this.boardService.createBoard(board, ownerId)
   }
 
   @UseGuards(JwtAuthGuard)
