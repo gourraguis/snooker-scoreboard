@@ -4,7 +4,6 @@ export const AuthenticatedUser = createParamDecorator((data, ctx: ExecutionConte
   const request = ctx.switchToHttp().getRequest()
 
   const { user } = request
-  console.log(user)
 
   return data ? user[data] : user
 })

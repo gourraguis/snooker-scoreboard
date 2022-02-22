@@ -40,7 +40,6 @@ export class GameService {
   }
 
   public async saveGame(game: IGameDB): Promise<IGameDB> {
-    console.log(game)
     return this.gameRepository.save(game)
   }
 

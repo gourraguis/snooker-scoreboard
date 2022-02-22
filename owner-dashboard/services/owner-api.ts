@@ -216,13 +216,12 @@ export const deleteBoard = async (
 export const getWeeklyGames = async (): Promise<number> => {
   try {
     const token = localStorage.getItem('jwtToken')
-    const { data: weeklyScore } = await axios.get<number>(`${API_ENDPOINT}game/weeklyGames`, {
+    const { data: weeklyGames } = await axios.get<number>(`${API_ENDPOINT}game/weeklyGames`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
-    console.log(weeklyScore)
-    return weeklyScore
+    return weeklyGames
   } catch (err) {
     return 0
   }
@@ -231,13 +230,12 @@ export const getWeeklyGames = async (): Promise<number> => {
 export const getDailyGames = async (): Promise<number> => {
   try {
     const token = localStorage.getItem('jwtToken')
-    const { data: monthlyGames } = await axios.get<number>(`${API_ENDPOINT}game/dailyGames`, {
+    const { data: dailyGames } = await axios.get<number>(`${API_ENDPOINT}game/dailyGames`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
-    console.log(monthlyGames)
-    return monthlyGames
+    return dailyGames
   } catch (err) {
     return 0
   }

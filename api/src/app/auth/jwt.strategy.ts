@@ -21,10 +21,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   public async validate(payload: Payload) {
-    console.log(payload)
     const { phoneNumber, otp } = payload
     const owner = await this.ownerService.getOwner(phoneNumber, otp)
-    console.log(payload)
 
     if (!owner) {
       throw new UnauthorizedException()
