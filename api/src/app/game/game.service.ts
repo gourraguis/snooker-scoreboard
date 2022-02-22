@@ -96,11 +96,13 @@ export class GameService {
 
     for (let index = 0; index < games.length; index++) {
       const day = await this.gameRepository.find({
+        ownerId: phoneNumber,
         managerId: games[index].id,
         startedAt: Between(dailDyate, new Date()),
       })
 
       const week = await this.gameRepository.find({
+        ownerId: phoneNumber,
         managerId: games[index].id,
         startedAt: Between(weeklyDate, new Date()),
       })
