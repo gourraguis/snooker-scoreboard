@@ -40,7 +40,7 @@ export class ManagerService {
     return managers
   }
 
-  public async createManager(manager: IManager): Promise<Manager> {
+  public async createManager(manager: IManager, ownerId: string): Promise<Manager> {
     this.logger.log(JSON.stringify(manager, null, 2))
     const existingManager = await this.managerRepository.findOne({
       id: manager.id,
@@ -52,7 +52,7 @@ export class ManagerService {
     const newManager = new Manager()
     newManager.id = manager.id
     newManager.name = manager.name
-    newManager.owner = manager.owner
+    newManager.owner = ownerId
     return this.managerRepository.save(newManager)
   }
 

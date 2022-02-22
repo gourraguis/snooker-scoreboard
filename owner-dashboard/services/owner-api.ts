@@ -79,8 +79,8 @@ export const createManager = async (
     const newElem: ICardElements = {
       id: res.data.id,
       name: res.data.name,
-      dailyScore: 10,
-      weeklyScore: 70,
+      dailyScore: 0,
+      weeklyScore: 0,
     }
     setManagersElements([...managersElements, newElem])
     openNotification({ title: 'Manager a été ajouté' })
@@ -115,29 +115,17 @@ export const createBoard = async (
 }
 
 export const getManagers = async (setManagersElements: SetterOrUpdater<ICardElements[]>) => {
-  let elements: ICardElements[] = []
   const token = localStorage.getItem('jwtToken')
-  await axios
-    .get(`${API_ENDPOINT}manager/all`, {
+  try {
+    const res = await axios.get(`${API_ENDPOINT}game/managersGames`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
-    .then((res) => {
-      for (let index = 0; index < res.data.length; index++) {
-        const newElem = {
-          id: res.data[index].id,
-          name: res.data[index].name,
-          dailyScore: 10,
-          weeklyScore: 70,
-        }
-        elements = [...elements, newElem]
-      }
-      setManagersElements(elements)
-    })
-    .catch((err) => {
-      openNotification({ title: `${err.response.data.message}`, type: 'error' })
-    })
+    setManagersElements(res.data)
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 export const getBoards = async (setTablesElements: SetterOrUpdater<ICardElements[]>) => {

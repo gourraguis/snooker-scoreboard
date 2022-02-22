@@ -30,12 +30,12 @@ export class ManagerController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  createManager(@Body() manager: IManager): Promise<Manager> {
+  createManager(@AuthenticatedUser('phoneNumber') ownerId: string, @Body() manager: IManager): Promise<Manager> {
     validatePhoneNumber(manager.id)
     if (!manager.name) {
       throw new BadRequestException("Please provide the manager's name")
     }
-    return this.managerService.createManager(manager)
+    return this.managerService.createManager(manager, ownerId)
   }
 
   @UseGuards(JwtAuthGuard)
