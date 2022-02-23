@@ -22,6 +22,8 @@ const MDModalNewGame: FunctionComponent<MDModalNewGameProps> = ({ onCancel, visi
   const handleCancel = () => {
     onCancel()
   }
+
+  // Todo remove any
   const onFinish = (values: any) => {
     const initBoard: IInitBoard = {
       boardId,
@@ -65,7 +67,6 @@ const MDModalNewGame: FunctionComponent<MDModalNewGameProps> = ({ onCancel, visi
           name="basic"
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 16 }}
-          initialValues={{ remember: true }}
           onFinish={onFinish}
           autoComplete="off"
         >

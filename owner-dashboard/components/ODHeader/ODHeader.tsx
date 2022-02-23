@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import { FunctionComponent } from 'react'
 import { Button, Layout, Typography } from 'antd'
+import { LogoutOutlined } from '@ant-design/icons'
 
 import { useRecoilState } from 'recoil'
 import styles from './ODHeader.module.css'
@@ -26,7 +27,7 @@ export const ODHeader: FunctionComponent = () => {
       </Title>
       {!!owner && (
         <Button className={styles.button} onClick={handleLogout}>
-          Logout
+          <LogoutOutlined />
         </Button>
       )}
     </Header>

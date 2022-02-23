@@ -4,10 +4,8 @@ import { SetterOrUpdater } from 'recoil'
 import { ICardElements } from '../types/cardElement'
 import { IManager } from '../types/manager'
 import { IOwner } from '../types/owner'
-import { IBoard } from '../types/table'
+import { IBoard } from '../types/board'
 import { openNotification } from './notification'
-
-const url = 'http://localhost:5000'
 
 const API_ENDPOINT = 'http://localhost:5000/'
 
@@ -66,23 +64,6 @@ export const getCurrentOwner = async (): Promise<IOwner | null> => {
   }
 }
 
-// export const checkOwnerAuth = async (setIsAuth: SetterOrUpdater<boolean>, router: NextRouter) => {
-//   const token = localStorage.getItem('jwtToken')
-//   const phoneNumber = localStorage.getItem('phoneNumber')
-//   try {
-//     const res = await axios.get(`${url}/owner/${phoneNumber}`, {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     })
-//     if (res) setIsAuth(true)
-//   } catch (err) {
-//     console.log(err)
-//     setIsAuth(false)
-//     router.push('/login')
-//   }
-// }
-
 export const createManager = async (
   manager: IManager,
   managersElements: ICardElements[],
@@ -90,7 +71,7 @@ export const createManager = async (
 ) => {
   const token = localStorage.getItem('jwtToken')
   try {
-    const res = await axios.post(`${url}/manager`, manager, {
+    const res = await axios.post(`${API_ENDPOINT}manager`, manager, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -98,8 +79,8 @@ export const createManager = async (
     const newElem: ICardElements = {
       id: res.data.id,
       name: res.data.name,
-      dailyScore: 10,
-      weeklyScore: 70,
+      dailyScore: 0,
+      weeklyScore: 0,
     }
     setManagersElements([...managersElements, newElem])
     openNotification({ title: 'Manager a été ajouté' })
@@ -115,7 +96,7 @@ export const createBoard = async (
 ) => {
   const token = localStorage.getItem('jwtToken')
   try {
-    const res = await axios.post(`${url}/board`, table, {
+    const res = await axios.post(`${API_ENDPOINT}board`, table, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -134,36 +115,25 @@ export const createBoard = async (
 }
 
 export const getManagers = async (setManagersElements: SetterOrUpdater<ICardElements[]>) => {
-  let elements: ICardElements[] = []
   const token = localStorage.getItem('jwtToken')
-  await axios
-    .get(`${url}/manager/all`, {
+  try {
+    const res = await axios.get(`${API_ENDPOINT}game/managersGames`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
-    .then((res) => {
-      for (let index = 0; index < res.data.length; index++) {
-        const newElem = {
-          id: res.data[index].id,
-          name: res.data[index].name,
-          dailyScore: 10,
-          weeklyScore: 70,
-        }
-        elements = [...elements, newElem]
-      }
-      setManagersElements(elements)
-    })
-    .catch((err) => {
-      openNotification({ title: `${err.response.data.message}`, type: 'error' })
-    })
+    setManagersElements(res.data)
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 export const getBoards = async (setTablesElements: SetterOrUpdater<ICardElements[]>) => {
+  const onwer = await getCurrentOwner()
   let elements: ICardElements[] = []
   const token = localStorage.getItem('jwtToken')
   await axios
-    .get(`${url}/board/all`, {
+    .get(`${API_ENDPOINT}board/all/${onwer?.phoneNumber}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -192,7 +162,7 @@ export const deleteManager = async (
 ) => {
   const token = localStorage.getItem('jwtToken')
   try {
-    const res = await axios.delete(`${url}/manager/${id}`, {
+    const res = await axios.delete(`${API_ENDPOINT}manager/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -206,14 +176,14 @@ export const deleteManager = async (
   }
 }
 
-export const deleteTable = async (
+export const deleteBoard = async (
   tablesElements: ICardElements[],
   id: string,
   setTablesElements: SetterOrUpdater<ICardElements[]>
 ) => {
   const token = localStorage.getItem('jwtToken')
   try {
-    const res = await axios.get(`${url}/board/${id}`, {
+    const res = await axios.get(`${API_ENDPOINT}board/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -225,7 +195,7 @@ export const deleteTable = async (
         owner: '',
       }
       try {
-        const put = await axios.put(`${url}/board`, board, {
+        const put = await axios.put(`${API_ENDPOINT}board`, board, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -240,5 +210,33 @@ export const deleteTable = async (
     }
   } catch (err) {
     console.log(err)
+  }
+}
+
+export const getWeeklyGames = async (): Promise<number> => {
+  try {
+    const token = localStorage.getItem('jwtToken')
+    const { data: weeklyGames } = await axios.get<number>(`${API_ENDPOINT}game/weeklyGames`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return weeklyGames
+  } catch (err) {
+    return 0
+  }
+}
+
+export const getDailyGames = async (): Promise<number> => {
+  try {
+    const token = localStorage.getItem('jwtToken')
+    const { data: dailyGames } = await axios.get<number>(`${API_ENDPOINT}game/dailyGames`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return dailyGames
+  } catch (err) {
+    return 0
   }
 }

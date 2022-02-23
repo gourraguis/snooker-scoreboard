@@ -1,18 +1,24 @@
-import { Controller, Post, Body, BadRequestException, Get, Param, Put, UseGuards, Query } from '@nestjs/common'
+import { Controller, Post, Body, BadRequestException, Get, Put, UseGuards, Query } from '@nestjs/common'
 import { ConfigService } from '../../config/config.service'
 import { AuthenticatedUser } from '../auth/authenticated-user.decorator'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard'
+import { SmsService } from '../sms/sms.service'
 import { Owner } from './entities/owner.entity'
 import { OwnerService } from './owner.service'
 import { validatePhoneNumber } from './utils'
 
 @Controller('owner')
 export class OwnerController {
-  constructor(private configService: ConfigService, private readonly ownerService: OwnerService) {}
+  constructor(
+    private configService: ConfigService,
+    private readonly ownerService: OwnerService,
+    private readonly smsService: SmsService
+  ) {}
 
   @Put('otp')
-  generateOtp(@Query('phoneNumber') phoneNumber: string) {
-    return this.ownerService.generateOtp(phoneNumber)
+  async generateOtp(@Query('phoneNumber') phoneNumber: string) {
+    const owner = await this.ownerService.generateOtp(phoneNumber)
+    if (owner) this.smsService.sendSms(owner.otp)
   }
 
   @Get('')

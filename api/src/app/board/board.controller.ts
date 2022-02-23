@@ -20,15 +20,16 @@ export class BoardController {
     return this.boardService.getBoard(id)
   }
 
-  @Get('all')
-  getOwnerBoards(@AuthenticatedUser('phoneNumber') phoneNumber: string): Promise<IBoard[]> {
+  // @UseGuards(JwtAuthGuard)
+  @Get('all/:phoneNumber')
+  getOwnerBoards(@Param('phoneNumber') phoneNumber: string): Promise<IBoard[]> {
     return this.boardService.getOwnerBoards(phoneNumber)
   }
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  createBoard(@Body() board: IBoard): Promise<Board> {
-    return this.boardService.createBoard(board)
+  createBoard(@AuthenticatedUser('phoneNumber') ownerId: string, @Body() board: IBoard): Promise<Board> {
+    return this.boardService.createBoard(board, ownerId)
   }
 
   @UseGuards(JwtAuthGuard)

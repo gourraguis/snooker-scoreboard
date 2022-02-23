@@ -16,11 +16,10 @@ const ODManagerModal: FunctionComponent<ODManagerModalProps> = ({ onCancel, visi
     onCancel()
   }
   const onFinish = async (values: IManager) => {
-    const phoneNumber = localStorage.getItem('phoneNumber')
     const newManager: IManager = {
       id: values.id,
       name: values.name,
-      owner: phoneNumber,
+      owner: '',
     }
     createManager(newManager, managersElements, setManagersElements)
     onCancel()
@@ -46,7 +45,6 @@ const ODManagerModal: FunctionComponent<ODManagerModalProps> = ({ onCancel, visi
           name="basic"
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 12 }}
-          initialValues={{ remember: true }}
           onFinish={onFinish}
           autoComplete="off"
         >

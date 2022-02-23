@@ -47,7 +47,7 @@ export const getBoards = async (setBoards: SetterOrUpdater<IBoard[]>) => {
       console.log(err)
     })
   await axios
-    .get(`${url}/board/byOwner/${ownerId}`)
+    .get(`${url}/board/all/${ownerId}`)
     .then((res) => {
       setBoards(res.data)
     })
@@ -58,6 +58,16 @@ export const getBoards = async (setBoards: SetterOrUpdater<IBoard[]>) => {
 
 export const saveGame = async (game: IGame) => {
   const token = localStorage.getItem('token')
+
+  let ownerId = ''
+  await axios
+    .get(`${url}/manager/${token}`)
+    .then((res) => {
+      ownerId = res.data.owner
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   const winnerScore = Math.max(game.players[0].score!, game.players[1].score!)
   const winner = game.players.find((elem) => elem.score === winnerScore)
   const loser = game.players.find((elem) => elem.name !== winner!.name)
@@ -65,10 +75,11 @@ export const saveGame = async (game: IGame) => {
   const dbGame = {
     boardId: game.boardId,
     managerId: token,
+    ownerId,
     winner: winner!.name,
     loser: loser!.name,
     startedAt: game.startedAt,
-    finishedAt: moment().format('LLLL'),
+    finishedAt: moment(),
   }
   await axios
     .post(`${url}/game`, dbGame)

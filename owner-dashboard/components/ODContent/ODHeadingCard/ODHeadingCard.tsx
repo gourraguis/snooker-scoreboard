@@ -1,13 +1,27 @@
 import { Row, Col, Divider, Card } from 'antd'
-import { useRecoilValue } from 'recoil'
+import { useEffect } from 'react'
+import { useRecoilState } from 'recoil'
 import { dailyStats, weeklyStats } from '../../../atoms/globaleStats'
+import { getDailyGames, getWeeklyGames } from '../../../services/owner-api'
 
 import styles from './ODHeadingCard.module.css'
 import { ODHeadingStats } from './ODHeadingStats/ODHeadingStats'
 
 export const ODHeadingCard = () => {
-  const dailyScore = useRecoilValue(dailyStats)
-  const weeklyScore = useRecoilValue(weeklyStats)
+  const [dailyScore, setDailyScore] = useRecoilState(dailyStats)
+  const [weeklyScore, setWeeklyScore] = useRecoilState(weeklyStats)
+
+  const fetchStats = async () => {
+    const week = await getWeeklyGames()
+    const day = await getDailyGames()
+    setWeeklyScore(week)
+    setDailyScore(day)
+  }
+
+  useEffect(() => {
+    fetchStats()
+  }, [])
+
   return (
     <Card className={styles.card}>
       <Row>

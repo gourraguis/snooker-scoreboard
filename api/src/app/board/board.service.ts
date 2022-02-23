@@ -49,7 +49,7 @@ export class BoardService {
     return boards
   }
 
-  public async createBoard(board: IBoard): Promise<Board> {
+  public async createBoard(board: IBoard, ownerId: string): Promise<Board> {
     const existingBaord = await this.boardRepository.findOne({
       id: board.id,
     })
@@ -60,7 +60,7 @@ export class BoardService {
     const newBoard = new Board()
     newBoard.id = board.id
     newBoard.name = board.name
-    newBoard.owner = board.owner
+    newBoard.owner = ownerId
     return this.boardRepository.save(newBoard)
   }
 

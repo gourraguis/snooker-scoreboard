@@ -12,6 +12,9 @@ export class Game {
   managerId: string
 
   @Column()
+  ownerId: string
+
+  @Column()
   winner: string
 
   @Column()

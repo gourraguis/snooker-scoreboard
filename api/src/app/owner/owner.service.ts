@@ -51,7 +51,7 @@ export class OwnerService {
     }
   }
 
-  public async generateOtp(phoneNumber: string): Promise<void> {
+  public async generateOtp(phoneNumber: string): Promise<Owner> {
     const owner = await this.ownerRepository.findOne({
       phoneNumber: phoneNumber,
     })
@@ -60,12 +60,6 @@ export class OwnerService {
     }
 
     owner.otp = generateNewOtp()
-    await this.ownerRepository.save(owner)
-
-    await this.sendSms(owner.otp)
-  }
-
-  private async sendSms(otp: string) {
-    console.log('Send SMS:', otp)
+    return this.ownerRepository.save(owner)
   }
 }
