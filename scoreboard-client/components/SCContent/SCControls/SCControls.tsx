@@ -59,8 +59,8 @@ const SCControls = () => {
         scoredBalls: newHistory[finalIndex]?.scoredBalls,
         undoed: true,
       }
-
       setHistory(newHistory)
+      setSend(true)
     }
   }
 
