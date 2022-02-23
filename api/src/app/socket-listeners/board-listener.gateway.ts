@@ -38,7 +38,10 @@ export class BoardListenerGateway implements OnGatewayConnection, OnGatewayDisco
   }
 
   @SubscribeMessage<BoardClientToServerEvents>('initBoard')
-  onInitBoard(@MessageBody() boardId: string, @ConnectedSocket() client: Socket): IBoard {
+  onInitBoard(@MessageBody() boardId: string, @ConnectedSocket() client: Socket): IBoard | void {
+    console.log(boardId)
+
+    if (!boardId) return
     client.data.boardId = boardId
 
     const board = this.boardService.findBoard(boardId)

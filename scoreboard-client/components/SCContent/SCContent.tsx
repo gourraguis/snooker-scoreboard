@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { useEffect, useState } from 'react'
 import { Col, Empty, Row } from 'antd'
@@ -24,10 +25,12 @@ const SCContent = () => {
   const [globalScore, setGlobalScoreState] = useRecoilState(globalScoreState)
   const setHistory = useSetRecoilState(historyState)
   const [showGlobalScore, setShowGlobalScore] = useState(false)
+  const router = useRouter()
+  const { id } = router.query
 
   useEffect(() => {
-    initSocket(addGameAction(setGlobalScoreState, setGame, setHistory), setBoard)
-  }, [])
+    initSocket(addGameAction(setGlobalScoreState, setGame, setHistory), setBoard, id)
+  }, [id])
 
   useEffect(() => {
     const found = globalScore.find((element) => element.score > 0)
@@ -43,6 +46,7 @@ const SCContent = () => {
       </Head>
       <div className={styles.contentCentered}>
         {!board && <Empty className={styles.centered} description="BOARD IS NOT CONNECTED TO API" />}
+        {!id && <Empty className={styles.centered} description="BOARD ID IS NOT DEFINED" />}
         {!!board && !game && <Empty className={styles.centered} description="GAME IS NOT STARTED" />}
       </div>
       {!!board && !!game && (
