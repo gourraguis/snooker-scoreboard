@@ -6,10 +6,13 @@ import { BoardSocket } from './types/sockets'
 
 const socket: BoardSocket = io('localhost:5000/board')
 
-export const initSocket = (startNewGame: (game: IGame) => void, setBoard: SetterOrUpdater<IBoard | null>) => {
+export const initSocket = (
+  startNewGame: (game: IGame) => void,
+  setBoard: SetterOrUpdater<IBoard | null>,
+  id: string
+) => {
   socket.on('connect', () => {
-    const dummyBoardId = Math.floor(Math.random() * 1000).toString()
-    socket.emit('initBoard', dummyBoardId, setBoard)
+    socket.emit('initBoard', id, setBoard)
     console.log('Connected to server')
   })
 

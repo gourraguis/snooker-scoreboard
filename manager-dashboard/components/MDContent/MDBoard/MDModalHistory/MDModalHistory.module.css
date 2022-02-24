@@ -38,3 +38,10 @@
   max-height: 50vh;
   overflow-y: scroll;
 }
+
+.textBar {
+  margin: 0;
+  font-size: 1rem;
+  margin-top: -10px;
+  text-decoration: line-through;
+}
