@@ -9,12 +9,9 @@ const socket: BoardSocket = io('localhost:5000/board')
 export const initSocket = (
   startNewGame: (game: IGame) => void,
   setBoard: SetterOrUpdater<IBoard | null>,
-  id: string | string[] | undefined
+  id: string
 ) => {
   socket.on('connect', () => {
-    // const dummyBoardId = Math.floor(Math.random() * 1000).toString()
-    console.log(id)
-
     socket.emit('initBoard', id, setBoard)
     console.log('Connected to server')
   })

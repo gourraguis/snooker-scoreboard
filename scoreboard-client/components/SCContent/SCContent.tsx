@@ -26,7 +26,7 @@ const SCContent = () => {
   const setHistory = useSetRecoilState(historyState)
   const [showGlobalScore, setShowGlobalScore] = useState(false)
   const router = useRouter()
-  const { id } = router.query
+  const id = router?.query?.id as string
 
   useEffect(() => {
     initSocket(addGameAction(setGlobalScoreState, setGame, setHistory), setBoard, id)

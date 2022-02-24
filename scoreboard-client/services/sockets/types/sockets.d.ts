@@ -7,7 +7,7 @@ export interface ServerToClientEvents {
 }
 
 export interface ClientToServerEvents {
-  initBoard: (boardId: string | string[] | undefined, cb: (board: IBoard) => void) => void
+  initBoard: (boardId: string, cb: (board: IBoard) => void) => void
   updateGame: (game: IGame) => void
 }
 
