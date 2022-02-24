@@ -1,4 +1,3 @@
-/* eslint-disable no-plusplus */
 import axios from 'axios'
 import { SetterOrUpdater } from 'recoil'
 import { ICardElements } from '../types/cardElement'
@@ -114,47 +113,6 @@ export const createBoard = async (
   }
 }
 
-export const getManagers = async (setManagersElements: SetterOrUpdater<ICardElements[]>) => {
-  const token = localStorage.getItem('jwtToken')
-  try {
-    const res = await axios.get(`${API_ENDPOINT}game/managersGames`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    setManagersElements(res.data)
-  } catch (err) {
-    console.log(err)
-  }
-}
-
-export const getBoards = async (setTablesElements: SetterOrUpdater<ICardElements[]>) => {
-  const onwer = await getCurrentOwner()
-  let elements: ICardElements[] = []
-  const token = localStorage.getItem('jwtToken')
-  await axios
-    .get(`${API_ENDPOINT}board/all/${onwer?.phoneNumber}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    .then((res) => {
-      for (let index = 0; index < res.data.length; index++) {
-        const newElem = {
-          id: res.data[index].id,
-          name: res.data[index].name,
-          dailyScore: 10,
-          weeklyScore: 70,
-        }
-        elements = [...elements, newElem]
-      }
-      setTablesElements(elements)
-    })
-    .catch((err) => {
-      openNotification({ title: `${err.response.data.message}`, type: 'error' })
-    })
-}
-
 export const deleteManager = async (
   managersElements: ICardElements[],
   id: string,
@@ -238,5 +196,33 @@ export const getDailyGames = async (): Promise<number> => {
     return dailyGames
   } catch (err) {
     return 0
+  }
+}
+
+export const getManagers = async (setManagersElements: SetterOrUpdater<ICardElements[]>) => {
+  const token = localStorage.getItem('jwtToken')
+  try {
+    const res = await axios.get(`${API_ENDPOINT}game/managersGames`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    setManagersElements(res.data)
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export const getBoards = async (setBoardsElements: SetterOrUpdater<ICardElements[]>) => {
+  const token = localStorage.getItem('jwtToken')
+  try {
+    const res = await axios.get(`${API_ENDPOINT}game/boardsGames`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    setBoardsElements(res.data)
+  } catch (err) {
+    console.log(err)
   }
 }
