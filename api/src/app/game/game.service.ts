@@ -118,4 +118,44 @@ export class GameService {
     }
     return data
   }
+
+  public async getBoardsGames(phoneNumber: string): Promise<ICardElements[]> {
+    const dailDyate = new Date()
+    dailDyate.setDate(dailDyate.getDate() - 1)
+
+    const weeklyDate = new Date()
+    weeklyDate.setDate(weeklyDate.getDate() - 7)
+
+    const games = await this.gameRepository.query(`SELECT * FROM board WHERE board.owner = '${phoneNumber}'`)
+    if (!games) {
+      throw new NotFoundException('There is no games this day')
+    }
+
+    let data = []
+
+    for (let index = 0; index < games.length; index++) {
+      const day = await this.gameRepository.find({
+        ownerId: phoneNumber,
+        boardId: games[index].id,
+        startedAt: Between(dailDyate, new Date()),
+      })
+
+      const week = await this.gameRepository.find({
+        ownerId: phoneNumber,
+        boardId: games[index].id,
+        startedAt: Between(weeklyDate, new Date()),
+      })
+
+      data = [
+        ...data,
+        {
+          id: games[index].id,
+          name: games[index].name,
+          dailyScore: day.length,
+          weeklyScore: week.length,
+        },
+      ]
+    }
+    return data
+  }
 }
