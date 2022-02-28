@@ -43,10 +43,6 @@ export class GameService {
     return this.gameRepository.save(game)
   }
 
-  public async getBoardGames(boardId) {
-    return this.gameRepository.find({ boardId })
-  }
-
   public async getWeeklyGames(phoneNumber: string) {
     const date = new Date()
     date.setDate(date.getDate() - 7)
