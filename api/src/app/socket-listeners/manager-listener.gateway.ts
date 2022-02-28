@@ -32,7 +32,6 @@ export class ManagerListenerGateway implements OnGatewayConnection {
       //todo: redirect to login in case of error
       return
     }
-    //todo: use board id to start game on the right board
     this.logger.log(`Starting new game on board id: ${board.boardId}`)
     const newGame = this.gameService.createGame(board)
     this.boardEmitterGateway.emitStartNewGame(newGame)
