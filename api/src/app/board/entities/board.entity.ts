@@ -12,4 +12,7 @@ export class Board {
     nullable: true,
   })
   owner: string
+
+  @Column()
+  socketId: string
 }

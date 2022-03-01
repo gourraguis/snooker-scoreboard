@@ -13,13 +13,26 @@ export class BoardService {
     private readonly boardRepository: Repository<Board>
   ) {}
 
-  public findBoard(boardId: string): IBoard {
-    this.logger.log(`Fetching board id: ${boardId} from db`)
-    return {
-      id: boardId,
-      name: `Table ${boardId}`,
-      owner: `0708303132`,
+  public async getBoardWithSocketId(id: string, socketId: string) {
+    const board = await this.boardRepository.findOne({
+      id,
+    })
+    if (!board) {
+      throw new NotFoundException('getBoardWithSocketId: There is no baord with this id')
     }
+    const res = {
+      id: board.id,
+      name: board.name,
+      owner: board.owner,
+    }
+    const newBoard = {
+      id: board.id,
+      name: board.name,
+      owner: board.owner,
+      socketId,
+    }
+    await this.boardRepository.save(newBoard)
+    return res
   }
 
   public async getBoards(): Promise<IBoard[]> {
@@ -29,16 +42,12 @@ export class BoardService {
 
   public async getBoard(id: string): Promise<IBoard> {
     const board = await this.boardRepository.findOne({
-      id: id,
+      id,
     })
     if (!board) {
-      throw new NotFoundException('There is no baord with this id')
+      throw new NotFoundException('getBoard: There is no baord with this id')
     }
-    return {
-      id: board.id,
-      name: board.name,
-      owner: board.owner,
-    }
+    return board
   }
 
   public async getOwnerBoards(phoneNumber: string): Promise<IBoard[]> {
