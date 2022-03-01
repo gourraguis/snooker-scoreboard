@@ -45,6 +45,9 @@ export class BoardService {
       id,
     })
     if (!board) {
+      //Todo: Fix err when id is not valid
+      console.log(id)
+
       throw new NotFoundException('getBoard: There is no baord with this id')
     }
     return board

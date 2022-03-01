@@ -47,6 +47,14 @@ const MDModalNewGame: FunctionComponent<MDModalNewGameProps> = ({ onCancel, visi
     onCancel()
   }
 
+  const DefaultValue1 = {
+    defaultValue: 'Player 1',
+  }
+
+  const DefaultValue2 = {
+    defaultValue: 'Player 2',
+  }
+
   return (
     <div>
       <Modal
@@ -69,6 +77,10 @@ const MDModalNewGame: FunctionComponent<MDModalNewGameProps> = ({ onCancel, visi
           wrapperCol={{ span: 16 }}
           onFinish={onFinish}
           autoComplete="off"
+          initialValues={{
+            firstPlayer: 'Player 1',
+            secondPlayer: 'Player 2',
+          }}
         >
           <Form.Item label="Player 1" name="firstPlayer">
             <Input />
