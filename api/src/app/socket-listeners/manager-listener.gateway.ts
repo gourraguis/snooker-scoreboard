@@ -10,6 +10,10 @@ import { GameService } from '../game/game.service'
 import { BoardEmitterGateway } from '../socket-emitters/board-emitter.gateway'
 import { ManagerClientToServerEvents, ManagerServer, ManagerSocket } from '../types/manager-sockets'
 import { IInitBoard } from '../types/initBoard'
+import { IBoard } from '../board/types/board'
+import { ManagerService } from '../manager/manager.service'
+import { BoardService } from '../board/board.service'
+import { ManagerEmmiterGateway } from '../socket-emitters/manager-emitter.gateway'
 
 @WebSocketGateway({ cors: true, namespace: 'manager' })
 export class ManagerListenerGateway implements OnGatewayConnection {
@@ -17,11 +21,27 @@ export class ManagerListenerGateway implements OnGatewayConnection {
   @WebSocketServer()
   server: ManagerServer
 
-  constructor(private readonly boardEmitterGateway: BoardEmitterGateway, private readonly gameService: GameService) {}
+  constructor(
+    private readonly boardEmitterGateway: BoardEmitterGateway,
+    private readonly managerEmmiterGateway: ManagerEmmiterGateway,
+    private readonly gameService: GameService,
+    private readonly managerService: ManagerService,
+    private readonly boardService: BoardService
+  ) {}
 
   public handleConnection(ManagerClient: ManagerSocket) {
     this.logger.log(`NODE_ENV=${process.env.NODE_ENV}`)
     this.logger.log(`Manager connected: ${ManagerClient.id}`)
+  }
+
+  @SubscribeMessage<ManagerClientToServerEvents>('getBoardsData')
+  async onInitBoard(@MessageBody() managerId: string): Promise<void | IBoard[]> {
+    if (!managerId) return
+    const manager = await this.managerService.getManager(managerId)
+    const boards = await this.boardService.getOwnerBoards(manager.owner)
+    this.boardEmitterGateway.emitGetBoardsData(boards)
+    // this.managerEmmiterGateway.emitAddBoards(boards)
+    // return board
   }
 
   @SubscribeMessage<ManagerClientToServerEvents>('initGame')
