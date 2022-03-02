@@ -94,7 +94,7 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
       ) : (
         <Row>
           <Col span={11} className={styles.column}>
-            <MDPlayer player={game.players[0]} />
+            <MDPlayer player={game.players[0]} boardId={board.id} />
           </Col>
 
           <Col span={2}>
@@ -102,7 +102,7 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
           </Col>
 
           <Col span={11} className={styles.column}>
-            <MDPlayer player={game.players[1]} />
+            <MDPlayer player={game.players[1]} boardId={board.id} />
           </Col>
           <MDModalHistory
             visible={isHistoryModalVisible}
