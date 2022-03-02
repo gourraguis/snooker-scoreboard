@@ -30,3 +30,7 @@ export const initSocket = (
 export const emitNewGame = (board: IInitBoard, addGame: (game: IGame) => void) => {
   socket.emit('initGame', board, addGame)
 }
+
+export const emitUpdatePlayerName = (board: IInitBoard) => {
+  socket.emit('updatePlayerName', board)
+}
