@@ -5,6 +5,7 @@ import { IInitBoard } from './initBoard'
 export interface ServerToClientEvents {
   initGame: (newGame: IGame) => void
   updatePlayerName: (game: IGame) => void
+  getBoardsData: (boardId: string) => void
 }
 
 export interface ClientToServerEvents {
