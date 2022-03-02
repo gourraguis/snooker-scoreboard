@@ -1,4 +1,5 @@
 import { atom, selector, SetterOrUpdater } from 'recoil'
+import { emitUpdateGame } from '../services/sockets'
 import { IGame } from '../types/game'
 import { IPlayer, IPlayersNames } from '../types/player'
 
@@ -16,30 +17,40 @@ export const startedAtSelector = selector<Date>({
 })
 
 export const updateGameAction = (setGame: SetterOrUpdater<IGame | null>) => (newPlayers: IPlayersNames) => {
-  // Todo: fix this type (idk why it's not working)
-  setGame((oldGame: IGame) => {
-    const players: IPlayer[] = [
-      {
-        name: newPlayers.firstPlayer || '',
-        turn: oldGame.players[0].turn,
-        score: oldGame.players[0].score,
-      },
-      {
-        name: newPlayers.secondPlayer || '',
-        turn: oldGame.players[1].turn,
-        score: oldGame.players[1].score,
-      },
-    ]
+  setGame((oldGame: IGame | null) => {
+    if (oldGame) {
+      const players: IPlayer[] = [
+        {
+          name: newPlayers.firstPlayer || '',
+          turn: oldGame.players[0].turn,
+          score: oldGame.players[0].score,
+        },
+        {
+          name: newPlayers.secondPlayer || '',
+          turn: oldGame.players[1].turn,
+          score: oldGame.players[1].score,
+        },
+      ]
 
-    const newGame = {
-      id: oldGame.id,
-      boardId: oldGame.boardId,
-      players,
-      startedAt: oldGame.startedAt,
-      finishedAt: oldGame.finishedAt,
-      history: oldGame.history,
+      const newGame = {
+        id: oldGame.id,
+        boardId: oldGame.boardId,
+        players,
+        startedAt: oldGame.startedAt,
+        finishedAt: oldGame.finishedAt,
+        history: oldGame.history,
+      }
+
+      return newGame
     }
+    return null
+  })
+}
 
-    return newGame
+export const sendGameData = (setGame: SetterOrUpdater<IGame | null>) => () => {
+  setGame((oldGame: IGame | null) => {
+    // Todo: check why oldGame is empty
+    if (oldGame) emitUpdateGame(oldGame)
+    return oldGame
   })
 }

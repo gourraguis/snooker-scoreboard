@@ -5,6 +5,7 @@ import { IGame } from '../../../types/game'
 export interface ServerToClientEvents {
   initGame: (newGame: IGame) => void
   updatePlayerName: (newNames: IGame) => void
+  getBoardsData: (game: IGame) => void
 }
 
 export interface ClientToServerEvents {
