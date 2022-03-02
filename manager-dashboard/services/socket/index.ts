@@ -1,4 +1,5 @@
 import { io } from 'socket.io-client'
+import { SetterOrUpdater } from 'recoil'
 import { IBoard } from '../../types/board'
 import { ManagerSocket } from './types/sockets'
 import { IGame } from '../../types/game'
@@ -6,16 +7,19 @@ import { IInitBoard } from '../../types/initBoard'
 
 const socket: ManagerSocket = io('http://localhost:5000/manager')
 
-socket.on('connect', () => {
-  console.log('Manager Socket Connected to server')
-})
 socket.on('disconnect', () => console.error(`socket disconnected`))
 
 export const initSocket = (
   addBoard: (board: IBoard) => void,
   removeBoard: (board: IBoard) => void,
-  updateGame: (game: IGame) => void
+  updateGame: (game: IGame) => void,
+  setBoards: SetterOrUpdater<IBoard[]>,
+  id: string | null
 ) => {
+  socket.on('connect', () => {
+    socket.emit('getBoardsData', id)
+    console.log('Manager Socket Connected to server')
+  })
   socket.on('addBoard', (board) => {
     addBoard(board)
   })
