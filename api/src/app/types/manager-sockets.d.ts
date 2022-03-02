@@ -11,6 +11,7 @@ export interface ServerToClientEvents {
 
 export interface ClientToServerEvents {
   initGame: (board: IInitBoard, cb: (game: IGame) => void) => void
+  updatePlayerName: (board: IInitBoard, cb: (board: IGame) => void) => void
 }
 
 interface SocketData {
