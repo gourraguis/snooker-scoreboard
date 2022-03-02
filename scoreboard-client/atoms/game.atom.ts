@@ -2,6 +2,7 @@ import { atom, selector, SetterOrUpdater } from 'recoil'
 import { emitUpdateGame } from '../services/sockets'
 import { IGame } from '../types/game'
 import { IPlayer, IPlayersNames } from '../types/player'
+import { ITurn } from '../types/turn'
 
 export const gameState = atom<IGame | null>({
   key: 'gameState',
@@ -47,10 +48,55 @@ export const updateGameAction = (setGame: SetterOrUpdater<IGame | null>) => (new
   })
 }
 
-export const sendGameData = (setGame: SetterOrUpdater<IGame | null>) => () => {
-  setGame((oldGame: IGame | null) => {
-    // Todo: check why oldGame is empty
-    if (oldGame) emitUpdateGame(oldGame)
-    return oldGame
-  })
-}
+export const sendGameData =
+  (setGame: SetterOrUpdater<IGame | null>, setHistory: SetterOrUpdater<ITurn[]>) => async () => {
+    let playerZeroScore: number
+    let playerOneScore: number
+    const historyData: ITurn[] = await new Promise((resolve) => {
+      setHistory((oldHistory: ITurn[]) => {
+        playerZeroScore = oldHistory
+          .filter(({ value }) => value === 0)
+          .reduce((acc, turn) => {
+            const turnScore = turn.scoredBalls.reduce((acc2, val) => acc2 + val, 0)
+            return acc + turnScore
+          }, 0)
+
+        playerOneScore = oldHistory
+          .filter(({ value }) => value === 1)
+          .reduce((acc, turn) => {
+            const turnScore = turn.scoredBalls.reduce((acc2, val) => acc2 + val, 0)
+            return acc + turnScore
+          }, 0)
+        resolve(oldHistory)
+        return oldHistory
+      })
+    })
+
+    setGame((oldGame: IGame | null) => {
+      if (oldGame) {
+        const players: IPlayer[] = [
+          {
+            name: oldGame.players[0].name || '',
+            turn: oldGame.players[0].turn,
+            score: playerZeroScore,
+          },
+          {
+            name: oldGame.players[1].name || '',
+            turn: oldGame.players[1].turn,
+            score: playerOneScore,
+          },
+        ]
+        const newGame = {
+          id: oldGame.id,
+          boardId: oldGame.boardId,
+          players,
+          startedAt: oldGame.startedAt,
+          finishedAt: oldGame.finishedAt,
+          history: historyData.slice(0, -1),
+        }
+        emitUpdateGame(newGame)
+        return newGame
+      }
+      return null
+    })
+  }

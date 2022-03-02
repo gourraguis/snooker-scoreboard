@@ -34,7 +34,7 @@ const SCContent = () => {
       setBoard,
       id,
       updateGameAction(setGame),
-      sendGameData(setGame)
+      sendGameData(setGame, setHistory)
     )
   }, [id])
 
