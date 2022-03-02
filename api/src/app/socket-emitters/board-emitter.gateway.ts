@@ -1,5 +1,6 @@
 import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets'
 import { BoardService } from '../board/board.service'
+import { IBoard } from '../board/types/board'
 import { IGame } from '../game/types/game'
 import { BoardServer } from '../types/board-sockets'
 import { IInitBoard } from '../types/initBoard'
@@ -19,5 +20,11 @@ export class BoardEmitterGateway {
   public async emitUpdatePlayerName(updatedGame: IInitBoard) {
     const board = await this.boardService.getBoard(updatedGame.boardId)
     this.server.to(board.socketId).emit('updatePlayerName', updatedGame)
+  }
+
+  public async emitGetBoardsData(boards: IBoard[]) {
+    for (let index = 0; index < boards.length; index++) {
+      this.server.to(boards[index].socketId).emit('getBoardsData', boards[index].id)
+    }
   }
 }
