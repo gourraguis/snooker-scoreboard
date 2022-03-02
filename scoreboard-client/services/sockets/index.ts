@@ -9,7 +9,8 @@ const socket: BoardSocket = io('localhost:5000/board')
 export const initSocket = (
   startNewGame: (game: IGame) => void,
   setBoard: SetterOrUpdater<IBoard | null>,
-  id: string
+  id: string,
+  updatePlayerName: (game: IGame) => void
 ) => {
   socket.on('connect', () => {
     socket.emit('initBoard', id, setBoard)
@@ -19,7 +20,12 @@ export const initSocket = (
   socket.on('disconnect', () => console.error('Disconnected from server'))
 
   socket.on('initGame', startNewGame)
+
+  socket.on('updatePlayerName', (game) => {
+    updatePlayerName(game)
+  })
 }
+
 export const emitUpdateGame = (game: IGame) => {
   socket.emit('updateGame', game)
 }
