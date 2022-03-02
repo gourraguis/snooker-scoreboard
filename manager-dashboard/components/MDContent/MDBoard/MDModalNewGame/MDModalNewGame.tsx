@@ -23,8 +23,7 @@ const MDModalNewGame: FunctionComponent<MDModalNewGameProps> = ({ onCancel, visi
     onCancel()
   }
 
-  // Todo remove any
-  const onFinish = (values: any) => {
+  const onFinish = (values: { firstPlayer: string; secondPlayer: string }) => {
     const initBoard: IInitBoard = {
       boardId,
       firstPlayer: values.firstPlayer,
@@ -45,14 +44,6 @@ const MDModalNewGame: FunctionComponent<MDModalNewGameProps> = ({ onCancel, visi
       })
     })
     onCancel()
-  }
-
-  const DefaultValue1 = {
-    defaultValue: 'Player 1',
-  }
-
-  const DefaultValue2 = {
-    defaultValue: 'Player 2',
   }
 
   return (
