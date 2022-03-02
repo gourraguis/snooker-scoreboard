@@ -7,7 +7,7 @@ import Head from 'next/head'
 import { currentTurnSelector, historyState, playersScoreSelector } from '../../atoms/history'
 import { initSocket } from '../../services/sockets'
 import { boardState } from '../../atoms/board.atom'
-import { gameState } from '../../atoms/game.atom'
+import { gameState, updateGameAction } from '../../atoms/game.atom'
 import SCPlayerCard from './SCPlayerCard/SCPlayerCard'
 import SCHeading from './SCHeader/SCHeader'
 import SCGameDetails from './SCGameDetails/SCGameDetails'
@@ -29,7 +29,7 @@ const SCContent = () => {
   const id = router?.query?.id as string
 
   useEffect(() => {
-    initSocket(addGameAction(setGlobalScoreState, setGame, setHistory), setBoard, id)
+    initSocket(addGameAction(setGlobalScoreState, setGame, setHistory), setBoard, id, updateGameAction(setGame))
   }, [id])
 
   useEffect(() => {
