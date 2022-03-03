@@ -1,20 +1,20 @@
 {
   "folders": [
     {
-      "name": "scoreboard-client",
-      "path": "../scoreboard-client"
+      "name": "client-scoreboard",
+      "path": "../client-scoreboard"
     },
     {
-      "name": "manager-dashboard",
-      "path": "../manager-dashboard"
+      "name": "api",
+      "path": "../api"
     },
     {
       "name": "owner-dashboard",
       "path": "../owner-dashboard"
     },
     {
-      "name": "api",
-      "path": "../api"
+      "name": "manager-dashboard",
+      "path": "../manager-dashboard"
     }
   ],
   "settings": {}
