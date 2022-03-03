@@ -60,7 +60,6 @@ const MDModalNewGame: FunctionComponent<MDModalNewGameProps> = ({ onCancel, visi
         history: game!.history,
       }
       setGames(() => [...games.filter(({ id }) => id !== newGameData.id), newGameData])
-      console.log(games)
 
       addGame(newGame)
       openNotification({
