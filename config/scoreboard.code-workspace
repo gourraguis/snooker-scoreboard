@@ -5,16 +5,16 @@
       "path": "../client-scoreboard"
     },
     {
-      "name": "api",
-      "path": "../api"
+      "name": "manager-dashboard",
+      "path": "../manager-dashboard"
     },
     {
       "name": "owner-dashboard",
       "path": "../owner-dashboard"
     },
     {
-      "name": "manager-dashboard",
-      "path": "../manager-dashboard"
+      "name": "api",
+      "path": "../api"
     }
   ],
   "settings": {}
