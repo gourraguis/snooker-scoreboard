@@ -3,7 +3,7 @@ import { Button, Form, Input, Modal } from 'antd'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { emitNewGame } from '../../../../services/socket'
 import { openNotification } from '../../../../services/notification'
-import { addGameAction, gamesState } from '../../../../atoms/games.atom'
+import { addGameAction, gameForBoardIdSelector, gamesState } from '../../../../atoms/games.atom'
 import { IGame } from '../../../../types/game'
 import { IInitBoard } from '../../../../types/initBoard'
 import { saveGame } from '../../../../services/manager'
@@ -15,6 +15,7 @@ interface MDModalNewGameProps {
 }
 
 const MDModalNewGame: FunctionComponent<MDModalNewGameProps> = ({ onCancel, visible, boardId }) => {
+  const game = useRecoilValue(gameForBoardIdSelector(boardId))
   const setGames = useSetRecoilState(gamesState)
   const addGame = addGameAction(setGames)
   const oldGame = useRecoilValue(gamesState)
@@ -69,8 +70,8 @@ const MDModalNewGame: FunctionComponent<MDModalNewGameProps> = ({ onCancel, visi
           onFinish={onFinish}
           autoComplete="off"
           initialValues={{
-            firstPlayer: 'Player 1',
-            secondPlayer: 'Player 2',
+            firstPlayer: game?.players[0].name || 'Player 1',
+            secondPlayer: game?.players[1].name || 'Player 2',
           }}
         >
           <Form.Item label="Player 1" name="firstPlayer">
