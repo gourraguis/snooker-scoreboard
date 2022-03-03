@@ -51,7 +51,7 @@ const SCContent = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.contentCentered}>
-        {!board && <Empty className={styles.centered} description="BOARD IS NOT CONNECTED TO API" />}
+        {id && !board && <Empty className={styles.centered} description="BOARD IS NOT CONNECTED TO API" />}
         {!id && <Empty className={styles.centered} description="BOARD ID IS NOT DEFINED" />}
         {!!board && !game && <Empty className={styles.centered} description="GAME IS NOT STARTED" />}
       </div>
