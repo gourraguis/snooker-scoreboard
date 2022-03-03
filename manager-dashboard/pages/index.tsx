@@ -20,7 +20,8 @@ const Home: NextPage = () => {
   const router = useRouter()
 
   useEffect(() => {
-    initSocket(addBoardAction(setBoards), removeBoardAction(setBoards), updateGameAction(setGames))
+    const id = localStorage.getItem('token')
+    initSocket(addBoardAction(setBoards), removeBoardAction(setBoards), updateGameAction(setGames), setBoards, id)
   }, [])
 
   const checker = async () => {
