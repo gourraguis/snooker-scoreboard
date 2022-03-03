@@ -83,8 +83,8 @@ export const saveGame = async (game: IGame) => {
   }
   await axios
     .post(`${url}/game`, dbGame)
-    .then((res) => {
-      console.log(res)
+    .then(() => {
+      // console.log(res)
     })
     .catch((err) => {
       console.log(err)
