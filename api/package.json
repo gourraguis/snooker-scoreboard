@@ -20,6 +20,10 @@
     "migration:run": "npm run typeorm -- migration:run",
     "migration:revert": "npm run typeorm -- migration:revert"
   },
+  "engines": {
+    "node": "14.18.1",
+    "npm": "8.3.0"
+  },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
