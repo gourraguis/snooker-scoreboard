@@ -21,7 +21,6 @@ const Home: NextPage = () => {
       router.push('/login')
       return
     }
-    console.log(currentOwner)
     setOwner(currentOwner)
   }
 
