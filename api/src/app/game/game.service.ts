@@ -27,12 +27,12 @@ export class GameService {
       players: [
         {
           turn: 0,
-          name: board.firstPlayer || `Harvey`,
+          name: board.firstPlayer || `Player 1`,
           score: 0,
         },
         {
           turn: 1,
-          name: board.secondPlayer || `Mike Ross`,
+          name: board.secondPlayer || `Player 2`,
           score: 0,
         },
       ],

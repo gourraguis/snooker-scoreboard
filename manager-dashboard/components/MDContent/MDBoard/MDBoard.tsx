@@ -30,8 +30,8 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
   const handleNewGame = () => {
     const initBoard: IInitBoard = {
       boardId: board.id,
-      firstPlayer: '',
-      secondPlayer: '',
+      firstPlayer: game?.players[0].name,
+      secondPlayer: game?.players[1].name,
     }
     if (oldGame.length > 0) saveGame(oldGame[oldGame.length - 1])
 
