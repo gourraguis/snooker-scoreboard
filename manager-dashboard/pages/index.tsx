@@ -20,7 +20,8 @@ const Home: NextPage = () => {
   const router = useRouter()
 
   useEffect(() => {
-    initSocket(addBoardAction(setBoards), removeBoardAction(setBoards), updateGameAction(setGames))
+    const id = localStorage.getItem('token')
+    initSocket(addBoardAction(setBoards), removeBoardAction(setBoards), updateGameAction(setGames), setBoards, id)
   }, [])
 
   const checker = async () => {
@@ -42,7 +43,7 @@ const Home: NextPage = () => {
         <>
           <Head>
             <title>Manager Dashboard</title>
-            <link rel="icon" href="/favicon.ico" />
+            <link rel="icon" href="/favicon/favicon.ico" />
           </Head>
 
           <Layout style={{ minHeight: '100vh' }}>

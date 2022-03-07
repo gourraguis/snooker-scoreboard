@@ -7,7 +7,7 @@ const Home: NextPage = () => {
     <div style={{ height: '100vh' }}>
       <Head>
         <title>Snooker Scoreboard</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon/favicon.ico" />
       </Head>
       <SCContent />
     </div>

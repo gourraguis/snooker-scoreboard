@@ -1,9 +1,16 @@
 .header {
   height: inherit;
-  padding-top: .5rem;
+  padding-top: 0.5rem;
 }
 
 .title {
   text-align: center;
   color: white !important;
+}
+
+.button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 15px 10px 0 0;
 }

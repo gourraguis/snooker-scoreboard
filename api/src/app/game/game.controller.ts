@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param, UseGuards } from '@nestjs/common'
+import { Controller, Post, Body, Get, UseGuards } from '@nestjs/common'
 import { AuthenticatedUser } from '../auth/authenticated-user.decorator'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard'
 import { GameService } from './game.service'
@@ -12,11 +12,6 @@ export class GameController {
   @Post()
   saveGame(@Body() game: IGameDB): Promise<IGameDB> {
     return this.gameService.saveGame(game)
-  }
-
-  @Get('board/:boardId')
-  getBoardGames(@Param('boardId') boardId: string): Promise<IGameDB[]> {
-    return this.gameService.getBoardGames(boardId)
   }
 
   @UseGuards(JwtAuthGuard)

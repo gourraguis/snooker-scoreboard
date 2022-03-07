@@ -27,12 +27,12 @@ export class GameService {
       players: [
         {
           turn: 0,
-          name: board.firstPlayer || `Harvey`,
+          name: board.firstPlayer || `Player 1`,
           score: 0,
         },
         {
           turn: 1,
-          name: board.secondPlayer || `Mike Ross`,
+          name: board.secondPlayer || `Player 2`,
           score: 0,
         },
       ],
@@ -41,10 +41,6 @@ export class GameService {
 
   public async saveGame(game: IGameDB): Promise<IGameDB> {
     return this.gameRepository.save(game)
-  }
-
-  public async getBoardGames(boardId) {
-    return this.gameRepository.find({ boardId })
   }
 
   public async getWeeklyGames(phoneNumber: string) {

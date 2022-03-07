@@ -27,8 +27,8 @@ export class BoardListenerGateway implements OnGatewayConnection, OnGatewayDisco
     private readonly boardService: BoardService
   ) {}
 
-  public handleDisconnect(boardClient: BoardSocket) {
-    const board = this.boardService.findBoard(boardClient.data.boardId)
+  public async handleDisconnect(boardClient: BoardSocket) {
+    const board = await this.boardService.getBoard(boardClient.data.boardId)
     this.managerEmmiterGateway.emitRemoveBoard(board)
     this.logger.log(`Board disconnected: ${boardClient.id}`)
   }
@@ -38,13 +38,11 @@ export class BoardListenerGateway implements OnGatewayConnection, OnGatewayDisco
   }
 
   @SubscribeMessage<BoardClientToServerEvents>('initBoard')
-  onInitBoard(@MessageBody() boardId: string, @ConnectedSocket() client: Socket): IBoard | void {
-    console.log(boardId)
-
+  async onInitBoard(@MessageBody() boardId: string, @ConnectedSocket() client: Socket): Promise<void | IBoard> {
     if (!boardId) return
     client.data.boardId = boardId
 
-    const board = this.boardService.findBoard(boardId)
+    const board = await this.boardService.getBoardWithSocketId(boardId, client.id)
     this.managerEmmiterGateway.emitAddBoard(board)
     return board
   }

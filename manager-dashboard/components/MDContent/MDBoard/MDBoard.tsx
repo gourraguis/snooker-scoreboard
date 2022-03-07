@@ -30,8 +30,8 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
   const handleNewGame = () => {
     const initBoard: IInitBoard = {
       boardId: board.id,
-      firstPlayer: '',
-      secondPlayer: '',
+      firstPlayer: game?.players[0].name,
+      secondPlayer: game?.players[1].name,
     }
     if (oldGame.length > 0) saveGame(oldGame[oldGame.length - 1])
 
@@ -94,7 +94,7 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
       ) : (
         <Row>
           <Col span={11} className={styles.column}>
-            <MDPlayer player={game.players[0]} />
+            <MDPlayer player={game.players[0]} boardId={board.id} />
           </Col>
 
           <Col span={2}>
@@ -102,7 +102,7 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
           </Col>
 
           <Col span={11} className={styles.column}>
-            <MDPlayer player={game.players[1]} />
+            <MDPlayer player={game.players[1]} boardId={board.id} />
           </Col>
           <MDModalHistory
             visible={isHistoryModalVisible}
