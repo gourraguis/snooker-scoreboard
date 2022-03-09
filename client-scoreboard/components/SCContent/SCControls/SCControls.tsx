@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { RollbackOutlined, SyncOutlined } from '@ant-design/icons'
 import {
@@ -95,6 +95,38 @@ const SCControls = () => {
     ])
     setSend(true)
   }
+
+  const handleKeyPress = useCallback(
+    (event) => {
+      if (event.key === 's') {
+        switchPlayer()
+      } else if (event.key === 'u') {
+        undoBall()
+      } else if (event.key === 'r') {
+        scoreBall(1)()
+      } else if (event.key === 'y') {
+        scoreBall(2)()
+      } else if (event.key === 'g') {
+        scoreBall(3)()
+      } else if (event.key === 'b') {
+        scoreBall(4)()
+      } else if (event.key === 'l') {
+        scoreBall(5)()
+      } else if (event.key === 'p') {
+        scoreBall(6)()
+      } else if (event.key === 'k') {
+        scoreBall(7)()
+      }
+    },
+    [switchPlayer, undoBall, scoreBall]
+  )
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyPress)
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress)
+    }
+  }, [handleKeyPress])
 
   return (
     <div className={styles.content}>

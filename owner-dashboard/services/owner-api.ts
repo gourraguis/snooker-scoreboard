@@ -5,12 +5,11 @@ import { IManager } from '../types/manager'
 import { IOwner } from '../types/owner'
 import { IBoard } from '../types/board'
 import { openNotification } from './notification'
-
-const API_ENDPOINT = 'http://localhost:5000/'
+import { getApiEndpoint } from './config'
 
 export const generateOtpOwner = async (phoneNumber: string): Promise<boolean> => {
   try {
-    await axios.put<void>(`${API_ENDPOINT}owner/otp?phoneNumber=${phoneNumber}`)
+    await axios.put<void>(`${getApiEndpoint()}owner/otp?phoneNumber=${phoneNumber}`)
 
     openNotification({
       title: `Veuillez entrer votre code d'authentification`,
@@ -28,7 +27,7 @@ export const generateOtpOwner = async (phoneNumber: string): Promise<boolean> =>
 
 export const loginOwner = async (phoneNumber: string, otp: string): Promise<string | null> => {
   try {
-    const { data: jwtToken } = await axios.get<string>(`${API_ENDPOINT}auth/owner`, {
+    const { data: jwtToken } = await axios.get<string>(`${getApiEndpoint()}auth/owner`, {
       params: {
         phoneNumber,
         otp,
@@ -51,7 +50,7 @@ export const loginOwner = async (phoneNumber: string, otp: string): Promise<stri
 export const getCurrentOwner = async (): Promise<IOwner | null> => {
   try {
     const token = localStorage.getItem('jwtToken')
-    const { data: owner } = await axios.get<IOwner>(`${API_ENDPOINT}owner`, {
+    const { data: owner } = await axios.get<IOwner>(`${getApiEndpoint()}owner`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -70,7 +69,7 @@ export const createManager = async (
 ) => {
   const token = localStorage.getItem('jwtToken')
   try {
-    const res = await axios.post(`${API_ENDPOINT}manager`, manager, {
+    const res = await axios.post(`${getApiEndpoint()}manager`, manager, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -95,7 +94,7 @@ export const createBoard = async (
 ) => {
   const token = localStorage.getItem('jwtToken')
   try {
-    const res = await axios.post(`${API_ENDPOINT}board`, table, {
+    const res = await axios.post(`${getApiEndpoint()}board`, table, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -120,7 +119,7 @@ export const deleteManager = async (
 ) => {
   const token = localStorage.getItem('jwtToken')
   try {
-    const res = await axios.delete(`${API_ENDPOINT}manager/${id}`, {
+    const res = await axios.delete(`${getApiEndpoint()}manager/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -141,7 +140,7 @@ export const deleteBoard = async (
 ) => {
   const token = localStorage.getItem('jwtToken')
   try {
-    const res = await axios.get(`${API_ENDPOINT}board/${id}`, {
+    const res = await axios.get(`${getApiEndpoint()}board/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -153,7 +152,7 @@ export const deleteBoard = async (
         owner: '',
       }
       try {
-        const put = await axios.put(`${API_ENDPOINT}board`, board, {
+        const put = await axios.put(`${getApiEndpoint()}board`, board, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -174,7 +173,7 @@ export const deleteBoard = async (
 export const getWeeklyGames = async (): Promise<number> => {
   try {
     const token = localStorage.getItem('jwtToken')
-    const { data: weeklyGames } = await axios.get<number>(`${API_ENDPOINT}game/weeklyGames`, {
+    const { data: weeklyGames } = await axios.get<number>(`${getApiEndpoint()}game/weeklyGames`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -188,7 +187,7 @@ export const getWeeklyGames = async (): Promise<number> => {
 export const getDailyGames = async (): Promise<number> => {
   try {
     const token = localStorage.getItem('jwtToken')
-    const { data: dailyGames } = await axios.get<number>(`${API_ENDPOINT}game/dailyGames`, {
+    const { data: dailyGames } = await axios.get<number>(`${getApiEndpoint()}game/dailyGames`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -202,7 +201,7 @@ export const getDailyGames = async (): Promise<number> => {
 export const getManagers = async (setManagersElements: SetterOrUpdater<ICardElements[]>) => {
   const token = localStorage.getItem('jwtToken')
   try {
-    const res = await axios.get(`${API_ENDPOINT}game/managersGames`, {
+    const res = await axios.get(`${getApiEndpoint()}game/managersGames`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -216,7 +215,7 @@ export const getManagers = async (setManagersElements: SetterOrUpdater<ICardElem
 export const getBoards = async (setBoardsElements: SetterOrUpdater<ICardElements[]>) => {
   const token = localStorage.getItem('jwtToken')
   try {
-    const res = await axios.get(`${API_ENDPOINT}game/boardsGames`, {
+    const res = await axios.get(`${getApiEndpoint()}game/boardsGames`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

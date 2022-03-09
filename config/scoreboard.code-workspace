@@ -1,8 +1,8 @@
 {
   "folders": [
     {
-      "name": "scoreboard-client",
-      "path": "../scoreboard-client"
+      "name": "client-scoreboard",
+      "path": "../client-scoreboard"
     },
     {
       "name": "manager-dashboard",

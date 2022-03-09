@@ -4,8 +4,9 @@ import { IBoard } from '../../types/board'
 import { ManagerSocket } from './types/sockets'
 import { IGame } from '../../types/game'
 import { IInitBoard } from '../../types/initBoard'
+import { getApiEndpoint } from '../config'
 
-const socket: ManagerSocket = io('http://localhost:5000/manager')
+const socket: ManagerSocket = io(`${getApiEndpoint()}/manager`)
 
 socket.on('disconnect', () => console.error(`socket disconnected`))
 

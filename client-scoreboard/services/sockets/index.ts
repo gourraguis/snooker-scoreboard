@@ -2,9 +2,10 @@ import { SetterOrUpdater } from 'recoil'
 import { io } from 'socket.io-client'
 import { IBoard } from '../../types/board'
 import { IGame } from '../../types/game'
+import { getApiEndpoint } from '../config'
 import { BoardSocket } from './types/sockets'
 
-const socket: BoardSocket = io('localhost:5000/board')
+const socket: BoardSocket = io(`${getApiEndpoint()}/board`)
 
 export const initSocket = (
   startNewGame: (game: IGame) => void,

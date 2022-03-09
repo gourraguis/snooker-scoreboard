@@ -1,18 +1,18 @@
 version: '3'
 services:
-  scoreboard-client:
+  client-scoreboard:
     build:
-      context: ./scoreboard-client
+      context: ./client-scoreboard
     environment:
       - NODE_ENV
     ports:
       - "3010:3010"
     depends_on:
       - "api"
-    container_name: scoreboard-client
+    container_name: client-scoreboard
     volumes:
-       - ./scoreboard-client:/usr/src/app/scoreboard-client
-       - /usr/src/app/scoreboard-client/node_modules
+       - ./client-scoreboard:/usr/src/app/client-scoreboard
+       - /usr/src/app/client-scoreboard/node_modules
 
   manager-dashboard:
     build:

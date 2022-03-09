@@ -5,13 +5,12 @@ import { SetterOrUpdater } from 'recoil'
 import { IBoard } from '../types/board'
 import { IGame } from '../types/game'
 import { ILogin } from '../types/login'
+import { getApiEndpoint } from './config'
 import { openNotification } from './notification'
-
-const url = 'http://localhost:5000'
 
 export const loginManager = async (loginData: ILogin, setAuth: SetterOrUpdater<boolean>, router: NextRouter) => {
   await axios
-    .get(`${url}/manager/${loginData.phoneNumber}`)
+    .get(`${getApiEndpoint()}manager/${loginData.phoneNumber}`)
     .then((res) => {
       localStorage.setItem('token', res.data.id)
       openNotification({ title: `Hello ${res.data.name}` })
@@ -26,7 +25,7 @@ export const loginManager = async (loginData: ILogin, setAuth: SetterOrUpdater<b
 export const checkManagerAuth = async (setIsAuth: SetterOrUpdater<boolean>, router: NextRouter) => {
   const token = localStorage.getItem('token')
   try {
-    const res = await axios.get(`${url}/manager/${token}`)
+    const res = await axios.get(`${getApiEndpoint()}manager/${token}`)
     if (res) setIsAuth(true)
   } catch (err) {
     console.log(err)
@@ -39,7 +38,7 @@ export const getBoards = async (setBoards: SetterOrUpdater<IBoard[]>) => {
   const token = localStorage.getItem('token')
   let ownerId = ''
   await axios
-    .get(`${url}/manager/${token}`)
+    .get(`${getApiEndpoint()}manager/${token}`)
     .then((res) => {
       ownerId = res.data.owner
     })
@@ -47,7 +46,7 @@ export const getBoards = async (setBoards: SetterOrUpdater<IBoard[]>) => {
       console.log(err)
     })
   await axios
-    .get(`${url}/board/all/${ownerId}`)
+    .get(`${getApiEndpoint()}board/all/${ownerId}`)
     .then((res) => {
       setBoards(res.data)
     })
@@ -61,7 +60,7 @@ export const saveGame = async (game: IGame) => {
 
   let ownerId = ''
   await axios
-    .get(`${url}/manager/${token}`)
+    .get(`${getApiEndpoint()}manager/${token}`)
     .then((res) => {
       ownerId = res.data.owner
     })
@@ -82,7 +81,7 @@ export const saveGame = async (game: IGame) => {
     finishedAt: moment(),
   }
   await axios
-    .post(`${url}/game`, dbGame)
+    .post(`${getApiEndpoint()}game`, dbGame)
     .then((res) => {
       console.log(res)
     })
