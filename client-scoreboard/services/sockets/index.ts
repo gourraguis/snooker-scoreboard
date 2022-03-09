@@ -5,7 +5,7 @@ import { IGame } from '../../types/game'
 import { getApiEndpoint } from '../config'
 import { BoardSocket } from './types/sockets'
 
-const socket: BoardSocket = io(`${getApiEndpoint()}/board`)
+const socket: BoardSocket = io(`${getApiEndpoint()}board`)
 
 export const initSocket = (
   startNewGame: (game: IGame) => void,

@@ -18,7 +18,7 @@ export const loginManager = async (loginData: ILogin, setAuth: SetterOrUpdater<b
       router.push('/')
     })
     .catch((err) => {
-      console.log(err)
+      console.log(err.response)
     })
 }
 
