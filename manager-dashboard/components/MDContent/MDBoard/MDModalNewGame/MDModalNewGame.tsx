@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from 'react'
 import { Button, Form, Input, Modal } from 'antd'
-import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import { emitNewGame } from '../../../../services/socket'
 import { openNotification } from '../../../../services/notification'
-import { addGameAction, gamesState } from '../../../../atoms/games.atom'
+import { addGameAction, gameForBoardIdSelector, gamesState } from '../../../../atoms/games.atom'
 import { IGame } from '../../../../types/game'
 import { IInitBoard } from '../../../../types/initBoard'
 import { saveGame } from '../../../../services/manager'
@@ -15,7 +15,8 @@ interface MDModalNewGameProps {
 }
 
 const MDModalNewGame: FunctionComponent<MDModalNewGameProps> = ({ onCancel, visible, boardId }) => {
-  const setGames = useSetRecoilState(gamesState)
+  const game = useRecoilValue(gameForBoardIdSelector(boardId))
+  const [games, setGames] = useRecoilState(gamesState)
   const addGame = addGameAction(setGames)
   const oldGame = useRecoilValue(gamesState)
 
@@ -37,6 +38,28 @@ const MDModalNewGame: FunctionComponent<MDModalNewGameProps> = ({ onCancel, visi
           type: 'error',
         })
       }
+
+      const players = [
+        {
+          name: initBoard.firstPlayer!,
+          turn: game!.players[0].turn,
+          score: game!.players[0].score,
+        },
+        {
+          name: initBoard.secondPlayer!,
+          turn: game!.players[1].turn,
+          score: game!.players[1].score,
+        },
+      ]
+      const newGameData = {
+        id: game!.id,
+        boardId: game!.boardId,
+        players,
+        startedAt: game!.startedAt,
+        finishedAt: game!.finishedAt,
+        history: game!.history,
+      }
+      setGames(() => [...games.filter(({ id }) => id !== newGameData.id), newGameData])
 
       addGame(newGame)
       openNotification({

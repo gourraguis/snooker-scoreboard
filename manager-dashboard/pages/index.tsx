@@ -43,7 +43,7 @@ const Home: NextPage = () => {
         <>
           <Head>
             <title>Manager Dashboard</title>
-            <link rel="icon" href="/favicon.ico" />
+            <link rel="icon" href="/favicon/favicon.ico" />
           </Head>
 
           <Layout style={{ minHeight: '100vh' }}>

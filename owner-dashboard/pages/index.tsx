@@ -36,7 +36,7 @@ const Home: NextPage = () => {
     <>
       <Head>
         <title>Owner Dashboard</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon/favicon.ico" />
       </Head>
       <Layout style={{ minHeight: '100vh' }}>
         <ODHeader />
