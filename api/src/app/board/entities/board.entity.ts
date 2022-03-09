@@ -13,6 +13,8 @@ export class Board {
   })
   owner: string
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   socketId: string
 }
