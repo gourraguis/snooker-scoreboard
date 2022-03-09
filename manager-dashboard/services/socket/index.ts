@@ -6,7 +6,7 @@ import { IGame } from '../../types/game'
 import { IInitBoard } from '../../types/initBoard'
 import { getApiEndpoint } from '../config'
 
-const socket: ManagerSocket = io(`${getApiEndpoint()}/manager`)
+const socket: ManagerSocket = io(`${getApiEndpoint()}manager`)
 
 socket.on('disconnect', () => console.error(`socket disconnected`))
 

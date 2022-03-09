@@ -27,7 +27,7 @@ export const MDLogin: FunctionComponent = () => {
           </Form.Item>
 
           <Form.Item wrapperCol={{ span: 24 }}>
-            <Button type="primary" htmlType="submit">
+            <Button style={{ width: '100%' }} type="primary" htmlType="submit">
               Login
             </Button>
           </Form.Item>
