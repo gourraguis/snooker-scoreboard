@@ -19,7 +19,7 @@ const SCHistory = () => {
     <Card title={<h3 className={styles.title}>Historique</h3>} className={styles.card}>
       <Content className={styles.content}>
         {shownHistory.map((item, index) => (
-          <AnimatePresence exitBeforeEnter key={index}>
+          <AnimatePresence exitBeforeEnter>
             <motion.div
               key={item.value}
               animate={{ y: 0 }}
@@ -27,7 +27,7 @@ const SCHistory = () => {
               exit={{ y: -20 }}
               transition={{ duration: 0.15 }}
             >
-              <div className={styles.wrapper}>
+              <div key={index} className={styles.wrapper}>
                 <UserOutlined className={styles[`icon${item.value}`]} />
                 <div>
                   <p className={classNames({ [styles.text]: !item.undoed }, { [styles.textBar]: item.undoed })}>
