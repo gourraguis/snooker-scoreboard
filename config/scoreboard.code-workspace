@@ -15,7 +15,11 @@
     {
       "name": "api",
       "path": "../api"
-    }
+    },
+    {
+      "name": "website",
+      "path": "../website"
+    },
   ],
   "settings": {}
 }
