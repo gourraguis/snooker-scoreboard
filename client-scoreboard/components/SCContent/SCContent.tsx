@@ -62,7 +62,7 @@ const SCContent = () => {
           </div>
           <Content>
             <Row>
-              <Col span={6} offset={1}>
+              <Col span={6} offset={1} className={styles.cent}>
                 {game.players.map((player) => (
                   <SCPlayerCard
                     isCurrent={currentTurn?.value === player.turn}
