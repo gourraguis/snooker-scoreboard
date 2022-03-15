@@ -7,8 +7,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%;
   width: 100%;
+  min-height: 500px;
 }
 
 .divider {
@@ -28,4 +28,11 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.all {
+  height: 100%; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }

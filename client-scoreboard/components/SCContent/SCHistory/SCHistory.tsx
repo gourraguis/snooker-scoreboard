@@ -16,35 +16,37 @@ const SCHistory = () => {
   const shownHistory = playingHistoryWithoutCurrentTurn.slice(historyLength > 4 ? historyLength - 5 : 0, historyLength)
 
   return (
-    <Card title={<h3 className={styles.title}>Historique</h3>} className={styles.card}>
-      <Content className={styles.content}>
-        {shownHistory.map((item, index) => (
-          <AnimatePresence exitBeforeEnter key={index}>
-            <motion.div
-              key={item.value}
-              animate={{ y: 0 }}
-              initial={{ y: 20 }}
-              exit={{ y: -20 }}
-              transition={{ duration: 0.15 }}
-            >
-              <div className={styles.wrapper}>
-                <UserOutlined className={styles[`icon${item.value}`]} />
-                <div>
-                  <p className={classNames({ [styles.text]: !item.undoed }, { [styles.textBar]: item.undoed })}>
-                    Marque {item.scoredBalls.reduce((a, b) => a + b, 0)} points
-                  </p>
-                  <div className={styles.ballBox}>
-                    {item.scoredBalls.map((ball, index2) => (
-                      <SCBall key={index2} value={ball} size="sm" />
-                    ))}
+    <Content className={styles.all}>
+      <Card title={<h3 className={styles.title}>Historique</h3>} className={styles.card}>
+        <Content className={styles.content}>
+          {shownHistory.map((item, index) => (
+            <AnimatePresence exitBeforeEnter key={index}>
+              <motion.div
+                key={item.value}
+                animate={{ y: 0 }}
+                initial={{ y: 20 }}
+                exit={{ y: -20 }}
+                transition={{ duration: 0.15 }}
+              >
+                <div className={styles.wrapper}>
+                  <UserOutlined className={styles[`icon${item.value}`]} />
+                  <div>
+                    <p className={classNames({ [styles.text]: !item.undoed }, { [styles.textBar]: item.undoed })}>
+                      Marque {item.scoredBalls.reduce((a, b) => a + b, 0)} points
+                    </p>
+                    <div className={styles.ballBox}>
+                      {item.scoredBalls.map((ball, index2) => (
+                        <SCBall key={index2} value={ball} size="sm" />
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        ))}
-      </Content>
-    </Card>
+              </motion.div>
+            </AnimatePresence>
+          ))}
+        </Content>
+      </Card>
+    </Content>
   )
 }
 
