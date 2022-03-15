@@ -31,3 +31,11 @@
   align-items: center;
   justify-content: center;
 }
+
+.cent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 65vh;
+}
