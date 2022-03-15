@@ -4,9 +4,9 @@
     "display": "standalone",
     "scope": "/",
     "start_url": "/",
-    "name": "Jawad Club",
-    "short_name": "Jawad Club",
-    "description": "Snnoker App",
+    "name": "Jawad Manager",
+    "short_name": "Jawad Manager",
+    "description": "Snnoker App For Manager",
     "icons": [
         {
             "src": "/icon-192x192.png",
