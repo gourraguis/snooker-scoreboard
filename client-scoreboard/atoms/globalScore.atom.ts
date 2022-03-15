@@ -58,16 +58,30 @@ export const addGameAction =
             },
           ]
         }
-        return [
-          {
-            playerName: game.players[0].name,
-            score: oldGlobalState[0].score,
-          },
-          {
-            playerName: game.players[1].name,
-            score: oldGlobalState[1].score + 1,
-          },
-        ]
+        if (playerZeroScore < playerOneScore) {
+          return [
+            {
+              playerName: game.players[0].name,
+              score: oldGlobalState[0].score,
+            },
+            {
+              playerName: game.players[1].name,
+              score: oldGlobalState[1].score + 1,
+            },
+          ]
+        }
+        if (playerZeroScore === playerOneScore) {
+          return [
+            {
+              playerName: game.players[0].name,
+              score: oldGlobalState[0].score,
+            },
+            {
+              playerName: game.players[1].name,
+              score: oldGlobalState[1].score,
+            },
+          ]
+        }
       }
       return [
         {
