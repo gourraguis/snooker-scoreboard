@@ -1,14 +1,14 @@
 import { Card, Row, Col, Divider, Empty, Menu, Dropdown } from 'antd'
-import { PlusOutlined, HistoryOutlined } from '@ant-design/icons'
+import { PlusOutlined, HistoryOutlined, CloseCircleOutlined } from '@ant-design/icons'
 import { FunctionComponent, useState } from 'react'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { IBoard } from '../../../types/board'
 import { MDTimer } from './MDTimer/MDTimer'
 
 import styles from './MDBoard.module.css'
-import { emitNewGame } from '../../../services/socket'
+import { emitNewGame, stopTimer } from '../../../services/socket'
 import { MDPlayer } from './MDPlayer/MDPlayer'
-import { addGameAction, gameForBoardIdSelector, gamesState } from '../../../atoms/games.atom'
+import { addGameAction, gameForBoardIdSelector, gamesState, timerState } from '../../../atoms/games.atom'
 import { openNotification } from '../../../services/notification'
 import MDModalHistory from './MDModalHistory/MDModalHistory'
 import MDModalNewGame from './MDModalNewGame/MDModalNewGame'
@@ -26,8 +26,10 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
   const [isHistoryModalVisible, setIsHistoryModalVisible] = useState(false)
   const [isNewGameModalVisible, setIsNewGameModalVisible] = useState(false)
   const oldGame = useRecoilValue(gamesState)
+  const stopedTimer = useSetRecoilState(timerState)
 
   const handleNewGame = () => {
+    stopedTimer(false)
     const initBoard: IInitBoard = {
       boardId: board.id,
       firstPlayer: game?.players[0].name,
@@ -66,6 +68,15 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
   const handleNewDiffGame = () => {
     setIsNewGameModalVisible(true)
   }
+  const handleEndGame = () => {
+    stopedTimer(true)
+    const initBoard: IInitBoard = {
+      boardId: board.id,
+      firstPlayer: game?.players[0].name,
+      secondPlayer: game?.players[1].name,
+    }
+    stopTimer(initBoard)
+  }
   const menu = (
     <Menu>
       <Menu.Item onClick={handleNewGame} key="initSameGame">
@@ -80,7 +91,12 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
   return (
     <Card
       title={board.name}
-      extra={<MDTimer startedAt={game?.startedAt} />}
+      extra={
+        <>
+          <MDTimer startedAt={game?.startedAt} />
+          <CloseCircleOutlined className={styles.endButton} onClick={handleEndGame} />
+        </>
+      }
       actions={[
         <Dropdown overlay={menu} trigger={['click']}>
           <PlusOutlined />

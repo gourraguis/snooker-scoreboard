@@ -22,6 +22,11 @@ export class BoardEmitterGateway {
     this.server.to(board.socketId).emit('updatePlayerName', updatedGame)
   }
 
+  public async emitStopTimer(updatedGame: IInitBoard) {
+    const board = await this.boardService.getBoard(updatedGame.boardId)
+    this.server.to(board.socketId).emit('stopTimer')
+  }
+
   public async emitGetBoardsData(boards: IBoard[]) {
     for (let index = 0; index < boards.length; index++) {
       this.server.to(boards[index].socketId).emit('getBoardsData', boards[index].id)

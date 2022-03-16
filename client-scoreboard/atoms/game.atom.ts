@@ -9,6 +9,11 @@ export const gameState = atom<IGame | null>({
   default: null,
 })
 
+export const timerState = atom<boolean>({
+  key: 'timerState',
+  default: false,
+})
+
 export const startedAtSelector = selector<Date>({
   key: 'startedAtSelector',
   get: ({ get }) => {
@@ -100,3 +105,7 @@ export const sendGameData =
       return null
     })
   }
+
+export const stopTimerAction = (stopTimer: SetterOrUpdater<boolean>) => async () => {
+  stopTimer(true)
+}

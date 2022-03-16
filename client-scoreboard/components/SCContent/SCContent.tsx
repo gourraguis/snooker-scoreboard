@@ -7,7 +7,7 @@ import Head from 'next/head'
 import { currentTurnSelector, historyState, playersScoreSelector } from '../../atoms/history'
 import { initSocket } from '../../services/sockets'
 import { boardState } from '../../atoms/board.atom'
-import { gameState, sendGameData, updateGameAction } from '../../atoms/game.atom'
+import { gameState, sendGameData, stopTimerAction, timerState, updateGameAction } from '../../atoms/game.atom'
 import SCPlayerCard from './SCPlayerCard/SCPlayerCard'
 import SCHeading from './SCHeader/SCHeader'
 import SCGameDetails from './SCGameDetails/SCGameDetails'
@@ -25,16 +25,18 @@ const SCContent = () => {
   const [globalScore, setGlobalScoreState] = useRecoilState(globalScoreState)
   const setHistory = useSetRecoilState(historyState)
   const [showGlobalScore, setShowGlobalScore] = useState(false)
+  const setStopTimer = useSetRecoilState(timerState)
   const router = useRouter()
   const id = router?.query?.id as string
 
   useEffect(() => {
     initSocket(
-      addGameAction(setGlobalScoreState, setGame, setHistory),
+      addGameAction(setGlobalScoreState, setGame, setHistory, setStopTimer),
       setBoard,
       id,
       updateGameAction(setGame),
-      sendGameData(setGame, setHistory)
+      sendGameData(setGame, setHistory),
+      stopTimerAction(setStopTimer)
     )
   }, [id])
 
