@@ -9,8 +9,7 @@ export const boardsState = atom<IBoard[]>({
 
 export const addBoardAction = (setBoards: SetterOrUpdater<IBoard[]>) => (board: IBoard) => {
   setBoards((boards) => {
-    // const newArr = boards.filter(({ id }) => id === board.id)
-    const arr: any[] = []
+    const arr: IBoard[] = []
     let same = false
     for (let index = 0; index < boards.length; index++) {
       if (boards[index].id === board.id) {
