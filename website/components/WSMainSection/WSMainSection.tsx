@@ -9,7 +9,7 @@ export const WSMainSection: FunctionComponent = () => (
       <img alt="Bg" src="/Bg.jpeg" />
     </div>
     <div className={styles.bgText}>
-      <p className={styles.test}>
+      <p>
         La meilleur solution pour optimiser
         <br />
         les revenus de votre salle
