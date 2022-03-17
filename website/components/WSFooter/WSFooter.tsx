@@ -8,6 +8,6 @@ const { Paragraph } = Typography
 
 export const WSFooter: FunctionComponent = () => (
   <Footer className={styles.footer}>
-    <Paragraph>Copyright © 2022 Club</Paragraph>
+    <Paragraph className={styles.text}>Copyright © 2022 Club</Paragraph>
   </Footer>
 )
