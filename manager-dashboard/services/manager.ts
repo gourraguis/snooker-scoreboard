@@ -83,6 +83,9 @@ export const saveGame = async (game: IGame) => {
   await axios
     .post(`${getApiEndpoint()}game`, dbGame)
     .then((res) => {
+      openNotification({
+        title: 'Fin de la partie',
+      })
       console.log(res)
     })
     .catch((err) => {

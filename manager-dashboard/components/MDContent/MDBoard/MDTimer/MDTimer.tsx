@@ -1,7 +1,9 @@
 import { Typography } from 'antd'
 import moment from 'moment'
 import { FunctionComponent, useState } from 'react'
+import { useRecoilValue } from 'recoil'
 import { useInterval } from 'usehooks-ts'
+import { timerState } from '../../../../atoms/games.atom'
 
 const { Text } = Typography
 
@@ -11,6 +13,7 @@ interface MDTimerProps {
 
 export const MDTimer: FunctionComponent<MDTimerProps> = ({ startedAt }) => {
   const [timerText, setTimerText] = useState('00:00')
+  const stopedTimer = useRecoilValue(timerState)
 
   useInterval(() => {
     if (startedAt) {
@@ -18,5 +21,10 @@ export const MDTimer: FunctionComponent<MDTimerProps> = ({ startedAt }) => {
     }
   }, 1000)
 
-  return <Text type="secondary">{timerText}</Text>
+  return (
+    <div>
+      {stopedTimer && <Text type="secondary">00:00</Text>}
+      {!stopedTimer && <Text type="secondary">{timerText}</Text>}
+    </div>
+  )
 }
