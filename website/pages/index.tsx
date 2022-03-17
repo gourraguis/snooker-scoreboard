@@ -7,6 +7,7 @@ import { WSFooter } from '../components/WSFooter/WSFooter'
 import { WSMainSection } from '../components/WSMainSection/WSMainSection'
 import { WSScoreBoard } from '../components/WSScoreBoard/WSScoreBoard'
 import { WSManager } from '../components/WSManager/WSManager'
+import { WSOwner } from '../components/WSOwner/WSOwner'
 
 const Home: NextPage = () => {
   useEffect(() => {
@@ -23,6 +24,7 @@ const Home: NextPage = () => {
         <WSMainSection />
         <WSScoreBoard />
         <WSManager />
+        <WSOwner />
         <WSFooter />
       </Layout>
     </>
