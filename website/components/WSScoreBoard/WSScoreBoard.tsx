@@ -5,15 +5,10 @@ import styles from './WSScoreBoard.module.css'
 
 export const WSScoreBoard: FunctionComponent = () => (
   <div className={styles.all}>
+    <h2 className={styles.header}>Score Board</h2>
+    <p className={styles.text}>Tableau pour afficher et gérer les résultats.</p>
     <div className={styles.bgWrap}>
-      <img alt="Bg" src="/Bg.jpeg" />
-    </div>
-    <div className={styles.bgText}>
-      <p className={styles.test}>
-        La meilleur solution pour optimiser
-        <br />
-        les revenus de votre salle
-      </p>
+      <img alt="ScoreBoard" src="/ScoreBoard.png" />
     </div>
   </div>
 )
