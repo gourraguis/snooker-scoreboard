@@ -6,6 +6,7 @@ import { openNotification } from '../services/notification'
 import { WSFooter } from '../components/WSFooter/WSFooter'
 import { WSMainSection } from '../components/WSMainSection/WSMainSection'
 import { WSScoreBoard } from '../components/WSScoreBoard/WSScoreBoard'
+import { WSManager } from '../components/WSManager/WSManager'
 
 const Home: NextPage = () => {
   useEffect(() => {
@@ -21,6 +22,7 @@ const Home: NextPage = () => {
       <Layout style={{ minHeight: '100vh' }}>
         <WSMainSection />
         <WSScoreBoard />
+        <WSManager />
         <WSFooter />
       </Layout>
     </>
