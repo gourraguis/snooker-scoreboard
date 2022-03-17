@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from 'react'
 import { Button, Form, Input, Modal } from 'antd'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { emitNewGame } from '../../../../services/socket'
 import { openNotification } from '../../../../services/notification'
-import { addGameAction, gameForBoardIdSelector, gamesState } from '../../../../atoms/games.atom'
+import { addGameAction, gameForBoardIdSelector, gamesState, timerState } from '../../../../atoms/games.atom'
 import { IGame } from '../../../../types/game'
 import { IInitBoard } from '../../../../types/initBoard'
 import { saveGame } from '../../../../services/manager'
@@ -19,12 +19,14 @@ const MDModalNewGame: FunctionComponent<MDModalNewGameProps> = ({ onCancel, visi
   const [games, setGames] = useRecoilState(gamesState)
   const addGame = addGameAction(setGames)
   const oldGame = useRecoilValue(gamesState)
+  const stopedTimer = useSetRecoilState(timerState)
 
   const handleCancel = () => {
     onCancel()
   }
 
   const onFinish = (values: { firstPlayer: string; secondPlayer: string }) => {
+    stopedTimer(false)
     const initBoard: IInitBoard = {
       boardId,
       firstPlayer: values.firstPlayer,

@@ -7,6 +7,11 @@ export const gamesState = atom<IGame[]>({
   default: [],
 })
 
+export const timerState = atom<boolean>({
+  key: 'timerState',
+  default: false,
+})
+
 export const gameForBoardIdSelector = (boardId: string) =>
   selector<IGame | null>({
     key: `gameForBoardIdSelector:${boardId}`,

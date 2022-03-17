@@ -10,3 +10,9 @@
 .divider {
   height: 100%;
 }
+
+.endButton {
+  color: brown;
+  margin-left: 10px;
+  cursor: pointer;
+}

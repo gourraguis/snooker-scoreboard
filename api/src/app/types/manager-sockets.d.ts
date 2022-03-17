@@ -13,6 +13,7 @@ export interface ClientToServerEvents {
   getBoardsData: (managerId: string | null) => void
   initGame: (board: IInitBoard, cb: (game: IGame) => void) => void
   updatePlayerName: (board: IInitBoard, cb: (board: IGame) => void) => void
+  stopTimer: (board: IInitBoard) => void
 }
 
 interface SocketData {
