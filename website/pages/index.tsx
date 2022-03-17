@@ -6,16 +6,16 @@ import { openNotification } from '../services/notification'
 
 const Home: NextPage = () => {
   useEffect(() => {
-    openNotification({ title: 'Welcome to Jawad Club' })
+    openNotification({ title: 'Welcome to Club' })
   }, [])
 
   return (
     <>
       <Head>
-        <title>Jawad Club</title>
+        <title>Club</title>
         <link rel="icon" href="/favicon/favicon.ico" />
       </Head>
-      <Layout style={{ minHeight: '100vh' }}>Hello from jawad club!</Layout>
+      <Layout style={{ minHeight: '100vh' }}>Hello from club!</Layout>
     </>
   )
 }
