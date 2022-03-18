@@ -8,6 +8,12 @@
   .all {
     grid-template-columns: repeat(2, 1fr);
   }
+  .text {
+    width: 60%;
+  }
+  .button {
+    margin-top: 2vh;
+  }
 }
 
 @media (max-width: 800px) {
@@ -15,13 +21,10 @@
     order: -1;
   }
   .button {
-    margin-top: 4vh;
+    margin-top: 8vh;
   }
-}
-
-@media (max-width: 1000px) {
-  .button {
-    margin-top: 4vh;
+  .text {
+    width: 80%;
   }
 }
 
@@ -45,7 +48,6 @@
 }
 
 .text {
-  width: 60%;
   display: flex;
   justify-content: start;
   text-align: center;
