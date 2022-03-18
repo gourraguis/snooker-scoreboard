@@ -15,7 +15,7 @@ export const WSManager: FunctionComponent = () => (
         <p className={styles.text}>Espace du serveur pour pouvoir lancer et manipuler les parties facilement.</p>
       </div>
       <div className={styles.buttonBos}>
-        <Button className={styles.button} type="primary">
+        <Button href="https://manager.jawad.club/" className={styles.button} type="primary">
           Login
         </Button>
       </div>

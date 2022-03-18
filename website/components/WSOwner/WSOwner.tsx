@@ -15,7 +15,7 @@ export const WSOwner: FunctionComponent = () => (
         </p>
       </div>
       <div className={styles.buttonBos}>
-        <Button className={styles.button} type="primary">
+        <Button href="https://owner.jawad.club/" className={styles.button} type="primary">
           Login
         </Button>
       </div>
