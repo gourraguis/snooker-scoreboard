@@ -1,21 +1,26 @@
 import Head from 'next/head'
 import type { NextPage } from 'next'
 import { Layout } from 'antd'
-import { useEffect } from 'react'
-import { openNotification } from '../services/notification'
+import { WSFooter } from '../components/WSFooter/WSFooter'
+import { WSMainSection } from '../components/WSMainSection/WSMainSection'
+import { WSScoreBoard } from '../components/WSScoreBoard/WSScoreBoard'
+import { WSManager } from '../components/WSManager/WSManager'
+import { WSOwner } from '../components/WSOwner/WSOwner'
 
 const Home: NextPage = () => {
-  useEffect(() => {
-    openNotification({ title: 'Welcome to Jawad Club' })
-  }, [])
-
   return (
     <>
       <Head>
-        <title>Jawad Club</title>
+        <title>Club</title>
         <link rel="icon" href="/favicon/favicon.ico" />
       </Head>
-      <Layout style={{ minHeight: '100vh' }}>Hello from jawad club!</Layout>
+      <Layout style={{ minHeight: '100vh' }}>
+        <WSMainSection />
+        <WSScoreBoard />
+        <WSManager />
+        <WSOwner />
+        <WSFooter />
+      </Layout>
     </>
   )
 }
