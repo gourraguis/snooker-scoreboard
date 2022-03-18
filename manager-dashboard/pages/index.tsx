@@ -10,50 +10,51 @@ import { MDHeader } from '../components/MDHeader/MDHeader'
 import { MDContent } from '../components/MDContent/MDContent'
 import { MDFooter } from '../components/MDFooter/MDFooter'
 import { gamesState, updateGameAction } from '../atoms/games.atom'
-import { checkManagerAuth } from '../services/manager'
+import { getCurrentManager } from '../services/manager'
 import { authState } from '../atoms/authState'
 
 const Home: NextPage = () => {
   const setBoards = useSetRecoilState(boardsState)
   const setGames = useSetRecoilState(gamesState)
-  const [isAuth, setIsAuth] = useRecoilState(authState)
   const router = useRouter()
+  const [manager, setManager] = useRecoilState(authState)
+
+  const fetchCurrentManager = async () => {
+    const currentManager = await getCurrentManager()
+
+    if (!currentManager) {
+      router.push('/login')
+      return
+    }
+    setManager(currentManager)
+  }
 
   useEffect(() => {
     const id = localStorage.getItem('token')
     initSocket(addBoardAction(setBoards), removeBoardAction(setBoards), updateGameAction(setGames), setBoards, id)
   }, [])
 
-  const checker = async () => {
-    await checkManagerAuth(setIsAuth, router)
-  }
-
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    if (!token) {
-      router.push('/login')
-      return
-    }
-    checker()
+    fetchCurrentManager()
   }, [])
 
-  return (
-    <div>
-      {isAuth && (
-        <>
-          <Head>
-            <title>Manager Dashboard</title>
-            <link rel="icon" href="/favicon/favicon.ico" />
-          </Head>
+  if (!manager) {
+    return null
+  }
 
-          <Layout style={{ minHeight: '100vh' }}>
-            <MDHeader />
-            <MDContent />
-            <MDFooter />
-          </Layout>
-        </>
-      )}
-    </div>
+  return (
+    <>
+      <Head>
+        <title>Manager Dashboard</title>
+        <link rel="icon" href="/favicon/favicon.ico" />
+      </Head>
+
+      <Layout style={{ minHeight: '100vh' }}>
+        <MDHeader />
+        <MDContent />
+        <MDFooter />
+      </Layout>
+    </>
   )
 }
 

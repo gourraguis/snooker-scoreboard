@@ -7,6 +7,11 @@ export class AuthController {
 
   @Get('owner')
   loginOwner(@Query('phoneNumber') phoneNumber: string, @Query('otp') otp: string) {
-    return this.authService.checkOtp(phoneNumber, otp)
+    return this.authService.checkOwnerOtp(phoneNumber, otp)
+  }
+
+  @Get('manager')
+  loginManager(@Query('phoneNumber') phoneNumber: string, @Query('otp') otp: string) {
+    return this.authService.checkManagerOtp(phoneNumber, otp)
   }
 }
