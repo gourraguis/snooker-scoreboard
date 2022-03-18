@@ -71,6 +71,8 @@ export const saveGame = async (game: IGame) => {
   const winner = game.players.find((elem) => elem.score === winnerScore)
   const loser = game.players.find((elem) => elem.name !== winner!.name)
 
+  console.log(winnerScore)
+
   const dbGame = {
     boardId: game.boardId,
     managerId: token,
@@ -80,15 +82,17 @@ export const saveGame = async (game: IGame) => {
     startedAt: game.startedAt,
     finishedAt: moment(),
   }
-  await axios
-    .post(`${getApiEndpoint()}game`, dbGame)
-    .then((res) => {
-      openNotification({
-        title: 'Fin de la partie',
+  if (winnerScore !== 0) {
+    await axios
+      .post(`${getApiEndpoint()}game`, dbGame)
+      .then((res) => {
+        openNotification({
+          title: 'Fin de la partie',
+        })
+        console.log(res)
       })
-      console.log(res)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
 }
