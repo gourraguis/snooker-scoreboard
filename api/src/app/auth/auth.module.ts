@@ -10,12 +10,14 @@ import { OwnerModule } from '../owner/owner.module'
 import { OwnerService } from '../owner/owner.service'
 import { ConfigModule } from '../../config/config.module'
 import { ConfigService } from '../../config/config.service'
+import { ManagerModule } from '../manager/manager.module'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Owner]),
     ConfigModule,
     OwnerModule,
+    ManagerModule,
     PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],

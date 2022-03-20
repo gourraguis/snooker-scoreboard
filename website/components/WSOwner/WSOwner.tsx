@@ -8,12 +8,14 @@ export const WSOwner: FunctionComponent = () => (
   <div className={styles.all}>
     <div className={styles.wrapText}>
       <h2 className={styles.header}>Owner dashboard</h2>
-      <p className={styles.text}>
-        Espace du propriétaire pour pouvoir gérer ces tables et serveurs facilement et voir les statistiques en temps
-        réelle.
-      </p>
+      <div className={styles.wrapP}>
+        <p className={styles.text}>
+          Espace du propriétaire pour pouvoir gérer ces tables et serveurs facilement et voir les statistiques en temps
+          réelle.
+        </p>
+      </div>
       <div className={styles.buttonBos}>
-        <Button className={styles.button} type="primary">
+        <Button href="https://owner.jawad.club/" className={styles.button} type="primary">
           Login
         </Button>
       </div>

@@ -3,6 +3,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 6vh;
 }
 
 .header {
@@ -33,6 +34,7 @@
   width: 80vw;
   overflow: hidden;
   margin-bottom: 1%;
+  margin-top: 3vh;
 }
 
 .bgWrap img {
