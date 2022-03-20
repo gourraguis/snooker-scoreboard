@@ -1,14 +1,27 @@
-import { Controller, Post, Body, Get, BadRequestException, Param, Delete, UseGuards } from '@nestjs/common'
+import { Controller, Post, Body, Get, BadRequestException, Param, Delete, UseGuards, Put, Query } from '@nestjs/common'
 import { AuthenticatedUser } from '../auth/authenticated-user.decorator'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard'
 import { validatePhoneNumber } from '../owner/utils'
+import { SmsService } from '../sms/sms.service'
 import { Manager } from './entities/manager.entity'
 import { ManagerService } from './manager.service'
 import { IManager } from './types'
 
 @Controller('manager')
 export class ManagerController {
-  constructor(private readonly managerService: ManagerService) {}
+  constructor(private readonly managerService: ManagerService, private readonly smsService: SmsService) {}
+
+  @Put('otp')
+  async generateOtp(@Query('phoneNumber') phoneNumber: string) {
+    const manager = await this.managerService.generateOtp(phoneNumber)
+    if (manager) this.smsService.sendSms(manager.otp)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('')
+  getCurrentManager(@AuthenticatedUser() manager: Manager) {
+    return manager
+  }
 
   @Get()
   getManagers(): Promise<IManager[]> {
@@ -22,11 +35,11 @@ export class ManagerController {
   }
 
   // @UseGuards(JwtAuthGuard)
-  @Get(':id')
-  getManager(@Param('id') id: string) {
-    validatePhoneNumber(id)
-    return this.managerService.getManager(id)
-  }
+  // @Get(':id')
+  // getManager(@Param('id') id: string) {
+  //   validatePhoneNumber(id)
+  //   return this.managerService.getManager(id)
+  // }
 
   @UseGuards(JwtAuthGuard)
   @Post()

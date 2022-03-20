@@ -1,6 +1,7 @@
-import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common'
+import { BadRequestException, ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { DeleteResult, Repository } from 'typeorm'
+import { generateNewOtp } from '../owner/utils'
 import { Manager } from './entities/manager.entity'
 import { IManager } from './types'
 
@@ -12,6 +13,35 @@ export class ManagerService {
     @InjectRepository(Manager)
     private readonly managerRepository: Repository<Manager>
   ) {}
+
+  public async generateOtp(phoneNumber: string): Promise<Manager> {
+    const manager = await this.managerRepository.findOne({
+      id: phoneNumber,
+    })
+    if (!manager) {
+      throw new NotFoundException('There is no manager with this phone number')
+    }
+
+    manager.otp = generateNewOtp()
+    return this.managerRepository.save(manager)
+  }
+
+  public async getTheManager(phoneNumber: string, otp: string): Promise<IManager> {
+    const manager = await this.managerRepository.findOne({
+      id: phoneNumber,
+      otp,
+    })
+    if (!manager) {
+      throw new BadRequestException(`Votre numéro de téléphone ou votre code d'authentification est invalide`)
+    }
+
+    return {
+      id: manager.id,
+      name: manager.name,
+      otp: manager.otp,
+      owner: manager.owner,
+    }
+  }
 
   public async getManagers(): Promise<IManager[]> {
     const managers = await this.managerRepository.find()

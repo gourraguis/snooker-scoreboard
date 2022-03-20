@@ -1,50 +1,76 @@
 import axios from 'axios'
 import moment from 'moment'
-import { NextRouter } from 'next/router'
 import { SetterOrUpdater } from 'recoil'
 import { IBoard } from '../types/board'
 import { IGame } from '../types/game'
-import { ILogin } from '../types/login'
+import { IManager } from '../types/manager'
 import { getApiEndpoint } from './config'
 import { openNotification } from './notification'
 
-export const loginManager = async (loginData: ILogin, setAuth: SetterOrUpdater<boolean>, router: NextRouter) => {
-  await axios
-    .get(`${getApiEndpoint()}manager/${loginData.phoneNumber}`)
-    .then((res) => {
-      localStorage.setItem('token', res.data.id)
-      openNotification({ title: `Hello ${res.data.name}` })
-      setAuth(true)
-      router.push('/')
+export const generateOtpManager = async (phoneNumber: string): Promise<boolean> => {
+  try {
+    await axios.put<void>(`${getApiEndpoint()}manager/otp?phoneNumber=${phoneNumber}`)
+
+    openNotification({
+      title: `Veuillez entrer votre code d'authentification`,
+      description: `Vous devez recevoir un code d'authentification par sms sur votre téléphone pour vous connecter`,
     })
-    .catch((err) => {
-      console.log(err.response)
+    return true
+  } catch (e: any) {
+    openNotification({
+      title: e.response.data.message,
+      type: 'error',
     })
+    return false
+  }
 }
 
-export const checkManagerAuth = async (setIsAuth: SetterOrUpdater<boolean>, router: NextRouter) => {
-  const token = localStorage.getItem('token')
+export const loginManager = async (phoneNumber: string, otp: string): Promise<string | null> => {
   try {
-    const res = await axios.get(`${getApiEndpoint()}manager/${token}`)
-    if (res) setIsAuth(true)
-  } catch (err) {
-    console.log(err)
-    setIsAuth(false)
-    router.push('/login')
+    const { data: jwtToken } = await axios.get<string>(`${getApiEndpoint()}auth/manager`, {
+      params: {
+        phoneNumber,
+        otp,
+      },
+    })
+    localStorage.setItem('token', phoneNumber)
+
+    openNotification({
+      title: `Bienvenue, on va vous rediriger vers votre dashboard`,
+    })
+    return jwtToken
+  } catch (e: any) {
+    openNotification({
+      title: e.response.data.message,
+      type: 'error',
+    })
+    return null
+  }
+}
+
+export const getCurrentManager = async (): Promise<IManager | null> => {
+  try {
+    const token = localStorage.getItem('jwtToken')
+    const { data: manager } = await axios.get<IManager>(`${getApiEndpoint()}manager`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return manager
+  } catch {
+    return null
   }
 }
 
 export const getBoards = async (setBoards: SetterOrUpdater<IBoard[]>) => {
-  const token = localStorage.getItem('token')
   let ownerId = ''
-  await axios
-    .get(`${getApiEndpoint()}manager/${token}`)
-    .then((res) => {
-      ownerId = res.data.owner
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+  const token = localStorage.getItem('jwtToken')
+  const { data: manager } = await axios.get<IManager>(`${getApiEndpoint()}manager`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  ownerId = manager.owner || ''
   await axios
     .get(`${getApiEndpoint()}board/all/${ownerId}`)
     .then((res) => {
@@ -80,15 +106,17 @@ export const saveGame = async (game: IGame) => {
     startedAt: game.startedAt,
     finishedAt: moment(),
   }
-  await axios
-    .post(`${getApiEndpoint()}game`, dbGame)
-    .then((res) => {
-      openNotification({
-        title: 'Fin de la partie',
+  if (winnerScore !== 0) {
+    await axios
+      .post(`${getApiEndpoint()}game`, dbGame)
+      .then((res) => {
+        openNotification({
+          title: 'Fin de la partie',
+        })
+        console.log(res)
       })
-      console.log(res)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
 }

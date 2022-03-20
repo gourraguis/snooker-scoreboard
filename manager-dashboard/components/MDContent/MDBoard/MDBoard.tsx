@@ -93,10 +93,10 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
     <Card
       title={board.name}
       extra={
-        <>
+        <div className={styles.endSection}>
           <MDTimer startedAt={game?.startedAt} />
           <CloseCircleOutlined className={styles.endButton} onClick={handleEndGame} />
-        </>
+        </div>
       }
       actions={[
         <Dropdown overlay={menu} trigger={['click']}>
