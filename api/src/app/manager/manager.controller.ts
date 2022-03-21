@@ -14,7 +14,7 @@ export class ManagerController {
   @Put('otp')
   async generateOtp(@Query('phoneNumber') phoneNumber: string) {
     const manager = await this.managerService.generateOtp(phoneNumber)
-    if (manager) this.smsService.sendSms(manager.otp)
+    if (manager) this.smsService.sendSms(manager.otp, phoneNumber)
   }
 
   @UseGuards(JwtAuthGuard)

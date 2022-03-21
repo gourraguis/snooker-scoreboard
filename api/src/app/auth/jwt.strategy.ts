@@ -32,10 +32,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     let owner: IOwner
     let manager: IManager
     try {
-      owner = await this.ownerService.getOwner(phoneNumber, otp)
+      owner = await this.ownerService.getOwner(phoneNumber)
     } catch {}
     try {
-      manager = await this.managerService.getTheManager(phoneNumber, otp)
+      manager = await this.managerService.getTheManager(phoneNumber)
     } catch {}
     if (!owner && !manager) {
       throw new UnauthorizedException()

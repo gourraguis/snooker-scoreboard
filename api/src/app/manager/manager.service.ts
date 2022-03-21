@@ -26,10 +26,9 @@ export class ManagerService {
     return this.managerRepository.save(manager)
   }
 
-  public async getTheManager(phoneNumber: string, otp: string): Promise<IManager> {
+  public async getTheManager(phoneNumber: string): Promise<IManager> {
     const manager = await this.managerRepository.findOne({
       id: phoneNumber,
-      otp,
     })
     if (!manager) {
       throw new BadRequestException(`Votre numéro de téléphone ou votre code d'authentification est invalide`)

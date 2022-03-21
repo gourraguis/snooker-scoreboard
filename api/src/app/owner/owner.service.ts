@@ -14,10 +14,9 @@ export class OwnerService {
     private readonly ownerRepository: Repository<Owner>
   ) {}
 
-  public async getOwner(phoneNumber: string, otp: string): Promise<IOwner> {
+  public async getOwner(phoneNumber: string): Promise<IOwner> {
     const owner = await this.ownerRepository.findOne({
       phoneNumber,
-      otp,
     })
     if (!owner) {
       throw new BadRequestException(`Votre numéro de téléphone ou votre code d'authentification est invalide`)
