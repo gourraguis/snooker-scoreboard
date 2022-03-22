@@ -17,7 +17,11 @@ const SCHistory = () => {
 
   return (
     <Content className={styles.all}>
-      <Card title={<h3 className={styles.title}>Historique</h3>} className={styles.card}>
+      <Card
+        bodyStyle={{ padding: '40px 1em' }}
+        title={<h3 className={styles.title}>Historique</h3>}
+        className={styles.card}
+      >
         <Content className={styles.content}>
           {shownHistory.map((item, index) => (
             <AnimatePresence exitBeforeEnter key={index}>

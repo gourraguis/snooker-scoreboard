@@ -23,7 +23,7 @@ const SCPlayerCard: FunctionComponent<SCPlayerCardProps> = ({
   showGlobalScore,
 }) => {
   return (
-    <Card bodyStyle={{ padding: '12px' }} className={classNames(styles.card, { [styles.active]: isCurrent })}>
+    <Card bodyStyle={{ padding: '6px' }} className={classNames(styles.card, { [styles.active]: isCurrent })}>
       <div className={styles.center}>
         <UserOutlined className={styles.icon} style={{ color }} />
         <p className={styles.text}>{playerName}</p>

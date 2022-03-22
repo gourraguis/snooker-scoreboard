@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: center;
   border: solid 1px #e9d8ae;
-  border-radius: 0.5rem;
+  border-radius: 0.5rem 0.5rem 0 0;
   padding: 1% 5%;
   margin-top: 2%;
   background-color: #121212;
