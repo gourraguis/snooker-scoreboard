@@ -37,14 +37,12 @@ const SCControls = () => {
 
   const undoBall = () => {
     if (currentScore > 0) {
-      setHistory([
-        ...history.slice(0, -1),
-        {
-          value: currentTurn.value as 0 | 1,
-          scoredBalls: [],
-          undoed: false,
-        },
-      ])
+      const elem = {
+        value: currentTurn.value as 0 | 1,
+        scoredBalls: history[history.length - 1].scoredBalls.slice(0, -1),
+        undoed: false,
+      }
+      setHistory([...history.slice(0, -1), elem])
     } else {
       const index = historyWithoutCurrentTurn
         .slice()
