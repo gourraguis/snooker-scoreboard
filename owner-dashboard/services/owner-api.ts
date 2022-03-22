@@ -102,8 +102,8 @@ export const createBoard = async (
     const newElem: ICardElements = {
       id: res.data.id,
       name: res.data.name,
-      dailyScore: 10,
-      weeklyScore: 70,
+      dailyScore: 0,
+      weeklyScore: 0,
     }
     setTablesElements([...tablesElements, newElem])
     openNotification({ title: 'Nouvelle table a été créé' })

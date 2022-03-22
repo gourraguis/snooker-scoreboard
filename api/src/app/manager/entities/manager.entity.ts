@@ -8,11 +8,6 @@ export class Manager {
   @Column()
   name: string
 
-  @Column({
-    nullable: true,
-  })
-  otp: string
-
   @Column()
   owner: string
 }
