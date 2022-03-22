@@ -4,7 +4,7 @@
   border-radius: 0.5rem;
   margin: 10% 0;
   width: 100%;
-  min-height: 500px;
+  min-height: 30em;
 }
 
 .wrapper {
@@ -20,13 +20,13 @@
 }
 .text {
   margin: 0;
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin-top: -10px;
   color: #e9d8ae;
 }
 .textBar {
   margin: 0;
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin-top: -10px;
   color: #e9d8ae;
   text-decoration: line-through;
@@ -47,15 +47,15 @@
 }
 
 .icon0 {
-  font-size: 40px;
+  font-size: 30px;
   color: rgb(250 204 21);
-  margin-right: 10%;
+  margin-right: 7%;
 }
 
 .icon1 {
-  font-size: 40px;
+  font-size: 30px;
   color: rgb(153 27 27);
-  margin-right: 10%;
+  margin-right: 7%;
 }
 .all {
   height: 100%;

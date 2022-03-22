@@ -37,7 +37,7 @@ export class ManagerListenerGateway implements OnGatewayConnection {
   @SubscribeMessage<ManagerClientToServerEvents>('getBoardsData')
   async onInitBoard(@MessageBody() managerId: string): Promise<void | IBoard[]> {
     if (!managerId) return
-    const manager = await this.managerService.getManager(managerId)
+    const manager = await this.managerService.getManagerById(managerId)
     const boards = await this.boardService.getOwnerBoards(manager.owner)
     this.boardEmitterGateway.emitGetBoardsData(boards)
     // this.managerEmmiterGateway.emitAddBoards(boards)

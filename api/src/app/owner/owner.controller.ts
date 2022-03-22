@@ -16,9 +16,9 @@ export class OwnerController {
   ) {}
 
   @Put('otp')
-  async generateOtp(@Query('phoneNumber') phoneNumber: string) {
-    const owner = await this.ownerService.generateOtp(phoneNumber)
-    if (owner) this.smsService.sendSms(owner.otp)
+  async checkPhoneNumber(@Query('phoneNumber') phoneNumber: string) {
+    const owner = await this.ownerService.checkPhoneNumber(phoneNumber)
+    if (owner) this.smsService.sendSms(phoneNumber)
   }
 
   @Get('')

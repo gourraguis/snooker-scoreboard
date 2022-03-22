@@ -8,11 +8,6 @@ export class Owner {
   @Column()
   name: string
 
-  @Column({
-    nullable: true,
-  })
-  otp: string
-
   @Column()
   balance: number
 
