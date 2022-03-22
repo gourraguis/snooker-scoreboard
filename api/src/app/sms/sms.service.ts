@@ -13,7 +13,7 @@ export class SmsService {
     this.twilioClient = new Twilio(accountSid, authToken)
   }
 
-  public async sendSms(otp: string, phoneNumber: string) {
+  public async sendSms(phoneNumber: string) {
     const serviceSid = this.configService.get('TWILIO_VERIFICATION_SERVICE_SID')
 
     const firstChar = phoneNumber.substring(0)
@@ -22,7 +22,6 @@ export class SmsService {
     this.twilioClient.verify
       .services(serviceSid)
       .verifications.create({ to: newPhone, channel: 'sms' })
-      .then((verification) => console.log(verification.sid))
       .catch((err) => console.log(err))
   }
 }

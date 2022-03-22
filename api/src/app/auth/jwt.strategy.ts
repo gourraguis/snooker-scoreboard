@@ -28,7 +28,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   public async validate(payload: Payload) {
-    const { phoneNumber, otp } = payload
+    const { phoneNumber } = payload
     let owner: IOwner
     let manager: IManager
     try {

@@ -1,7 +1,6 @@
 import { BadRequestException, ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { DeleteResult, Repository } from 'typeorm'
-import { generateNewOtp } from '../owner/utils'
 import { Manager } from './entities/manager.entity'
 import { IManager } from './types'
 
@@ -14,16 +13,14 @@ export class ManagerService {
     private readonly managerRepository: Repository<Manager>
   ) {}
 
-  public async generateOtp(phoneNumber: string): Promise<Manager> {
+  public async checkPhoneNumber(phoneNumber: string): Promise<Manager> {
     const manager = await this.managerRepository.findOne({
       id: phoneNumber,
     })
     if (!manager) {
       throw new NotFoundException('There is no manager with this phone number')
     }
-
-    manager.otp = generateNewOtp()
-    return this.managerRepository.save(manager)
+    return manager
   }
 
   public async getTheManager(phoneNumber: string): Promise<IManager> {
@@ -37,7 +34,6 @@ export class ManagerService {
     return {
       id: manager.id,
       name: manager.name,
-      otp: manager.otp,
       owner: manager.owner,
     }
   }
@@ -47,7 +43,7 @@ export class ManagerService {
     return managers
   }
 
-  public async getManager(id: string): Promise<IManager> {
+  public async getManagerById(id: string): Promise<IManager> {
     const manager = await this.managerRepository.findOne({
       id: id,
     })

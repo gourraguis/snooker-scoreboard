@@ -12,9 +12,9 @@ export class ManagerController {
   constructor(private readonly managerService: ManagerService, private readonly smsService: SmsService) {}
 
   @Put('otp')
-  async generateOtp(@Query('phoneNumber') phoneNumber: string) {
-    const manager = await this.managerService.generateOtp(phoneNumber)
-    if (manager) this.smsService.sendSms(manager.otp, phoneNumber)
+  async checkPhoneNumber(@Query('phoneNumber') phoneNumber: string) {
+    const manager = await this.managerService.checkPhoneNumber(phoneNumber)
+    if (manager) this.smsService.sendSms(phoneNumber)
   }
 
   @UseGuards(JwtAuthGuard)
@@ -33,13 +33,6 @@ export class ManagerController {
   getOwnerManagers(@AuthenticatedUser('phoneNumber') phoneNumber: string): Promise<IManager[]> {
     return this.managerService.getOwnerManagers(phoneNumber)
   }
-
-  // @UseGuards(JwtAuthGuard)
-  // @Get(':id')
-  // getManager(@Param('id') id: string) {
-  //   validatePhoneNumber(id)
-  //   return this.managerService.getManager(id)
-  // }
 
   @UseGuards(JwtAuthGuard)
   @Post()

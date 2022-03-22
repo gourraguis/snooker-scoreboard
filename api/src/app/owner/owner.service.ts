@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Owner } from './entities/owner.entity'
 import { IOwner } from './types/IOwner'
-import { generateNewOtp } from './utils'
 
 @Injectable()
 export class OwnerService {
@@ -50,15 +49,13 @@ export class OwnerService {
     }
   }
 
-  public async generateOtp(phoneNumber: string): Promise<Owner> {
+  public async checkPhoneNumber(phoneNumber: string): Promise<Owner> {
     const owner = await this.ownerRepository.findOne({
       phoneNumber: phoneNumber,
     })
     if (!owner) {
       throw new NotFoundException('There is no owner with this phone number')
     }
-
-    owner.otp = generateNewOtp()
-    return this.ownerRepository.save(owner)
+    return owner
   }
 }
