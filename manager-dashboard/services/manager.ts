@@ -2,6 +2,7 @@ import axios from 'axios'
 import moment from 'moment'
 import { SetterOrUpdater } from 'recoil'
 import { IBoard } from '../types/board'
+import { ICardElements } from '../types/cardElement'
 import { IGame } from '../types/game'
 import { IManager } from '../types/manager'
 import { getApiEndpoint } from './config'
@@ -126,5 +127,19 @@ export const saveGame = async (game: IGame) => {
       .catch((err) => {
         console.log(err)
       })
+  }
+}
+
+export const getGamesStats = async (setStats: SetterOrUpdater<ICardElements[]>) => {
+  const token = localStorage.getItem('jwtToken')
+  try {
+    const res = await axios.get(`${getApiEndpoint()}game/managerDailyGames`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    setStats(res.data)
+  } catch (err) {
+    console.log(err)
   }
 }
