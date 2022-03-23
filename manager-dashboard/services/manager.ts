@@ -82,11 +82,16 @@ export const getBoards = async (setBoards: SetterOrUpdater<IBoard[]>) => {
 }
 
 export const saveGame = async (game: IGame) => {
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem('jwtToken')
+  const managerId = localStorage.getItem('token')
 
   let ownerId = ''
   await axios
-    .get(`${getApiEndpoint()}manager/${token}`)
+    .get(`${getApiEndpoint()}manager`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
     .then((res) => {
       ownerId = res.data.owner
     })
@@ -99,14 +104,17 @@ export const saveGame = async (game: IGame) => {
 
   const dbGame = {
     boardId: game.boardId,
-    managerId: token,
+    managerId,
     ownerId,
     winner: winner!.name,
     loser: loser!.name,
     startedAt: game.startedAt,
     finishedAt: moment(),
   }
+
   if (winnerScore !== 0) {
+    console.log(dbGame)
+
     await axios
       .post(`${getApiEndpoint()}game`, dbGame)
       .then((res) => {

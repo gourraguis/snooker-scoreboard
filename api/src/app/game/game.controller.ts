@@ -37,4 +37,10 @@ export class GameController {
   getBoardsGames(@AuthenticatedUser('phoneNumber') phoneNumber: string): Promise<ICardElements[]> {
     return this.gameService.getBoardsGames(phoneNumber)
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('managerDailyGames')
+  getManagerDailyGames(@AuthenticatedUser('id') phoneNumber: string) {
+    return this.gameService.getManagerDailyGames(phoneNumber)
+  }
 }
