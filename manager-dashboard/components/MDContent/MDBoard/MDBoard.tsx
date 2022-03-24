@@ -17,9 +17,11 @@ import { saveGame } from '../../../services/manager'
 
 interface MDBoardProps {
   board: IBoard
+  dailyScore: number
+  weeklyScore: number
 }
 
-export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
+export const MDBoard: FunctionComponent<MDBoardProps> = ({ board, dailyScore, weeklyScore }) => {
   const game = useRecoilValue(gameForBoardIdSelector(board.id))
   const setGames = useSetRecoilState(gamesState)
   const addGame = addGameAction(setGames)
@@ -78,6 +80,7 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
     if (oldGame.length > 0) saveGame(oldGame[oldGame.length - 1])
     stopTimer(initBoard)
   }
+
   const menu = (
     <Menu>
       <Menu.Item onClick={handleNewGame} key="initSameGame">
@@ -92,6 +95,18 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board }) => {
   return (
     <Card
       title={board.name}
+      cover={
+        <div className={styles.cover}>
+          <p className={styles.text}>
+            <span className={styles.day}>{dailyScore}</span>
+            Matches Ce Jour
+          </p>
+          <p className={styles.text}>
+            <span className={styles.week}>{weeklyScore}</span>
+            Matches Cette Semaine
+          </p>
+        </div>
+      }
       extra={
         <div className={styles.endSection}>
           <MDTimer startedAt={game?.startedAt} />

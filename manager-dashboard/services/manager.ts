@@ -2,6 +2,7 @@ import axios from 'axios'
 import moment from 'moment'
 import { SetterOrUpdater } from 'recoil'
 import { IBoard } from '../types/board'
+import { ICardElements } from '../types/cardElement'
 import { IGame } from '../types/game'
 import { IManager } from '../types/manager'
 import { getApiEndpoint } from './config'
@@ -82,11 +83,16 @@ export const getBoards = async (setBoards: SetterOrUpdater<IBoard[]>) => {
 }
 
 export const saveGame = async (game: IGame) => {
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem('jwtToken')
+  const managerId = localStorage.getItem('token')
 
   let ownerId = ''
   await axios
-    .get(`${getApiEndpoint()}manager/${token}`)
+    .get(`${getApiEndpoint()}manager`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
     .then((res) => {
       ownerId = res.data.owner
     })
@@ -99,14 +105,17 @@ export const saveGame = async (game: IGame) => {
 
   const dbGame = {
     boardId: game.boardId,
-    managerId: token,
+    managerId,
     ownerId,
     winner: winner!.name,
     loser: loser!.name,
     startedAt: game.startedAt,
     finishedAt: moment(),
   }
+
   if (winnerScore !== 0) {
+    console.log(dbGame)
+
     await axios
       .post(`${getApiEndpoint()}game`, dbGame)
       .then((res) => {
@@ -118,5 +127,19 @@ export const saveGame = async (game: IGame) => {
       .catch((err) => {
         console.log(err)
       })
+  }
+}
+
+export const getGamesStats = async (setStats: SetterOrUpdater<ICardElements[]>) => {
+  const token = localStorage.getItem('jwtToken')
+  try {
+    const res = await axios.get(`${getApiEndpoint()}game/managerDailyGames`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    setStats(res.data)
+  } catch (err) {
+    console.log(err)
   }
 }
