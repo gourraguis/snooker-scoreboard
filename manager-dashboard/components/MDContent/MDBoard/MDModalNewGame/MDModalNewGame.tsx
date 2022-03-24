@@ -7,6 +7,7 @@ import { addGameAction, gameForBoardIdSelector, gamesState, timerState } from '.
 import { IGame } from '../../../../types/game'
 import { IInitBoard } from '../../../../types/initBoard'
 import { saveGame } from '../../../../services/manager'
+import { tableStats } from '../../../../atoms/tableStats'
 
 interface MDModalNewGameProps {
   onCancel: () => void
@@ -20,6 +21,7 @@ const MDModalNewGame: FunctionComponent<MDModalNewGameProps> = ({ onCancel, visi
   const addGame = addGameAction(setGames)
   const oldGame = useRecoilValue(gamesState)
   const stopedTimer = useSetRecoilState(timerState)
+  const setTableStats = useSetRecoilState(tableStats)
 
   const handleCancel = () => {
     onCancel()
@@ -32,7 +34,7 @@ const MDModalNewGame: FunctionComponent<MDModalNewGameProps> = ({ onCancel, visi
       firstPlayer: values.firstPlayer,
       secondPlayer: values.secondPlayer,
     }
-    if (oldGame.length > 0) saveGame(oldGame[oldGame.length - 1])
+    if (oldGame.length > 0) saveGame(oldGame[oldGame.length - 1], setTableStats)
     emitNewGame(initBoard, (newGame: IGame) => {
       if (!newGame) {
         openNotification({
