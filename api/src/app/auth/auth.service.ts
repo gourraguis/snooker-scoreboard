@@ -1,9 +1,9 @@
 import { JwtService } from '@nestjs/jwt'
 import { OwnerService } from '../owner/owner.service'
 import { BadRequestException, Injectable } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
 import { Twilio } from 'twilio'
 import { ManagerService } from '../manager/manager.service'
+import { ConfigService } from 'src/config/config.service'
 
 @Injectable()
 export class AuthService {
@@ -14,15 +14,15 @@ export class AuthService {
     private jwtService: JwtService,
     private readonly configService: ConfigService
   ) {
-    const accountSid = configService.get('TWILIO_ACCOUNT_SID')
-    const authToken = configService.get('TWILIO_AUTH_TOKEN')
+    const accountSid = this.configService.getTwilio().accountSid
+    const authToken = this.configService.getTwilio().authToken
 
     this.twilioClient = new Twilio(accountSid, authToken)
   }
 
   public async checkOwnerOtp(phoneNumber: string, otp: string): Promise<string> {
     await this.ownerService.getOwner(phoneNumber)
-    const serviceSid = this.configService.get('TWILIO_VERIFICATION_SERVICE_SID')
+    const serviceSid = this.configService.getTwilio().serviceSid
 
     const firstChar = phoneNumber.substring(0)
     const newPhone: string = firstChar !== '+' ? '+212' + phoneNumber.substring(1) : phoneNumber
@@ -41,7 +41,7 @@ export class AuthService {
 
   public async checkManagerOtp(phoneNumber: string, otp: string): Promise<string> {
     await this.managerService.getTheManager(phoneNumber)
-    const serviceSid = this.configService.get('TWILIO_VERIFICATION_SERVICE_SID')
+    const serviceSid = this.configService.getTwilio().serviceSid
 
     const firstChar = phoneNumber.substring(0)
     const newPhone: string = firstChar !== '+' ? '+212' + phoneNumber.substring(1) : phoneNumber

@@ -8,32 +8,23 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { Owner } from '../owner/entities/owner.entity'
 import { OwnerModule } from '../owner/owner.module'
 import { OwnerService } from '../owner/owner.service'
-import ConfigsModule from '../../config/config.module'
+import ConfigModule from '../../config/config.module'
 import { ConfigService } from '../../config/config.service'
 import { ManagerModule } from '../manager/manager.module'
-import { ConfigModule } from '@nestjs/config'
-import * as Joi from '@hapi/joi'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Owner]),
-    ConfigsModule,
+    ConfigModule,
     OwnerModule,
     ManagerModule,
     PassportModule,
     JwtModule.registerAsync({
-      imports: [ConfigsModule],
+      imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.getJwtSecret(),
         signOptions: { expiresIn: '14 days' },
-      }),
-    }),
-    ConfigModule.forRoot({
-      validationSchema: Joi.object({
-        TWILIO_ACCOUNT_SID: Joi.string().required(),
-        TWILIO_AUTH_TOKEN: Joi.string().required(),
-        TWILIO_VERIFICATION_SERVICE_SID: Joi.string().required(),
       }),
     }),
   ],
