@@ -8,6 +8,8 @@ import { ODHeader } from '../components/ODHeader/ODHeader'
 import { ODMenu } from '../components/ODMenu/ODMenu'
 import { getCurrentOwner } from '../services/owner-api'
 import { ownerState } from '../atoms/ownerState'
+import { ODSelector } from '../components/ODStatistics/ODSelector/ODSelector'
+import { ODTable } from '../components/ODStatistics/ODTable/ODTable'
 
 const Statistics: NextPage = () => {
   const router = useRouter()
@@ -39,7 +41,9 @@ const Statistics: NextPage = () => {
       </Head>
       <Layout style={{ minHeight: '100vh' }}>
         <ODHeader />
-        <div style={{ minHeight: '85vh' }}>Statistics Page</div>
+        <ODSelector />
+        <ODTable />
+        <div style={{ minHeight: '52vh' }}>Statistics Page</div>
         <ODMenu />
       </Layout>
     </>
