@@ -58,4 +58,9 @@ export class OwnerService {
     }
     return owner
   }
+
+  public async getStatisticsByFilter(phoneNumber: string, filter) {
+    console.log(phoneNumber)
+    console.log(filter)
+  }
 }

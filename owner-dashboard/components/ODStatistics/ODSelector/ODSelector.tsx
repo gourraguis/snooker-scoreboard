@@ -1,7 +1,9 @@
 import { Button, Select, DatePicker, Form } from 'antd'
 import { FunctionComponent } from 'react'
-import { useRecoilValue } from 'recoil'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { managersStats, tablesStats } from '../../../atoms/mainStats'
+import { statisticsState } from '../../../atoms/statistics'
+import { getStatisticsByFilter } from '../../../services/owner-api'
 import styles from './ODSelector.module.css'
 
 const { RangePicker } = DatePicker
@@ -13,6 +15,7 @@ const rangeConfig = {
 export const ODSelector: FunctionComponent = () => {
   const tablesElements = useRecoilValue(tablesStats)
   const managersElements = useRecoilValue(managersStats)
+  const setStatistics = useSetRecoilState(statisticsState)
 
   const onFinish = (fieldsValue: any) => {
     const rangeValue = fieldsValue['range-picker']
@@ -22,6 +25,7 @@ export const ODSelector: FunctionComponent = () => {
       startDate: rangeValue[0].format('YYYY-MM-DD'),
       endDate: rangeValue[1].format('YYYY-MM-DD'),
     }
+    getStatisticsByFilter(values, setStatistics)
     console.log(values)
   }
 
