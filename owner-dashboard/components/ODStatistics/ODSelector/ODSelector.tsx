@@ -1,5 +1,5 @@
 import { Button, Select, DatePicker, Form } from 'antd'
-import { FunctionComponent, useState } from 'react'
+import { FunctionComponent } from 'react'
 import { useRecoilValue } from 'recoil'
 import { managersStats, tablesStats } from '../../../atoms/mainStats'
 import styles from './ODSelector.module.css'
@@ -11,16 +11,14 @@ const rangeConfig = {
 }
 
 export const ODSelector: FunctionComponent = () => {
-  const [selectedManager, setSelectedManager] = useState()
-  const [selectedTable, setSelectedTable] = useState()
   const tablesElements = useRecoilValue(tablesStats)
   const managersElements = useRecoilValue(managersStats)
 
-  const onFinish = (fieldsValue: { [x: string]: any }) => {
+  const onFinish = (fieldsValue: any) => {
     const rangeValue = fieldsValue['range-picker']
     const values = {
-      managerId: selectedManager,
-      tableId: selectedTable,
+      managerId: fieldsValue.manager,
+      tableId: fieldsValue.table,
       startDate: rangeValue[0].format('YYYY-MM-DD'),
       endDate: rangeValue[1].format('YYYY-MM-DD'),
     }
@@ -29,15 +27,15 @@ export const ODSelector: FunctionComponent = () => {
 
   return (
     <Form className={styles.all} name="time_related_controls" onFinish={onFinish}>
-      <Form.Item className={styles.item}>
-        <Select showSearch placeholder="Select Manager" onChange={(value) => setSelectedManager(value)}>
+      <Form.Item name="manager" className={styles.item}>
+        <Select showSearch placeholder="Select Manager">
           {managersElements.map((elem) => (
             <Select.Option value={elem.id}>{elem.name}</Select.Option>
           ))}
         </Select>
       </Form.Item>
-      <Form.Item className={styles.item}>
-        <Select showSearch placeholder="Select Table" onChange={(value) => setSelectedTable(value)}>
+      <Form.Item name="table" className={styles.item}>
+        <Select showSearch placeholder="Select Table">
           {tablesElements.map((elem) => (
             <Select.Option value={elem.id}>{elem.name}</Select.Option>
           ))}
