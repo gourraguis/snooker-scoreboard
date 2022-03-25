@@ -36,6 +36,7 @@ export const ODSelector: FunctionComponent = () => {
           {managersElements.map((elem) => (
             <Select.Option value={elem.id}>{elem.name}</Select.Option>
           ))}
+          <Select.Option value="">Any Manager</Select.Option>
         </Select>
       </Form.Item>
       <Form.Item name="table" className={styles.item}>
@@ -43,6 +44,7 @@ export const ODSelector: FunctionComponent = () => {
           {tablesElements.map((elem) => (
             <Select.Option value={elem.id}>{elem.name}</Select.Option>
           ))}
+          <Select.Option value="">Any Table</Select.Option>
         </Select>
       </Form.Item>
       <Form.Item className={styles.item} name="range-picker" {...rangeConfig}>

@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Owner } from './entities/owner.entity'
 import { IOwner } from './types/IOwner'
+import { IGame } from '../game/types/game'
 
 @Injectable()
 export class OwnerService {
@@ -59,8 +60,17 @@ export class OwnerService {
     return owner
   }
 
-  public async getStatisticsByFilter(phoneNumber: string, filter) {
-    console.log(phoneNumber)
-    console.log(filter)
+  public async getStatisticsByFilter(phoneNumber: string, filter): Promise<IGame> {
+    let games: IGame
+    if (filter.managerId && filter.tableId) {
+      games = await this.ownerRepository.query(
+        `SELECT * FROM game WHERE game.owner_id = '${phoneNumber}' 
+       And game.manager_id = '${filter.managerId}'
+       And game.board_id = '${filter.tableId}'
+       And game.started_at BETWEEN '${filter.startDate}' And '${filter.endDate}'`
+      )
+    }
+
+    return games
   }
 }
