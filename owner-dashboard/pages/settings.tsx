@@ -39,7 +39,6 @@ const Settings: NextPage = () => {
       </Head>
       <Layout style={{ minHeight: '100vh' }}>
         <ODHeader />
-        <div style={{ minHeight: '85vh' }}>Settings Page</div>
         <ODMenu />
       </Layout>
     </>

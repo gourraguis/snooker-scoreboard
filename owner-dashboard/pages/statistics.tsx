@@ -43,7 +43,6 @@ const Statistics: NextPage = () => {
         <ODHeader />
         <ODSelector />
         <ODTable />
-        <div style={{ minHeight: '52vh' }}>Statistics Page</div>
         <ODMenu />
       </Layout>
     </>
