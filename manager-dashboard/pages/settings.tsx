@@ -4,43 +4,44 @@ import { Layout } from 'antd'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
-import { ODHeader } from '../components/ODHeader/ODHeader'
-import { ODMenu } from '../components/ODMenu/ODMenu'
-import { getCurrentOwner } from '../services/owner-api'
-import { ownerState } from '../atoms/ownerState'
+import { MDMenu } from '../components/MDMenu/MDMenu'
+import { authState } from '../atoms/authState'
+import { getCurrentManager } from '../services/manager'
+import { MDHeader } from '../components/MDHeader/MDHeader'
 
 const Settings: NextPage = () => {
   const router = useRouter()
-  const [owner, setOwner] = useRecoilState(ownerState)
+  const [manager, setManager] = useRecoilState(authState)
 
-  const fetchCurrentOwner = async () => {
-    const currentOwner = await getCurrentOwner()
+  const fetchCurrentManager = async () => {
+    const currentManager = await getCurrentManager()
 
-    if (!currentOwner) {
+    if (!currentManager) {
       router.push('/login')
       return
     }
-    setOwner(currentOwner)
+    setManager(currentManager)
   }
 
   useEffect(() => {
-    fetchCurrentOwner()
+    fetchCurrentManager()
   }, [])
 
-  if (!owner) {
+  if (!manager) {
     return null
   }
 
   return (
     <>
       <Head>
-        <title>Owner Dashboard</title>
+        <title>Manager Dashboard</title>
         <link rel="icon" href="/favicon/favicon.ico" />
       </Head>
       <Layout style={{ minHeight: '100vh' }}>
-        <ODHeader />
+        <MDHeader />
+        Settings
         <div style={{ marginTop: '10vh' }} />
-        <ODMenu />
+        <MDMenu />
       </Layout>
     </>
   )

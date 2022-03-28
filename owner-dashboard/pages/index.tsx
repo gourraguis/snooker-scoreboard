@@ -41,6 +41,7 @@ const Home: NextPage = () => {
       <Layout style={{ minHeight: '100vh' }}>
         <ODHeader />
         <ODContent />
+        <div style={{ marginTop: '10vh' }} />
         <ODMenu />
       </Layout>
     </>

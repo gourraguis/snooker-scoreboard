@@ -43,6 +43,7 @@ const Statistics: NextPage = () => {
         <ODHeader />
         <ODSelector />
         <ODTable />
+        <div style={{ marginTop: '10vh' }} />
         <ODMenu />
       </Layout>
     </>
