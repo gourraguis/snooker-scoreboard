@@ -1,5 +1,5 @@
 import { Button, Select, DatePicker, Form } from 'antd'
-import { FunctionComponent } from 'react'
+import { FunctionComponent, useState } from 'react'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { managersStats, tablesStats } from '../../../atoms/mainStats'
 import { statisticsState } from '../../../atoms/statistics'
@@ -9,24 +9,26 @@ import styles from './ODSelector.module.css'
 const { RangePicker } = DatePicker
 
 const rangeConfig = {
-  rules: [{ type: 'array' as const, required: true, message: 'Please select time!' }],
+  rules: [{ required: true, message: 'Please select time!' }],
 }
 
 export const ODSelector: FunctionComponent = () => {
   const tablesElements = useRecoilValue(tablesStats)
   const managersElements = useRecoilValue(managersStats)
   const setStatistics = useSetRecoilState(statisticsState)
+  const [isFetching, setIsFetching] = useState(false)
 
-  const onFinish = (fieldsValue: any) => {
-    const rangeValue = fieldsValue['range-picker']
+  const onFinish = async (fieldsValue: any) => {
+    setIsFetching(true)
     const values = {
       managerId: fieldsValue.manager,
       tableId: fieldsValue.table,
-      startDate: rangeValue[0].format('YYYY-MM-DD'),
-      endDate: rangeValue[1].format('YYYY-MM-DD'),
+      startDate: fieldsValue.startDate.format('YYYY-MM-DD'),
+      endDate: fieldsValue.endDate.format('YYYY-MM-DD'),
     }
-    getStatisticsByFilter(values, setStatistics)
-    console.log(values)
+
+    await getStatisticsByFilter(values, setStatistics)
+    setIsFetching(false)
   }
 
   return (
@@ -47,10 +49,13 @@ export const ODSelector: FunctionComponent = () => {
           <Select.Option value="">Any Table</Select.Option>
         </Select>
       </Form.Item>
-      <Form.Item className={styles.item} name="range-picker" {...rangeConfig}>
-        <RangePicker className={styles.date} />
+      <Form.Item className={styles.item} name="startDate" {...rangeConfig}>
+        <DatePicker className={styles.date} placeholder="Select Start Date" />
       </Form.Item>
-      <Button className={styles.button} type="primary" htmlType="submit">
+      <Form.Item className={styles.item} name="endDate" {...rangeConfig}>
+        <DatePicker className={styles.date} placeholder="Select End Date" />
+      </Form.Item>
+      <Button className={styles.button} type="primary" htmlType="submit" loading={isFetching}>
         Search
       </Button>
     </Form>

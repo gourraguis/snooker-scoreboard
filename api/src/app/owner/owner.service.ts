@@ -1,9 +1,9 @@
 import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import * as moment from 'moment'
 import { Repository } from 'typeorm'
 import { Owner } from './entities/owner.entity'
 import { IOwner } from './types/IOwner'
-import { IGame } from '../game/types/game'
 
 @Injectable()
 export class OwnerService {
@@ -60,8 +60,8 @@ export class OwnerService {
     return owner
   }
 
-  public async getStatisticsByFilter(phoneNumber: string, filter): Promise<IGame> {
-    let games: IGame
+  public async getStatisticsByFilter(phoneNumber: string, filter) {
+    let games = []
     if (filter.managerId && filter.tableId) {
       games = await this.ownerRepository.query(
         `SELECT * FROM game WHERE game.owner_id = '${phoneNumber}' 
@@ -69,8 +69,44 @@ export class OwnerService {
        And game.board_id = '${filter.tableId}'
        And game.started_at BETWEEN '${filter.startDate}' And '${filter.endDate}'`
       )
+    } else if (!filter.managerId && filter.tableId) {
+      games = await this.ownerRepository.query(
+        `SELECT * FROM game WHERE game.owner_id = '${phoneNumber}' 
+       And game.board_id = '${filter.tableId}'
+       And game.started_at BETWEEN '${filter.startDate}' And '${filter.endDate}'`
+      )
+    } else if (filter.managerId && !filter.tableId) {
+      games = await this.ownerRepository.query(
+        `SELECT * FROM game WHERE game.owner_id = '${phoneNumber}'
+       And game.manager_id = '${filter.managerId}'
+       And game.started_at BETWEEN '${filter.startDate}' And '${filter.endDate}'`
+      )
+    } else if (!filter.managerId && !filter.tableId) {
+      games = await this.ownerRepository.query(
+        `SELECT * FROM game WHERE game.owner_id = '${phoneNumber}' 
+       And game.started_at BETWEEN '${filter.startDate}' And '${filter.endDate}'`
+      )
     }
+    let data = []
+    for (let index = 0; index < games.length; index++) {
+      const table = await this.ownerRepository.query(`SELECT * FROM board WHERE board.id = '${games[index].board_id}'`)
+      const manager = await this.ownerRepository.query(
+        `SELECT * FROM manager WHERE manager.id = '${games[index].manager_id}'`
+      )
 
-    return games
+      data = [
+        ...data,
+        {
+          manager: manager[0]?.name,
+          table: table[0]?.name,
+          startedAt: games[index].started_at,
+          finishedAt: games[index].finished_at,
+          winner: games[index].winner,
+          loser: games[index].loser,
+          duration: moment(moment(games[index].finished_at).diff(moment(games[index].started_at))).format('mm:ss'),
+        },
+      ]
+    }
+    return data
   }
 }
