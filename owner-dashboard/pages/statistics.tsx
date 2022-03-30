@@ -6,11 +6,12 @@ import { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import { ODHeader } from '../components/ODHeader/ODHeader'
 import { ODMenu } from '../components/ODMenu/ODMenu'
-import { ODContent } from '../components/ODContent/ODContent'
 import { getCurrentOwner } from '../services/owner-api'
 import { ownerState } from '../atoms/ownerState'
+import { ODSelector } from '../components/ODStatistics/ODSelector/ODSelector'
+import { ODTable } from '../components/ODStatistics/ODTable/ODTable'
 
-const Home: NextPage = () => {
+const Statistics: NextPage = () => {
   const router = useRouter()
   const [owner, setOwner] = useRecoilState(ownerState)
 
@@ -40,7 +41,8 @@ const Home: NextPage = () => {
       </Head>
       <Layout style={{ minHeight: '100vh' }}>
         <ODHeader />
-        <ODContent />
+        <ODSelector />
+        <ODTable />
         <div style={{ marginTop: '10vh' }} />
         <ODMenu />
       </Layout>
@@ -48,4 +50,4 @@ const Home: NextPage = () => {
   )
 }
 
-export default Home
+export default Statistics

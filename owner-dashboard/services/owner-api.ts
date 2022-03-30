@@ -225,3 +225,18 @@ export const getBoards = async (setBoardsElements: SetterOrUpdater<ICardElements
     console.log(err)
   }
 }
+
+export const getStatisticsByFilter = async (filter: any, setStatistics: SetterOrUpdater<any>) => {
+  const token = localStorage.getItem('jwtToken')
+  try {
+    const res = await axios.post(`${getApiEndpoint()}owner/statistics`, filter, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    if (res.data) setStatistics(res.data)
+    console.log(res.data)
+  } catch (err) {
+    console.log(err)
+  }
+}

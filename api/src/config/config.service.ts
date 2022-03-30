@@ -70,9 +70,9 @@ export class ConfigService {
 
   public getTwilio() {
     return {
-      twilioSID: this.get('TWILIO_ACCOUNT_SID'),
-      twilioToken: this.get('TWILIO_AUTH_TOKEN'),
-      twilioVSSID: this.get('TWILIO_VERIFICATION_SERVICE_SID'),
+      accountSid: this.get('TWILIO_ACCOUNT_SID'),
+      authToken: this.get('TWILIO_AUTH_TOKEN'),
+      serviceSid: this.get('TWILIO_VERIFICATION_SERVICE_SID'),
     }
   }
 }

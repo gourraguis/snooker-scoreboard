@@ -8,10 +8,10 @@ import { addBoardAction, boardsState, removeBoardAction } from '../atoms/boards.
 import { initSocket } from '../services/socket'
 import { MDHeader } from '../components/MDHeader/MDHeader'
 import { MDContent } from '../components/MDContent/MDContent'
-import { MDFooter } from '../components/MDFooter/MDFooter'
 import { gamesState, updateGameAction } from '../atoms/games.atom'
 import { getCurrentManager } from '../services/manager'
 import { authState } from '../atoms/authState'
+import { MDMenu } from '../components/MDMenu/MDMenu'
 
 const Home: NextPage = () => {
   const setBoards = useSetRecoilState(boardsState)
@@ -52,7 +52,8 @@ const Home: NextPage = () => {
       <Layout style={{ minHeight: '100vh' }}>
         <MDHeader />
         <MDContent />
-        <MDFooter />
+        <div style={{ marginTop: '10vh' }} />
+        <MDMenu />
       </Layout>
     </>
   )

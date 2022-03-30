@@ -14,6 +14,7 @@ import MDModalHistory from './MDModalHistory/MDModalHistory'
 import MDModalNewGame from './MDModalNewGame/MDModalNewGame'
 import { IInitBoard } from '../../../types/initBoard'
 import { saveGame } from '../../../services/manager'
+import { tableStats } from '../../../atoms/tableStats'
 
 interface MDBoardProps {
   board: IBoard
@@ -29,6 +30,7 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board, dailyScore, we
   const [isNewGameModalVisible, setIsNewGameModalVisible] = useState(false)
   const oldGame = useRecoilValue(gamesState)
   const stopedTimer = useSetRecoilState(timerState)
+  const setTableStats = useSetRecoilState(tableStats)
 
   const handleNewGame = () => {
     stopedTimer(false)
@@ -37,7 +39,7 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board, dailyScore, we
       firstPlayer: game?.players[0].name,
       secondPlayer: game?.players[1].name,
     }
-    if (oldGame.length > 0) saveGame(oldGame[oldGame.length - 1])
+    if (oldGame.length > 0) saveGame(oldGame[oldGame.length - 1], setTableStats)
 
     emitNewGame(initBoard, (newGame) => {
       if (!newGame) {
@@ -77,7 +79,7 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board, dailyScore, we
       firstPlayer: game?.players[0].name,
       secondPlayer: game?.players[1].name,
     }
-    if (oldGame.length > 0) saveGame(oldGame[oldGame.length - 1])
+    if (oldGame.length > 0) saveGame(oldGame[oldGame.length - 1], setTableStats)
     stopTimer(initBoard)
   }
 

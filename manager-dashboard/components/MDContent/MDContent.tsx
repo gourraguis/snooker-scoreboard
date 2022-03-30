@@ -1,19 +1,20 @@
 import classNames from 'classnames'
 import { Layout, Empty, Space } from 'antd'
-import { FunctionComponent, useEffect, useState } from 'react'
+import { FunctionComponent, useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { boardsState } from '../../atoms/boards.atom'
 import { MDBoard } from './MDBoard/MDBoard'
 import { getBoards, getGamesStats } from '../../services/manager'
 import styles from './MDContent.module.css'
-import { ICardElements } from '../../types/cardElement'
 import { gamesState } from '../../atoms/games.atom'
+import { tableStats } from '../../atoms/tableStats'
 
 const { Content } = Layout
 
 export const MDContent: FunctionComponent = () => {
   const [boards, setBoards] = useRecoilState(boardsState)
-  const [stats, setStats] = useState<ICardElements[]>([])
+  const [stats, setStats] = useRecoilState(tableStats)
+
   const oldGame = useRecoilValue(gamesState)
   useEffect(() => {
     getBoards(setBoards)

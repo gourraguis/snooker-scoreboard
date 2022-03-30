@@ -82,7 +82,7 @@ export const getBoards = async (setBoards: SetterOrUpdater<IBoard[]>) => {
     })
 }
 
-export const saveGame = async (game: IGame) => {
+export const saveGame = async (game: IGame, setTableStats: SetterOrUpdater<ICardElements[]>) => {
   const token = localStorage.getItem('jwtToken')
   const managerId = localStorage.getItem('token')
 
@@ -114,7 +114,14 @@ export const saveGame = async (game: IGame) => {
   }
 
   if (winnerScore !== 0) {
-    console.log(dbGame)
+    setTableStats((oldTableStats) => {
+      const newTableStats = oldTableStats.map((elem) => {
+        return elem.id === game.boardId
+          ? { id: elem.id, name: elem.name, dailyScore: elem.dailyScore + 1, weeklyScore: elem.weeklyScore + 1 }
+          : elem
+      })
+      return newTableStats
+    })
 
     await axios
       .post(`${getApiEndpoint()}game`, dbGame)
