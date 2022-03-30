@@ -6,8 +6,13 @@ import styles from './ODMenu.module.css'
 
 export const ODMenu: FunctionComponent = () => {
   const router = useRouter()
+
+  const handleClick = (e: any) => {
+    console.log('click ', e.key)
+  }
+
   return (
-    <Menu className={styles.menu} defaultSelectedKeys={['1']} mode="horizontal">
+    <Menu onClick={handleClick} className={styles.menu} defaultSelectedKeys={['1']} mode="horizontal">
       <Menu.Item onClick={() => router.push('/')} className={styles.item} key="1">
         <HomeFilled className={styles.icon} />
       </Menu.Item>
