@@ -5,6 +5,7 @@ import { IBoard } from '../types/board'
 import { ICardElements } from '../types/cardElement'
 import { IGame } from '../types/game'
 import { IManager } from '../types/manager'
+import { IStatiscis } from '../types/statistics'
 import { getApiEndpoint } from './config'
 import { openNotification } from './notification'
 
@@ -146,6 +147,21 @@ export const getGamesStats = async (setStats: SetterOrUpdater<ICardElements[]>) 
       },
     })
     setStats(res.data)
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export const getManagerStatistics = async (setStatistics: SetterOrUpdater<IStatiscis[] | undefined>) => {
+  const token = localStorage.getItem('jwtToken')
+  try {
+    const res = await axios.get(`${getApiEndpoint()}manager/statistics`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    if (res.data) setStatistics(res.data)
+    console.log(res.data)
   } catch (err) {
     console.log(err)
   }
