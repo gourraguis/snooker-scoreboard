@@ -49,4 +49,10 @@ export class ManagerController {
   deleteManager(@Param('id') id: string) {
     return this.managerService.deleteManager(id)
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('statistics')
+  getManagerStatistics(@AuthenticatedUser('id') phoneNumber: string) {
+    return this.managerService.getManagerStatistics(phoneNumber)
+  }
 }

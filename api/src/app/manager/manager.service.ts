@@ -1,5 +1,6 @@
 import { BadRequestException, ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import * as moment from 'moment'
 import { DeleteResult, Repository } from 'typeorm'
 import { Manager } from './entities/manager.entity'
 import { IManager } from './types'
@@ -83,5 +84,28 @@ export class ManagerService {
 
   public async deleteManager(id: string): Promise<DeleteResult> {
     return await this.managerRepository.delete({ id: id })
+  }
+
+  public async getManagerStatistics(phoneNumber: string) {
+    let games = []
+    games = await this.managerRepository.query(`SELECT * FROM game WHERE game.manager_id = '${phoneNumber}' LIMIT 30`)
+
+    let data = []
+    for (let index = 0; index < games.length; index++) {
+      const table = await this.managerRepository.query(
+        `SELECT * FROM board WHERE board.id = '${games[index].board_id}'`
+      )
+
+      data = [
+        ...data,
+        {
+          table: table[0]?.name,
+          winner: games[index].winner,
+          loser: games[index].loser,
+          startedAt: moment(games[index].started_at).format('MM-DD HH:mm'),
+        },
+      ]
+    }
+    return data
   }
 }
