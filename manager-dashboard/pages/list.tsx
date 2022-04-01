@@ -8,8 +8,9 @@ import { MDMenu } from '../components/MDMenu/MDMenu'
 import { authState } from '../atoms/authState'
 import { getCurrentManager } from '../services/manager'
 import { MDHeader } from '../components/MDHeader/MDHeader'
+import { MDList } from '../components/MDList/MDList'
 
-const Settings: NextPage = () => {
+const List: NextPage = () => {
   const router = useRouter()
   const [manager, setManager] = useRecoilState(authState)
 
@@ -39,12 +40,11 @@ const Settings: NextPage = () => {
       </Head>
       <Layout style={{ minHeight: '100vh' }}>
         <MDHeader />
-        Settings
-        <div style={{ marginTop: '10vh' }} />
+        <MDList />
         <MDMenu />
       </Layout>
     </>
   )
 }
 
-export default Settings
+export default List

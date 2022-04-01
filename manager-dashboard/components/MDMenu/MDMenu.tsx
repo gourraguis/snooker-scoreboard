@@ -1,4 +1,4 @@
-import { BarChartOutlined, HomeFilled, SettingFilled } from '@ant-design/icons'
+import { BarChartOutlined, FileTextOutlined, HomeFilled } from '@ant-design/icons'
 import { Menu } from 'antd'
 import { useRouter } from 'next/router'
 import { FunctionComponent } from 'react'
@@ -14,8 +14,8 @@ export const MDMenu: FunctionComponent = () => {
       <Menu.Item onClick={() => router.push('/statistics')} className={styles.item} key="2">
         <BarChartOutlined className={styles.icon} />
       </Menu.Item>
-      <Menu.Item onClick={() => router.push('/settings')} className={styles.item} key="3">
-        <SettingFilled className={styles.icon} />
+      <Menu.Item onClick={() => router.push('/list')} className={styles.item} key="3">
+        <FileTextOutlined className={styles.icon} />
       </Menu.Item>
     </Menu>
   )

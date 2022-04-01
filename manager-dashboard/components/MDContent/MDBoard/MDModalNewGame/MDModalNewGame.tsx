@@ -1,5 +1,6 @@
-import React, { FunctionComponent } from 'react'
-import { Button, Form, Input, Modal } from 'antd'
+import React, { FunctionComponent, useState } from 'react'
+import { Button, Modal, Space, Tooltip } from 'antd'
+import { FileTextOutlined } from '@ant-design/icons'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { emitNewGame } from '../../../../services/socket'
 import { openNotification } from '../../../../services/notification'
@@ -8,6 +9,8 @@ import { IGame } from '../../../../types/game'
 import { IInitBoard } from '../../../../types/initBoard'
 import { saveGame } from '../../../../services/manager'
 import { tableStats } from '../../../../atoms/tableStats'
+import styles from './MDModalNewGame.module.css'
+import { listState } from '../../../../atoms/listState'
 
 interface MDModalNewGameProps {
   onCancel: () => void
@@ -22,17 +25,41 @@ const MDModalNewGame: FunctionComponent<MDModalNewGameProps> = ({ onCancel, visi
   const oldGame = useRecoilValue(gamesState)
   const stopedTimer = useSetRecoilState(timerState)
   const setTableStats = useSetRecoilState(tableStats)
+  const [firstPlayerName, setFirstPlayerName] = useState<string>('Player 1')
+  const [secondPlayerName, setSecondPlayerName] = useState<string>('Player 2')
+  const [list, setList] = useRecoilState(listState)
+
+  const onListOne = () => {
+    if (list.length > 0) {
+      setFirstPlayerName(list[0])
+      setList((prev) => {
+        const arr = prev.slice(1)
+        return arr
+      })
+    }
+  }
+
+  const onListTwo = () => {
+    if (list.length > 0) {
+      setSecondPlayerName(list[0])
+      setList((prev) => {
+        const arr = prev.slice(1)
+        return arr
+      })
+    }
+  }
 
   const handleCancel = () => {
     onCancel()
   }
 
-  const onFinish = (values: { firstPlayer: string; secondPlayer: string }) => {
+  const onFinish = (e: { preventDefault: () => void }) => {
+    e.preventDefault()
     stopedTimer(false)
     const initBoard: IInitBoard = {
       boardId,
-      firstPlayer: values.firstPlayer,
-      secondPlayer: values.secondPlayer,
+      firstPlayer: firstPlayerName,
+      secondPlayer: secondPlayerName,
     }
     if (oldGame.length > 0) saveGame(oldGame[oldGame.length - 1], setTableStats)
     emitNewGame(initBoard, (newGame: IGame) => {
@@ -43,27 +70,29 @@ const MDModalNewGame: FunctionComponent<MDModalNewGameProps> = ({ onCancel, visi
         })
       }
 
-      const players = [
-        {
-          name: initBoard.firstPlayer!,
-          turn: game!.players[0].turn,
-          score: game!.players[0].score,
-        },
-        {
-          name: initBoard.secondPlayer!,
-          turn: game!.players[1].turn,
-          score: game!.players[1].score,
-        },
-      ]
-      const newGameData = {
-        id: game!.id,
-        boardId: game!.boardId,
-        players,
-        startedAt: game!.startedAt,
-        finishedAt: game!.finishedAt,
-        history: game!.history,
+      if (game) {
+        const players = [
+          {
+            name: initBoard.firstPlayer!,
+            turn: game!.players[0].turn,
+            score: game!.players[0].score,
+          },
+          {
+            name: initBoard.secondPlayer!,
+            turn: game!.players[1].turn,
+            score: game!.players[1].score,
+          },
+        ]
+        const newGameData = {
+          id: game!.id,
+          boardId: game!.boardId,
+          players,
+          startedAt: game!.startedAt,
+          finishedAt: game!.finishedAt,
+          history: game!.history,
+        }
+        setGames(() => [...games.filter(({ id }) => id !== newGameData.id), newGameData])
       }
-      setGames(() => [...games.filter(({ id }) => id !== newGameData.id), newGameData])
 
       addGame(newGame)
       openNotification({
@@ -83,30 +112,37 @@ const MDModalNewGame: FunctionComponent<MDModalNewGameProps> = ({ onCancel, visi
           <Button key="back" onClick={handleCancel}>
             Cancel
           </Button>,
-          <Button form="addTable" key="submit" htmlType="submit" type="primary">
+          <Button onClick={onFinish} key="submit" htmlType="submit" type="primary">
             Submit
           </Button>,
         ]}
       >
-        <Form
-          id="addTable"
-          name="basic"
-          labelCol={{ span: 4 }}
-          wrapperCol={{ span: 16 }}
-          onFinish={onFinish}
-          autoComplete="off"
-          initialValues={{
-            firstPlayer: 'Player 1',
-            secondPlayer: 'Player 2',
-          }}
-        >
-          <Form.Item label="Player 1" name="firstPlayer">
-            <Input />
-          </Form.Item>
-          <Form.Item label="Player 2" name="secondPlayer">
-            <Input />
-          </Form.Item>
-        </Form>
+        <form>
+          <Space className={styles.space}>
+            <input
+              name="firstPlayer"
+              id="firstPlayer"
+              style={{ width: 260 }}
+              value={firstPlayerName}
+              onChange={(e) => setFirstPlayerName(e.target.value)}
+            />
+            <Tooltip title="Take player from waiting list">
+              <FileTextOutlined onClick={onListOne} className={styles.icon} />
+            </Tooltip>
+          </Space>
+          <Space className={styles.space}>
+            <input
+              name="secondPlayer"
+              id="secondPlayer"
+              style={{ width: 260 }}
+              value={secondPlayerName}
+              onChange={(e) => setSecondPlayerName(e.target.value)}
+            />
+            <Tooltip title="Take player from waiting list">
+              <FileTextOutlined onClick={onListTwo} className={styles.icon} />
+            </Tooltip>
+          </Space>
+        </form>
       </Modal>
     </div>
   )
