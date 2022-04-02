@@ -28,8 +28,13 @@ const SCContent = () => {
   const setStopTimer = useSetRecoilState(timerState)
   const router = useRouter()
   const id = router?.query?.id as string
+  const showControls = !!router?.query?.showControls
 
   useEffect(() => {
+    if (!id) {
+      return
+    }
+    console.log(id)
     initSocket(
       addGameAction(setGlobalScoreState, setGame, setHistory, setStopTimer),
       setBoard,
@@ -63,8 +68,8 @@ const SCContent = () => {
             <SCHeading title={board.name} />
           </div>
           <Content>
-            <Row>
-              <Col span={6} offset={1} className={styles.cent}>
+            <Row gutter={16}>
+              <Col span={8} className={styles.cent}>
                 {game.players.map((player) => (
                   <SCPlayerCard
                     isCurrent={currentTurn?.value === player.turn}
@@ -77,14 +82,14 @@ const SCContent = () => {
                   />
                 ))}
               </Col>
-              <Col span={6} offset={2} className={styles.col}>
+              <Col span={8} className={styles.col}>
                 <SCGameDetails />
               </Col>
-              <Col span={6} offset={2} className={styles.col}>
+              <Col span={8} className={styles.col}>
                 <SCHistory />
               </Col>
             </Row>
-            <SCControls />
+            {showControls && <SCControls />}
           </Content>
         </div>
       )}

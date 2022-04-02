@@ -73,7 +73,7 @@ export const MDLogin: FunctionComponent = () => {
             exit={{ opacity: 0, x: 100 }}
             transition={{ duration: 0.55 }}
           >
-            <Card title="Login Form" style={{ width: 300 }}>
+            <Card title="Bienvenue chez Jawad 🙂" style={{ width: 300 }}>
               <Form name="phoneNumberForm" onFinish={onPhoneNumberSubmit}>
                 <Form.Item
                   name="phoneNumber"

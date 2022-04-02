@@ -35,7 +35,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       owner = await this.ownerService.getOwner(phoneNumber)
     } catch {}
     try {
-      manager = await this.managerService.getTheManager(phoneNumber)
+      manager = await this.managerService.getManager(phoneNumber)
     } catch {}
     if (!owner && !manager) {
       throw new UnauthorizedException()

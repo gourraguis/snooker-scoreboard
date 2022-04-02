@@ -30,7 +30,6 @@ export class ManagerListenerGateway implements OnGatewayConnection {
   ) {}
 
   public handleConnection(ManagerClient: ManagerSocket) {
-    this.logger.log(`NODE_ENV=${process.env.NODE_ENV}`)
     this.logger.log(`Manager connected: ${ManagerClient.id}`)
   }
 

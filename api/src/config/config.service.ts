@@ -75,4 +75,8 @@ export class ConfigService {
       serviceSid: this.get('TWILIO_VERIFICATION_SERVICE_SID'),
     }
   }
+
+  public getGlobalOtp() {
+    return this.get('GLOBAL_OTP')
+  }
 }

@@ -24,7 +24,7 @@ export class ManagerService {
     return manager
   }
 
-  public async getTheManager(phoneNumber: string): Promise<IManager> {
+  public async getManager(phoneNumber: string): Promise<IManager> {
     const manager = await this.managerRepository.findOne({
       id: phoneNumber,
     })

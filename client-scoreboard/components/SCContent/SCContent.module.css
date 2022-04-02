@@ -4,14 +4,12 @@
   justify-content: center;
 }
 
-.space {
-  width: 100%;
-}
-
 .content {
   min-height: 100vh;
   background-color: #202020;
   color: #e9d8ae;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .centerHeading {
