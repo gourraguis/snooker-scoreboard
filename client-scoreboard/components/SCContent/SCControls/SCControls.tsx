@@ -102,7 +102,7 @@ export const SCControls: FunctionComponent<SCControlsProps> = ({ showControls })
     (event) => {
       if (event.key === 's') {
         switchPlayer()
-      } else if (event.key === 'u') {
+      } else if (event.key === 'v') {
         undoBall()
       } else if (event.key === 'r') {
         scoreBall(1)()
