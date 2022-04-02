@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { FunctionComponent, useCallback, useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { RollbackOutlined, SyncOutlined } from '@ant-design/icons'
 import {
@@ -15,7 +15,11 @@ import { gameState } from '../../../atoms/game.atom'
 import { emitUpdateGame } from '../../../services/sockets'
 import styles from './SCControls.module.css'
 
-const SCControls = () => {
+interface SCControlsProps {
+  showControls: boolean
+}
+
+export const SCControls: FunctionComponent<SCControlsProps> = ({ showControls }) => {
   const game = useRecoilValue(gameState)!
   const playersScore = useRecoilValue(playersScoreSelector)
   const [history, setHistory] = useRecoilState(historyState)
@@ -126,6 +130,10 @@ const SCControls = () => {
     }
   }, [handleKeyPress])
 
+  if (!showControls) {
+    return null
+  }
+
   return (
     <div className={styles.content}>
       <RollbackOutlined onClick={undoBall} className={styles.icon} />
@@ -136,5 +144,3 @@ const SCControls = () => {
     </div>
   )
 }
-
-export default SCControls
