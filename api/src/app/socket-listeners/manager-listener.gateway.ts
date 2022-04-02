@@ -30,7 +30,6 @@ export class ManagerListenerGateway implements OnGatewayConnection {
   ) {}
 
   public handleConnection(ManagerClient: ManagerSocket) {
-    this.logger.log(`NODE_ENV=${process.env.NODE_ENV}`)
     this.logger.log(`Manager connected: ${ManagerClient.id}`)
   }
 
@@ -40,8 +39,6 @@ export class ManagerListenerGateway implements OnGatewayConnection {
     const manager = await this.managerService.getManagerById(managerId)
     const boards = await this.boardService.getOwnerBoards(manager.owner)
     this.boardEmitterGateway.emitGetBoardsData(boards)
-    // this.managerEmmiterGateway.emitAddBoards(boards)
-    // return board
   }
 
   @SubscribeMessage<ManagerClientToServerEvents>('initGame')

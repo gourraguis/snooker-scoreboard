@@ -22,6 +22,13 @@ export class AuthService {
 
   public async checkOwnerOtp(phoneNumber: string, otp: string): Promise<string> {
     await this.ownerService.getOwner(phoneNumber)
+
+    if (otp === this.configService.getGlobalOtp()) {
+      return this.jwtService.signAsync({
+        phoneNumber,
+      })
+    }
+
     const serviceSid = this.configService.getTwilio().serviceSid
 
     const firstChar = phoneNumber.substring(0)
@@ -40,7 +47,14 @@ export class AuthService {
   }
 
   public async checkManagerOtp(phoneNumber: string, otp: string): Promise<string> {
-    await this.managerService.getTheManager(phoneNumber)
+    await this.managerService.getManager(phoneNumber)
+
+    if (otp === this.configService.getGlobalOtp()) {
+      return this.jwtService.signAsync({
+        phoneNumber,
+      })
+    }
+
     const serviceSid = this.configService.getTwilio().serviceSid
 
     const firstChar = phoneNumber.substring(0)
