@@ -4,7 +4,6 @@ import { useEffect } from 'react'
 import Layout from 'antd/lib/layout/layout'
 import Head from 'next/head'
 import { NextPage } from 'next'
-import { ODFooter } from '../components/ODFooter/ODFooter'
 import { ODHeader } from '../components/ODHeader/ODHeader'
 import { ODLogin } from '../components/ODLogin/ODLogin'
 import { ownerState } from '../atoms/ownerState'
@@ -34,13 +33,12 @@ const Login: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Manager Dashboard</title>
+        <title>Owner Dashboard</title>
         <link rel="icon" href="/favicon/favicon.ico" />
       </Head>
       <Layout style={{ minHeight: '100vh' }}>
         <ODHeader />
         <ODLogin />
-        <ODFooter />
       </Layout>
     </>
   )

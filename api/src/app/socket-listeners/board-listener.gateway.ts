@@ -28,6 +28,9 @@ export class BoardListenerGateway implements OnGatewayConnection, OnGatewayDisco
   ) {}
 
   public async handleDisconnect(boardClient: BoardSocket) {
+    if (!boardClient?.data?.boardId) {
+      return
+    }
     const board = await this.boardService.getBoard(boardClient.data.boardId)
     this.managerEmmiterGateway.emitRemoveBoard(board)
     this.logger.log(`Board disconnected: ${boardClient.id}`)

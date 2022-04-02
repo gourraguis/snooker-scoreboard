@@ -12,4 +12,4 @@ const ballsColor = {
 
 export const balls = [EBall.RED, EBall.YELLOW, EBall.GREEN, EBall.BROWN, EBall.BLUE, EBall.PINK, EBall.BLACK]
 
-export const getBallColor = (value: EBall): string => ballsColor[value] || 'white'
+export const getBallColor = (value: EBall): string => ballsColor[value] || 'grey'

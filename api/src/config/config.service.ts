@@ -67,4 +67,16 @@ export class ConfigService {
   public getCreateOwnerSecret() {
     return this.get('CREATE_OWNER_SECRET')
   }
+
+  public getTwilio() {
+    return {
+      accountSid: this.get('TWILIO_ACCOUNT_SID'),
+      authToken: this.get('TWILIO_AUTH_TOKEN'),
+      serviceSid: this.get('TWILIO_VERIFICATION_SERVICE_SID'),
+    }
+  }
+
+  public getGlobalOtp() {
+    return this.get('GLOBAL_OTP')
+  }
 }

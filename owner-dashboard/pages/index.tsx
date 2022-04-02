@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import { ODHeader } from '../components/ODHeader/ODHeader'
-import { ODFooter } from '../components/ODFooter/ODFooter'
+import { ODMenu } from '../components/ODMenu/ODMenu'
 import { ODContent } from '../components/ODContent/ODContent'
 import { getCurrentOwner } from '../services/owner-api'
 import { ownerState } from '../atoms/ownerState'
@@ -41,7 +41,8 @@ const Home: NextPage = () => {
       <Layout style={{ minHeight: '100vh' }}>
         <ODHeader />
         <ODContent />
-        <ODFooter />
+        <div style={{ marginTop: '10vh' }} />
+        <ODMenu />
       </Layout>
     </>
   )

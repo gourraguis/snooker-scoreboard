@@ -30,7 +30,6 @@ export class ManagerListenerGateway implements OnGatewayConnection {
   ) {}
 
   public handleConnection(ManagerClient: ManagerSocket) {
-    this.logger.log(`NODE_ENV=${process.env.NODE_ENV}`)
     this.logger.log(`Manager connected: ${ManagerClient.id}`)
   }
 
@@ -40,8 +39,6 @@ export class ManagerListenerGateway implements OnGatewayConnection {
     const manager = await this.managerService.getManagerById(managerId)
     const boards = await this.boardService.getOwnerBoards(manager.owner)
     this.boardEmitterGateway.emitGetBoardsData(boards)
-    // this.managerEmmiterGateway.emitAddBoards(boards)
-    // return board
   }
 
   @SubscribeMessage<ManagerClientToServerEvents>('initGame')
@@ -60,10 +57,8 @@ export class ManagerListenerGateway implements OnGatewayConnection {
 
   @SubscribeMessage<ManagerClientToServerEvents>('updatePlayerName')
   onUpdatePlayerName(@MessageBody() board: IInitBoard) {
-    // const managerId = client.data.managerId
     const managerId = '1'
     if (!managerId) {
-      //todo: redirect to login in case of error
       return
     }
     this.logger.log(`Starting new game on board id: ${board.boardId}`)
@@ -74,10 +69,8 @@ export class ManagerListenerGateway implements OnGatewayConnection {
 
   @SubscribeMessage<ManagerClientToServerEvents>('stopTimer')
   onStopTimer(@MessageBody() board: IInitBoard) {
-    // const managerId = client.data.managerId
     const managerId = '1'
     if (!managerId) {
-      //todo: redirect to login in case of error
       return
     }
     this.logger.log(`Stop Timer on board id: ${board.boardId}`)

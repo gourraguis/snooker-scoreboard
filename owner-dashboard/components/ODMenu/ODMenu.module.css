@@ -1,0 +1,19 @@
+.menu {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  background-color: #001529;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.item {
+  width: 33%;
+}
+
+.icon {
+  color: white;
+  font-size: 20px !important;
+}

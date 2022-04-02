@@ -25,7 +25,7 @@ export const MDHeader: FunctionComponent = () => {
   return (
     <Header className={styles.header}>
       <Title level={2} className={styles.title}>
-        Manager Dashboard
+        Espace du gérant
       </Title>
       {!!isAuth && (
         <Button className={styles.button} onClick={handleLogout}>

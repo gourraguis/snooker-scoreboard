@@ -39,4 +39,10 @@ export class OwnerController {
 
     return this.ownerService.createOwner(owner)
   }
+
+  @Post('statistics')
+  @UseGuards(JwtAuthGuard)
+  getStatistics(@AuthenticatedUser('phoneNumber') phoneNumber: string, @Body() filter) {
+    return this.ownerService.getStatisticsByFilter(phoneNumber, filter)
+  }
 }
