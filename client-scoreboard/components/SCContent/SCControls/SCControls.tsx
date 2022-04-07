@@ -100,7 +100,7 @@ export const SCControls: FunctionComponent<SCControlsProps> = ({ showControls })
 
   const handleKeyPress = useCallback(
     (event) => {
-      if (event.key === 's') {
+      if (event.key === 'a') {
         switchPlayer()
       } else if (event.key === 'v') {
         undoBall()
