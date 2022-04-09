@@ -13,6 +13,8 @@ const { Title } = Typography
 export const ODHeader: FunctionComponent = () => {
   const [owner, setOwner] = useRecoilState(ownerState)
   const router = useRouter()
+  // todo: fetch club name from jwt token and set it here
+  const title = `[Club Name]`
 
   const handleLogout = () => {
     localStorage.removeItem('jwtToken')
@@ -23,7 +25,7 @@ export const ODHeader: FunctionComponent = () => {
   return (
     <Header className={styles.header}>
       <Title level={2} className={styles.title}>
-        Owner Dashboard
+        {title || 'Jawad Club'}
       </Title>
       {!!owner && (
         <Button className={styles.button} onClick={handleLogout}>
