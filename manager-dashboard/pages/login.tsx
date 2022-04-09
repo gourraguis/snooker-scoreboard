@@ -9,8 +9,7 @@ const login: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Manager Dashboard</title>
-        <link rel="icon" href="/favicon/favicon.ico" />
+        <title>Connexion du gérant</title>
       </Head>
       <Layout style={{ minHeight: '100vh' }}>
         <MDHeader />

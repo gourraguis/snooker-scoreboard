@@ -1,7 +1,7 @@
 import { atom } from 'recoil'
-import { IStatiscis } from '../types/statistics'
+import { IStatistics } from '../types/statistics'
 
-export const statisticsState = atom<IStatiscis[]>({
+export const statisticsState = atom<IStatistics[]>({
   key: 'statisticsState',
   default: [],
 })

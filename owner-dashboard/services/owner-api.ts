@@ -6,7 +6,7 @@ import { IOwner } from '../types/owner'
 import { IBoard } from '../types/board'
 import { openNotification } from './notification'
 import { getApiEndpoint } from './config'
-import { IStatiscis } from '../types/statistics'
+import { IStatistics } from '../types/statistics'
 
 export const generateOtpOwner = async (phoneNumber: string): Promise<boolean> => {
   try {
@@ -227,7 +227,7 @@ export const getBoards = async (setBoardsElements: SetterOrUpdater<ICardElements
   }
 }
 
-export const getStatisticsByFilter = async (filter: any, setStatistics: SetterOrUpdater<IStatiscis[]>) => {
+export const getStatisticsByFilter = async (filter: any, setStatistics: SetterOrUpdater<IStatistics[]>) => {
   const token = localStorage.getItem('jwtToken')
   try {
     const res = await axios.post(`${getApiEndpoint()}owner/statistics`, filter, {
