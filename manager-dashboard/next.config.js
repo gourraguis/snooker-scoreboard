@@ -27,13 +27,14 @@ module.exports = withPlugins([
         dest: 'public',
         register: true,
         skipWaiting: true,
-        disable: process.env.NODE_ENV === 'development',
+        disable: process.env.DISABLE_PWA === 'true',
       },
     },
   ],
   {
     env: {
       API_ENDPOINT: process.env.API_ENDPOINT,
+      DISABLE_PWA: process.env.DISABLE_PWA,
     },
   },
 ])

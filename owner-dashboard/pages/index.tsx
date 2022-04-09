@@ -35,8 +35,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Owner Dashboard</title>
-        <link rel="icon" href="/favicon/favicon.ico" />
+        <title>Admin - Jawad Club</title>
       </Head>
       <Layout style={{ minHeight: '100vh' }}>
         <ODHeader />
