@@ -5,14 +5,14 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import { MDMenu } from '../components/MDMenu/MDMenu'
-import { authState } from '../atoms/authState'
+import { managerState } from '../atoms/managerState'
 import { getCurrentManager } from '../services/manager'
 import { MDHeader } from '../components/MDHeader/MDHeader'
 import { MDTable } from '../components/MDStatistics/MDTable/MDTable'
 
 const Statistics: NextPage = () => {
   const router = useRouter()
-  const [manager, setManager] = useRecoilState(authState)
+  const [manager, setManager] = useRecoilState(managerState)
 
   const fetchCurrentManager = async () => {
     const currentManager = await getCurrentManager()

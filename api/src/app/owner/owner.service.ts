@@ -1,9 +1,8 @@
-import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common'
+import { BadRequestException, ConflictException, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import * as moment from 'moment'
 import { Repository } from 'typeorm'
 import { Owner } from './entities/owner.entity'
-import { IOwner } from './types/IOwner'
 
 @Injectable()
 export class OwnerService {
@@ -14,7 +13,7 @@ export class OwnerService {
     private readonly ownerRepository: Repository<Owner>
   ) {}
 
-  public async getOwner(phoneNumber: string): Promise<IOwner> {
+  public async getOwner(phoneNumber: string): Promise<Owner> {
     const owner = await this.ownerRepository.findOne({
       phoneNumber,
     })
@@ -22,14 +21,10 @@ export class OwnerService {
       throw new BadRequestException(`Votre numéro de téléphone ou votre code d'authentification est invalide`)
     }
 
-    return {
-      phoneNumber: owner.phoneNumber,
-      name: owner.name,
-      balance: owner.balance,
-    }
+    return owner
   }
 
-  public async createOwner(owner: Partial<Owner>): Promise<IOwner> {
+  public async createOwner(owner: Partial<Owner>): Promise<Owner> {
     const existingOwner = await this.ownerRepository.findOne({
       phoneNumber: owner.phoneNumber,
     })
@@ -43,21 +38,7 @@ export class OwnerService {
     newOwner.balance = this.defaultBalance
     await this.ownerRepository.save(newOwner)
 
-    return {
-      phoneNumber: owner.phoneNumber,
-      name: owner.name,
-      balance: owner.balance,
-    }
-  }
-
-  public async checkPhoneNumber(phoneNumber: string): Promise<Owner> {
-    const owner = await this.ownerRepository.findOne({
-      phoneNumber: phoneNumber,
-    })
-    if (!owner) {
-      throw new NotFoundException('There is no owner with this phone number')
-    }
-    return owner
+    return newOwner
   }
 
   public async getStatisticsByFilter(phoneNumber: string, filter) {
@@ -91,7 +72,7 @@ export class OwnerService {
     for (let index = 0; index < games.length; index++) {
       const table = await this.ownerRepository.query(`SELECT * FROM board WHERE board.id = '${games[index].board_id}'`)
       const manager = await this.ownerRepository.query(
-        `SELECT * FROM manager WHERE manager.id = '${games[index].manager_id}'`
+        `SELECT * FROM manager WHERE manager.phone_number = '${games[index].manager_id}'`
       )
 
       data = [

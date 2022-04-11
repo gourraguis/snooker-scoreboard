@@ -2,7 +2,6 @@ import { useRouter } from 'next/router'
 import { FunctionComponent } from 'react'
 import { Button, Layout, Typography } from 'antd'
 import { LogoutOutlined } from '@ant-design/icons'
-
 import { useRecoilState } from 'recoil'
 import styles from './ODHeader.module.css'
 import { ownerState } from '../../atoms/ownerState'
@@ -13,8 +12,6 @@ const { Title } = Typography
 export const ODHeader: FunctionComponent = () => {
   const [owner, setOwner] = useRecoilState(ownerState)
   const router = useRouter()
-  // todo: fetch club name from jwt token and set it here
-  const title = `[Club Name]`
 
   const handleLogout = () => {
     localStorage.removeItem('jwtToken')
@@ -25,7 +22,7 @@ export const ODHeader: FunctionComponent = () => {
   return (
     <Header className={styles.header}>
       <Title level={2} className={styles.title}>
-        {title || 'Jawad Club'}
+        {owner?.clubName || 'Jawad Club'}
       </Title>
       {!!owner && (
         <Button className={styles.button} onClick={handleLogout}>

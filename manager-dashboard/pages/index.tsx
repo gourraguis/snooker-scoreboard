@@ -10,14 +10,14 @@ import { MDHeader } from '../components/MDHeader/MDHeader'
 import { MDContent } from '../components/MDContent/MDContent'
 import { gamesState, updateGameAction } from '../atoms/games.atom'
 import { getCurrentManager } from '../services/manager'
-import { authState } from '../atoms/authState'
+import { managerState } from '../atoms/managerState'
 import { MDMenu } from '../components/MDMenu/MDMenu'
 
 const Home: NextPage = () => {
   const setBoards = useSetRecoilState(boardsState)
   const setGames = useSetRecoilState(gamesState)
   const router = useRouter()
-  const [manager, setManager] = useRecoilState(authState)
+  const [manager, setManager] = useRecoilState(managerState)
 
   const fetchCurrentManager = async () => {
     const currentManager = await getCurrentManager()
@@ -26,6 +26,7 @@ const Home: NextPage = () => {
       router.push('/login')
       return
     }
+    console.log(currentManager)
     setManager(currentManager)
   }
 

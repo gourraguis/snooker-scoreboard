@@ -40,7 +40,7 @@ export class GameController {
 
   @UseGuards(JwtAuthGuard)
   @Get('managerDailyGames')
-  getManagerDailyGames(@AuthenticatedUser('id') phoneNumber: string) {
-    return this.gameService.getManagerDailyGames(phoneNumber)
+  getManagerDailyGames(@AuthenticatedUser('phoneNumber') phoneNumber: string) {
+    return this.gameService.getManagerGames(phoneNumber)
   }
 }

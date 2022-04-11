@@ -18,8 +18,9 @@ export const generateOtpOwner = async (phoneNumber: string): Promise<boolean> =>
     })
     return true
   } catch (e: any) {
+    console.error(e)
     openNotification({
-      title: e.response.data.message,
+      title: e?.response?.data?.message || 'Erreur du système, veuillez ressayer plus tard.',
       type: 'error',
     })
     return false
@@ -40,15 +41,16 @@ export const loginOwner = async (phoneNumber: string, otp: string): Promise<stri
     })
     return jwtToken
   } catch (e: any) {
+    console.error(e)
     openNotification({
-      title: e.response.data.message,
+      title: e?.response?.data?.message || 'Erreur du système, veuillez ressayer plus tard.',
       type: 'error',
     })
     return null
   }
 }
 
-export const getCurrentOwner = async (): Promise<IOwner | null> => {
+export const getOwner = async (): Promise<IOwner | null> => {
   try {
     const token = localStorage.getItem('jwtToken')
     const { data: owner } = await axios.get<IOwner>(`${getApiEndpoint()}owner`, {
@@ -57,6 +59,7 @@ export const getCurrentOwner = async (): Promise<IOwner | null> => {
       },
     })
 
+    console.log(owner)
     return owner
   } catch {
     return null
