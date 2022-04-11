@@ -17,9 +17,8 @@ const ODManagerModal: FunctionComponent<ODManagerModalProps> = ({ onCancel, visi
   }
   const onFinish = async (values: IManager) => {
     const newManager: IManager = {
-      id: values.id,
+      phoneNumber: values.phoneNumber,
       name: values.name,
-      owner: '',
     }
     createManager(newManager, managersElements, setManagersElements)
     onCancel()
@@ -51,7 +50,7 @@ const ODManagerModal: FunctionComponent<ODManagerModalProps> = ({ onCancel, visi
           <Form.Item label="Name" name="name">
             <Input />
           </Form.Item>
-          <Form.Item label="Phone" name="id">
+          <Form.Item label="Phone" name="phoneNumber">
             <Input />
           </Form.Item>
         </Form>
