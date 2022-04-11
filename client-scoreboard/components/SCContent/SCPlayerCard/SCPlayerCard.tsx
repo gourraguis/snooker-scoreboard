@@ -14,7 +14,7 @@ interface SCPlayerCardProps {
   showGlobalScore: boolean
 }
 
-const SCPlayerCard: FunctionComponent<SCPlayerCardProps> = ({
+export const SCPlayerCard: FunctionComponent<SCPlayerCardProps> = ({
   isCurrent,
   color,
   points,
@@ -46,5 +46,3 @@ const SCPlayerCard: FunctionComponent<SCPlayerCardProps> = ({
     </Card>
   )
 }
-
-export default SCPlayerCard

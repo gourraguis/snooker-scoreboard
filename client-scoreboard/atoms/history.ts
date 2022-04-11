@@ -49,16 +49,16 @@ export const lastBallSelector = selector<EBall>({
 export const playersScoreSelector = selector<number[]>({
   key: 'playersScoreSelector',
   get: ({ get }) => {
-    const playingHistoryWithoutCurrentTurn = get(previousTurnsSelector).filter(({ undoed }) => undoed === false)
+    const scoreHistory = get(historyState).filter(({ undoed }) => undoed === false)
 
-    const playerZeroScore = playingHistoryWithoutCurrentTurn
+    const playerZeroScore = scoreHistory
       .filter(({ value }) => value === 0)
       .reduce((acc, turn) => {
         const turnScore = turn.scoredBalls.reduce((acc2, val) => acc2 + val, 0)
         return acc + turnScore
       }, 0)
 
-    const playerOneScore = playingHistoryWithoutCurrentTurn
+    const playerOneScore = scoreHistory
       .filter(({ value }) => value === 1)
       .reduce((acc, turn) => {
         const turnScore = turn.scoredBalls.reduce((acc2, val) => acc2 + val, 0)

@@ -8,7 +8,6 @@ import { currentTurnSelector, historyState, playersScoreSelector } from '../../a
 import { initSocket } from '../../services/sockets'
 import { boardState } from '../../atoms/board.atom'
 import { gameState, sendGameData, stopTimerAction, timerState, updateGameAction } from '../../atoms/game.atom'
-import SCPlayerCard from './SCPlayerCard/SCPlayerCard'
 import SCHeading from './SCHeader/SCHeader'
 import SCGameDetails from './SCGameDetails/SCGameDetails'
 import SCHistory from './SCHistory/SCHistory'
@@ -16,6 +15,7 @@ import SCHistory from './SCHistory/SCHistory'
 import styles from './SCContent.module.css'
 import { addGameAction, globalScoreState } from '../../atoms/globalScore.atom'
 import { SCControls } from './SCControls/SCControls'
+import { SCPlayerCard } from './SCPlayerCard/SCPlayerCard'
 
 const SCContent = () => {
   const [board, setBoard] = useRecoilState(boardState)
@@ -53,45 +53,50 @@ const SCContent = () => {
 
   return (
     <Content className={styles.content}>
-      <Head>
-        <title>Snooker Scoreboard</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <div className={styles.contentCentered}>
-        {id && !board && <Empty className={styles.centered} description="BOARD IS NOT CONNECTED TO API" />}
-        {!id && <Empty className={styles.centered} description="BOARD ID IS NOT DEFINED" />}
-        {!!board && !game && <Empty className={styles.centered} description="GAME IS NOT STARTED" />}
-      </div>
-      {!!board && !!game && (
-        <div>
+      {!id && (
+        <div className={styles.contentCentered}>
+          <Empty className={styles.centered} description="BOARD ID IS NOT DEFINED" />
+        </div>
+      )}
+      {id && !board && (
+        <div className={styles.contentCentered}>
+          <Empty className={styles.centered} description="BOARD IS NOT CONNECTED TO API" />
+        </div>
+      )}
+      {board && !game && (
+        <div className={styles.contentCentered}>
+          <Empty className={styles.centered} description="GAME IS NOT STARTED" />
+        </div>
+      )}
+
+      {board && game && (
+        <>
           <div className={styles.centerHeading}>
             <SCHeading title={board.name} />
           </div>
-          <Content>
-            <Row gutter={16}>
-              <Col span={8} className={styles.cent}>
-                {game.players.map((player) => (
-                  <SCPlayerCard
-                    isCurrent={currentTurn?.value === player.turn}
-                    color={player.turn ? 'rgb(153 27 27)' : 'rgb(250 204 21)'}
-                    playerName={player.name}
-                    points={playersScore[player.turn]}
-                    globalScore={globalScore[player.turn].score}
-                    showGlobalScore={showGlobalScore}
-                    key={player.turn}
-                  />
-                ))}
-              </Col>
-              <Col span={8} className={styles.col}>
-                <SCGameDetails />
-              </Col>
-              <Col span={8} className={styles.col}>
-                <SCHistory />
-              </Col>
-            </Row>
-            <SCControls showControls={showControls} />
-          </Content>
-        </div>
+          <Row gutter={16}>
+            <Col span={8} className={styles.cent}>
+              {game.players.map((player) => (
+                <SCPlayerCard
+                  isCurrent={currentTurn?.value === player.turn}
+                  color={player.turn ? 'rgb(153 27 27)' : 'rgb(250 204 21)'}
+                  playerName={player.name}
+                  points={playersScore[player.turn]}
+                  globalScore={globalScore[player.turn].score}
+                  showGlobalScore={showGlobalScore}
+                  key={player.turn}
+                />
+              ))}
+            </Col>
+            <Col span={8} className={styles.col}>
+              <SCGameDetails />
+            </Col>
+            <Col span={8} className={styles.col}>
+              <SCHistory />
+            </Col>
+          </Row>
+          <SCControls showControls={showControls} />
+        </>
       )}
     </Content>
   )
