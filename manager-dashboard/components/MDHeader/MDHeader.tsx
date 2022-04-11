@@ -1,33 +1,30 @@
-import { FunctionComponent, useEffect, useState } from 'react'
+import { FunctionComponent } from 'react'
 import { Button, Layout, Typography } from 'antd'
 import { LogoutOutlined } from '@ant-design/icons'
-
 import { useRouter } from 'next/router'
+import { useRecoilState } from 'recoil'
 import styles from './MDHeader.module.css'
+import { managerState } from '../../atoms/managerState'
 
 const { Header } = Layout
 const { Title } = Typography
 
 export const MDHeader: FunctionComponent = () => {
-  const [isAuth, setIsAuth] = useState(false)
+  const [manager, setManager] = useRecoilState(managerState)
   const router = useRouter()
 
   const handleLogout = () => {
-    localStorage.removeItem('token')
+    localStorage.removeItem('jwtToken')
+    setManager(null)
     router.push('/login')
   }
-
-  useEffect(() => {
-    if (localStorage.getItem('token')) setIsAuth(true)
-    else setIsAuth(false)
-  }, [isAuth])
 
   return (
     <Header className={styles.header}>
       <Title level={2} className={styles.title}>
-        Espace du gérant
+        {manager?.clubName || 'Jawad Club'}
       </Title>
-      {!!isAuth && (
+      {!!manager && (
         <Button className={styles.button} onClick={handleLogout}>
           <LogoutOutlined />
         </Button>

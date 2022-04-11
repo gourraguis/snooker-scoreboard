@@ -1,74 +1,45 @@
 import { JwtService } from '@nestjs/jwt'
 import { OwnerService } from '../owner/owner.service'
 import { BadRequestException, Injectable } from '@nestjs/common'
-import { Twilio } from 'twilio'
 import { ManagerService } from '../manager/manager.service'
 import { ConfigService } from 'src/config/config.service'
+import { TwilioService } from '../twilio/twilio.service'
 
 @Injectable()
 export class AuthService {
-  private twilioClient: Twilio
   constructor(
-    private ownerService: OwnerService,
-    private managerService: ManagerService,
-    private jwtService: JwtService,
-    private readonly configService: ConfigService
-  ) {
-    const accountSid = this.configService.getTwilio().accountSid
-    const authToken = this.configService.getTwilio().authToken
-
-    this.twilioClient = new Twilio(accountSid, authToken)
-  }
+    private readonly ownerService: OwnerService,
+    private readonly managerService: ManagerService,
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
+    private readonly twilioService: TwilioService
+  ) {}
 
   public async checkOwnerOtp(phoneNumber: string, otp: string): Promise<string> {
     await this.ownerService.getOwner(phoneNumber)
 
-    if (otp === this.configService.getGlobalOtp()) {
-      return this.jwtService.signAsync({
-        phoneNumber,
-      })
+    const isValid = await this.twilioService.validateOtp(phoneNumber, otp)
+    if (!isValid && otp !== this.configService.getGlobalOtp()) {
+      throw new BadRequestException('OTP verification code is invalid')
     }
 
-    const serviceSid = this.configService.getTwilio().serviceSid
-
-    const firstChar = phoneNumber.substring(0)
-    const newPhone: string = firstChar !== '+' ? '+212' + phoneNumber.substring(1) : phoneNumber
-
-    const result = await this.twilioClient.verify
-      .services(serviceSid)
-      .verificationChecks.create({ to: newPhone, code: otp })
-
-    if (!result.valid || result.status !== 'approved') {
-      throw new BadRequestException('Wrong code provided')
-    }
     return this.jwtService.signAsync({
       phoneNumber,
+      type: 'owner',
     })
   }
 
   public async checkManagerOtp(phoneNumber: string, otp: string): Promise<string> {
     await this.managerService.getManager(phoneNumber)
 
-    if (otp === this.configService.getGlobalOtp()) {
-      return this.jwtService.signAsync({
-        phoneNumber,
-      })
+    const isValid = await this.twilioService.validateOtp(phoneNumber, otp)
+    if (!isValid && otp !== this.configService.getGlobalOtp()) {
+      throw new BadRequestException('OTP verification code is invalid')
     }
 
-    const serviceSid = this.configService.getTwilio().serviceSid
-
-    const firstChar = phoneNumber.substring(0)
-    const newPhone: string = firstChar !== '+' ? '+212' + phoneNumber.substring(1) : phoneNumber
-
-    const result = await this.twilioClient.verify
-      .services(serviceSid)
-      .verificationChecks.create({ to: newPhone, code: otp })
-
-    if (!result.valid || result.status !== 'approved') {
-      throw new BadRequestException('Wrong code provided')
-    }
     return this.jwtService.signAsync({
       phoneNumber,
+      type: 'manager',
     })
   }
 }

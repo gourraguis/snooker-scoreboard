@@ -19,8 +19,9 @@ export const generateOtpManager = async (phoneNumber: string): Promise<boolean> 
     })
     return true
   } catch (e: any) {
+    console.error(e)
     openNotification({
-      title: e.response.data.message,
+      title: e?.response?.data?.message || 'Erreur du système, veuillez ressayer plus tard.',
       type: 'error',
     })
     return false
@@ -42,8 +43,9 @@ export const loginManager = async (phoneNumber: string, otp: string): Promise<st
     })
     return jwtToken
   } catch (e: any) {
+    console.error(e)
     openNotification({
-      title: e.response.data.message,
+      title: e?.response?.data?.message || 'Erreur du système, veuillez ressayer plus tard.',
       type: 'error',
     })
     return null

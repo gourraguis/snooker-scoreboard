@@ -1,7 +1,7 @@
 import { atom } from 'recoil'
 import { IManager } from '../types/manager'
 
-export const authState = atom<IManager | null>({
-  key: 'auth',
+export const managerState = atom<IManager | null>({
+  key: 'managerState',
   default: null,
 })

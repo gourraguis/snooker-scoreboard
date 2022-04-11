@@ -11,6 +11,7 @@ import { OwnerService } from '../owner/owner.service'
 import ConfigModule from '../../config/config.module'
 import { ConfigService } from '../../config/config.service'
 import { ManagerModule } from '../manager/manager.module'
+import { TwilioModule } from '../twilio/twilio.module'
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ManagerModule } from '../manager/manager.module'
     OwnerModule,
     ManagerModule,
     PassportModule,
+    TwilioModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

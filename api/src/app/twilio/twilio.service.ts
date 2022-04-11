@@ -3,7 +3,7 @@ import { ConfigService } from 'src/config/config.service'
 import { Twilio } from 'twilio'
 
 @Injectable()
-export class SmsService {
+export class TwilioService {
   private twilioClient: Twilio
 
   constructor(private readonly configService: ConfigService) {
@@ -13,7 +13,7 @@ export class SmsService {
     this.twilioClient = new Twilio(accountSid, authToken)
   }
 
-  public async sendSms(phoneNumber: string) {
+  public async sendOtp(phoneNumber: string) {
     const serviceSid = this.configService.getTwilio().serviceSid
 
     const firstChar = phoneNumber.substring(0)
@@ -23,5 +23,18 @@ export class SmsService {
       .services(serviceSid)
       .verifications.create({ to: newPhone, channel: 'sms' })
       .catch((err) => console.log(err))
+  }
+
+  public async validateOtp(phoneNumber: string, otp: string) {
+    const serviceSid = this.configService.getTwilio().serviceSid
+
+    const firstChar = phoneNumber.substring(0)
+    const newPhone: string = firstChar !== '+' ? '+212' + phoneNumber.substring(1) : phoneNumber
+
+    const result = await this.twilioClient.verify
+      .services(serviceSid)
+      .verificationChecks.create({ to: newPhone, code: otp })
+
+    return result.valid && result.status === 'approved'
   }
 }
