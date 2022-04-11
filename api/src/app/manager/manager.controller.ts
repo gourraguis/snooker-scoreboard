@@ -45,14 +45,14 @@ export class ManagerController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete(':id')
-  deleteManager(@Param('id') id: string) {
-    return this.managerService.deleteManager(id)
+  @Delete(':phoneNumber')
+  deleteManager(@Param('phoneNumber') phoneNumber: string) {
+    return this.managerService.deleteManager(phoneNumber)
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('statistics')
-  getManagerStatistics(@AuthenticatedUser('id') phoneNumber: string) {
+  getManagerStatistics(@AuthenticatedUser('phoneNumber') phoneNumber: string) {
     return this.managerService.getManagerStatistics(phoneNumber)
   }
 }

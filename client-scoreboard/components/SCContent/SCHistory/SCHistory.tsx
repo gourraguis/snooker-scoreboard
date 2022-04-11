@@ -4,16 +4,16 @@ import { useRecoilValue } from 'recoil'
 import { Card } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import classNames from 'classnames'
-import { previousTurnsSelector } from '../../../atoms/history'
+import { historyState } from '../../../atoms/history'
 import SCBall from '../SCGameDetails/SCBall/SCBall'
 
 import styles from './SCHistory.module.css'
 
 const SCHistory = () => {
-  const playingHistoryWithoutCurrentTurn = useRecoilValue(previousTurnsSelector)
+  const playingHistory = useRecoilValue(historyState)
 
-  const historyLength = playingHistoryWithoutCurrentTurn.length
-  const shownHistory = playingHistoryWithoutCurrentTurn.slice(historyLength > 4 ? historyLength - 5 : 0, historyLength)
+  const historyLength = playingHistory.length
+  const shownHistory = playingHistory.slice(historyLength > 4 ? historyLength - 5 : 0, historyLength)
 
   return (
     <Content className={styles.all}>
