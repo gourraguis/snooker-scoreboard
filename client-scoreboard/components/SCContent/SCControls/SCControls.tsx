@@ -87,14 +87,27 @@ export const SCControls: FunctionComponent<SCControlsProps> = ({ showControls })
   }, [send])
 
   const switchPlayer = () => {
-    setHistory([
-      ...history,
-      {
-        value: ((currentTurn.value + 1) % 2) as 0 | 1,
-        scoredBalls: [],
-        undoed: false,
-      },
-    ])
+    if (currentTurn.scoredBalls.length === 0) {
+      const newHistory = [...history]
+      newHistory.pop()
+      setHistory([
+        ...newHistory,
+        {
+          value: ((currentTurn.value + 1) % 2) as 0 | 1,
+          scoredBalls: [],
+          undoed: false,
+        },
+      ])
+    } else {
+      setHistory([
+        ...history,
+        {
+          value: ((currentTurn.value + 1) % 2) as 0 | 1,
+          scoredBalls: [],
+          undoed: false,
+        },
+      ])
+    }
     setSend(true)
   }
 
