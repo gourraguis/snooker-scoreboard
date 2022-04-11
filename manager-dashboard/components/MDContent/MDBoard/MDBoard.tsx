@@ -86,11 +86,11 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board, dailyScore, we
   const menu = (
     <Menu>
       <Menu.Item onClick={handleNewGame} key="initSameGame">
-        Restart game with same players
+        3awed match (meme joueurs)
       </Menu.Item>
 
       <Menu.Item onClick={handleNewDiffGame} key="initDifferentGame">
-        Restart game with different players
+        bda match jdid (joueurs différents)
       </Menu.Item>
     </Menu>
   )
