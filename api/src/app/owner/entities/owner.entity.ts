@@ -8,6 +8,16 @@ export class Owner {
   @Column()
   name: string
 
+  @Column({
+    nullable: true,
+  })
+  clubName: string
+
+  @Column({
+    nullable: true,
+  })
+  address: string
+
   @Column()
   balance: number
 

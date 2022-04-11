@@ -2,6 +2,7 @@ import { BadRequestException, ConflictException, Injectable, Logger, NotFoundExc
 import { InjectRepository } from '@nestjs/typeorm'
 import * as moment from 'moment'
 import { DeleteResult, Repository } from 'typeorm'
+import { Owner } from '../owner/entities/owner.entity'
 import { Manager } from './entities/manager.entity'
 import { IManager } from './types'
 
@@ -11,31 +12,33 @@ export class ManagerService {
 
   constructor(
     @InjectRepository(Manager)
-    private readonly managerRepository: Repository<Manager>
+    private readonly managerRepository: Repository<Manager>,
+    @InjectRepository(Owner)
+    private readonly ownerRepository: Repository<Owner>
   ) {}
-
-  public async checkPhoneNumber(phoneNumber: string): Promise<Manager> {
-    const manager = await this.managerRepository.findOne({
-      id: phoneNumber,
-    })
-    if (!manager) {
-      throw new NotFoundException('There is no manager with this phone number')
-    }
-    return manager
-  }
 
   public async getManager(phoneNumber: string): Promise<IManager> {
     const manager = await this.managerRepository.findOne({
-      id: phoneNumber,
+      where: {
+        phoneNumber: phoneNumber,
+      },
+    })
+    const owner = await this.ownerRepository.findOne({
+      where: {
+        phoneNumber: manager.owner,
+      },
     })
     if (!manager) {
       throw new BadRequestException(`Votre numéro de téléphone ou votre code d'authentification est invalide`)
     }
 
     return {
-      id: manager.id,
+      phoneNumber: manager.phoneNumber,
       name: manager.name,
       owner: manager.owner,
+      clubName: owner.clubName,
+      address: owner.address,
+      balance: owner.balance,
     }
   }
 
@@ -44,15 +47,15 @@ export class ManagerService {
     return managers
   }
 
-  public async getManagerById(id: string): Promise<IManager> {
+  public async getManagerByPhoneNumber(phoneNumber: string): Promise<IManager> {
     const manager = await this.managerRepository.findOne({
-      id: id,
+      phoneNumber: phoneNumber,
     })
     if (!manager) {
       throw new NotFoundException('There is no manager with this phone number')
     }
     return {
-      id: manager.id,
+      phoneNumber: manager.phoneNumber,
       name: manager.name,
       owner: manager.owner,
     }
@@ -69,21 +72,21 @@ export class ManagerService {
   public async createManager(manager: IManager, ownerId: string): Promise<Manager> {
     this.logger.log(JSON.stringify(manager, null, 2))
     const existingManager = await this.managerRepository.findOne({
-      id: manager.id,
+      phoneNumber: manager.phoneNumber,
     })
     if (existingManager) {
       throw new ConflictException('An manager with this phone number already exists')
     }
 
     const newManager = new Manager()
-    newManager.id = manager.id
+    newManager.phoneNumber = manager.phoneNumber
     newManager.name = manager.name
     newManager.owner = ownerId
     return this.managerRepository.save(newManager)
   }
 
-  public async deleteManager(id: string): Promise<DeleteResult> {
-    return await this.managerRepository.delete({ id: id })
+  public async deleteManager(phoneNumber: string): Promise<DeleteResult> {
+    return await this.managerRepository.delete({ phoneNumber: phoneNumber })
   }
 
   public async getManagerStatistics(phoneNumber: string) {

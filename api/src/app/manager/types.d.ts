@@ -1,5 +1,9 @@
 export interface IManager {
-  id: string
+  phoneNumber: phoneNumber
   name: string
+  clubName?: string
+  address?: string
+  balance?: number
+  otp?: string
   owner?: string
 }

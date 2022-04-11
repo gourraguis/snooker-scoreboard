@@ -7,14 +7,14 @@ import { NextPage } from 'next'
 import { ODHeader } from '../components/ODHeader/ODHeader'
 import { ODLogin } from '../components/ODLogin/ODLogin'
 import { ownerState } from '../atoms/ownerState'
-import { getCurrentOwner } from '../services/owner-api'
+import { getOwner } from '../services/owner-api'
 
 const Login: NextPage = () => {
   const router = useRouter()
   const [owner, setOwner] = useRecoilState(ownerState)
 
   const fetchCurrentOwner = async () => {
-    const currentOwner = await getCurrentOwner()
+    const currentOwner = await getOwner()
 
     if (currentOwner) {
       router.push('/')

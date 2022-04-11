@@ -3,7 +3,7 @@ import { Column, Entity, PrimaryColumn } from 'typeorm'
 @Entity()
 export class Manager {
   @PrimaryColumn()
-  id: string
+  phoneNumber: string
 
   @Column()
   name: string

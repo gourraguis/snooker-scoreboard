@@ -7,7 +7,7 @@ import { useRecoilState } from 'recoil'
 import { ODHeader } from '../components/ODHeader/ODHeader'
 import { ODMenu } from '../components/ODMenu/ODMenu'
 import { ODContent } from '../components/ODContent/ODContent'
-import { getCurrentOwner } from '../services/owner-api'
+import { getOwner } from '../services/owner-api'
 import { ownerState } from '../atoms/ownerState'
 
 const Home: NextPage = () => {
@@ -15,7 +15,7 @@ const Home: NextPage = () => {
   const [owner, setOwner] = useRecoilState(ownerState)
 
   const fetchCurrentOwner = async () => {
-    const currentOwner = await getCurrentOwner()
+    const currentOwner = await getOwner()
 
     if (!currentOwner) {
       router.push('/login')

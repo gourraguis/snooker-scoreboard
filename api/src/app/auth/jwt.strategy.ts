@@ -1,6 +1,6 @@
 import { ExtractJwt, Strategy } from 'passport-jwt'
 import { PassportStrategy } from '@nestjs/passport'
-import { Injectable, UnauthorizedException } from '@nestjs/common'
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common'
 import { OwnerService } from '../owner/owner.service'
 import { ConfigService } from '../../config/config.service'
 import { Owner } from '../owner/entities/owner.entity'
@@ -8,13 +8,17 @@ import { ManagerService } from '../manager/manager.service'
 import { IOwner } from '../owner/types/IOwner'
 import { IManager } from '../manager/types'
 
-interface Payload extends Owner {
+interface Payload {
+  phoneNumber: string
+  type: 'owner' | 'manager'
   iat: number
   exp: number
 }
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
+  private logger: Logger = new Logger(JwtStrategy.name)
+
   constructor(
     private configService: ConfigService,
     private ownerService: OwnerService,
@@ -28,19 +32,16 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   public async validate(payload: Payload) {
-    const { phoneNumber } = payload
-    let owner: IOwner
-    let manager: IManager
+    const { phoneNumber, type } = payload
     try {
-      owner = await this.ownerService.getOwner(phoneNumber)
-    } catch {}
-    try {
-      manager = await this.managerService.getManager(phoneNumber)
-    } catch {}
-    if (!owner && !manager) {
-      throw new UnauthorizedException()
+      if (type === 'owner') {
+        return await this.ownerService.getOwner(phoneNumber)
+      }
+      if (type === 'manager') {
+        return await this.managerService.getManager(phoneNumber)
+      }
+    } catch {
+      this.logger.warn(`Received invalid JWT validation request for ${type} with number: ${phoneNumber}`)
     }
-    if (owner) return owner
-    if (manager) return manager
   }
 }
