@@ -2,15 +2,16 @@ import { EllipsisOutlined } from '@ant-design/icons'
 import { Row, Col, Divider, Card, Dropdown, Menu } from 'antd'
 import { FunctionComponent } from 'react'
 import { useRecoilState } from 'recoil'
-import { managersStats, tablesStats } from '../../../../atoms/mainStats'
-import { deleteManager, deleteBoard } from '../../../../services/owner-api'
+import { ownerBoardsState } from '../../../../atoms/boards.atom'
+import { ownerManagersState } from '../../../../atoms/managers.atom'
+import { deleteManager, deleteBoard } from '../../../../services/api'
 import { ICardElements } from '../../../../types/cardElement'
 
 import styles from './ODMainCardContent.module.css'
 
-export const ODMainCardContent: FunctionComponent<ICardElements> = ({ id, name, dailyScore, weeklyScore }) => {
-  const [managersElements, setManagersElements] = useRecoilState(managersStats)
-  const [tablesElements, setTablesElements] = useRecoilState(tablesStats)
+export const ODMainCardContent: FunctionComponent<ICardElements> = ({ id, name, dailyGames, weeklyGames }) => {
+  const [ownerManagers, setOwnerManagers] = useRecoilState(ownerManagersState)
+  const [ownerBoards, setOwnerBoards] = useRecoilState(ownerBoardsState)
 
   const isPhoneNumber = (phoneNumber: string): boolean => {
     const phoneRegex = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/
@@ -22,9 +23,16 @@ export const ODMainCardContent: FunctionComponent<ICardElements> = ({ id, name, 
 
   // eslint-disable-next-line @typescript-eslint/no-shadow
   const deleteElem = (id: string) => {
-    if (isPhoneNumber(id)) deleteManager(managersElements, id, setManagersElements)
-    else deleteBoard(tablesElements, id, setTablesElements)
+    // todo: replace this with a clearer code, aka separate functions for manager and board
+    if (isPhoneNumber(id)) {
+      deleteManager(id)
+      setOwnerManagers(ownerManagers.filter((element) => element.id !== id))
+      return
+    }
+    deleteBoard(id)
+    setOwnerBoards(ownerBoards.filter((element) => element.id !== id))
   }
+
   const menu = (
     <Menu>
       <Menu.Item key="delete" onClick={() => deleteElem(id)}>
@@ -52,8 +60,8 @@ export const ODMainCardContent: FunctionComponent<ICardElements> = ({ id, name, 
         </Col>
 
         <Col span={7} className={styles.column}>
-          <span className={styles.dailyScore}>{dailyScore} </span>
-          <span className={styles.text}>Matches Ce Jour</span>
+          <span className={styles.dailyGames}>{dailyGames}</span>
+          <span className={styles.text}>Jour</span>
         </Col>
 
         <Col span={2}>
@@ -61,8 +69,8 @@ export const ODMainCardContent: FunctionComponent<ICardElements> = ({ id, name, 
         </Col>
 
         <Col span={7} className={styles.column}>
-          <span className={styles.weeklyScore}>{weeklyScore} </span>
-          <span className={styles.text}>Matches Cette Semaine</span>
+          <span className={styles.weeklyGames}>{weeklyGames}</span>
+          <span className={styles.text}>Semaine</span>
         </Col>
       </Row>
     </Card>

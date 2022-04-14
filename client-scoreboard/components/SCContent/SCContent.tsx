@@ -34,7 +34,6 @@ const SCContent = () => {
     if (!id) {
       return
     }
-    console.log(id)
     initSocket(
       addGameAction(setGlobalScoreState, setGame, setHistory, setStopTimer),
       setBoard,

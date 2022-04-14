@@ -1,4 +1,4 @@
-export interface IStatistics {
+export interface IStats {
   table: string
   manager: string
   winner: number

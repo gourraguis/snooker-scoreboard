@@ -1,18 +1,12 @@
-import { Controller, Post, Body, Get, Param, Put, UseGuards } from '@nestjs/common'
+import { Controller, Post, Body, Get, Param, Put, UseGuards, Delete } from '@nestjs/common'
 import { AuthenticatedUser } from '../auth/authenticated-user.decorator'
 import { JwtAuthGuard } from '../auth/jwt-auth.guard'
 import { BoardService } from './board.service'
 import { Board } from './entities/board.entity'
-import { IBoard } from './types/board'
 
 @Controller('board')
 export class BoardController {
   constructor(private readonly boardService: BoardService) {}
-
-  @Get()
-  getAllBoards(): Promise<IBoard[]> {
-    return this.boardService.getBoards()
-  }
 
   // @UseGuards(JwtAuthGuard)
   @Get(':id')
@@ -22,19 +16,25 @@ export class BoardController {
 
   // @UseGuards(JwtAuthGuard)
   @Get('all/:phoneNumber')
-  getOwnerBoards(@Param('phoneNumber') phoneNumber: string): Promise<IBoard[]> {
+  getOwnerBoards(@Param('phoneNumber') phoneNumber: string): Promise<Board[]> {
     return this.boardService.getOwnerBoards(phoneNumber)
   }
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  createBoard(@AuthenticatedUser('phoneNumber') ownerId: string, @Body() board: IBoard): Promise<Board> {
+  createBoard(@AuthenticatedUser('id') ownerId: string, @Body() board: Board): Promise<Board> {
     return this.boardService.createBoard(board, ownerId)
   }
 
   @UseGuards(JwtAuthGuard)
   @Put()
-  updateBoard(@Body() board: IBoard): Promise<Board> {
+  updateBoard(@Body() board: Board): Promise<Board> {
     return this.boardService.updateBoard(board)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
+  deleteManager(@Param('id') id: string) {
+    return this.boardService.deleteBoard(id)
   }
 }

@@ -1,8 +1,8 @@
 import { Table } from 'antd'
 import { FunctionComponent, useEffect, useState } from 'react'
-import { getManagerStatistics } from '../../../services/manager'
-import { IStatiscis } from '../../../types/statistics'
-import styles from './MDTable.module.css'
+import { getManagerStatistics } from '../../services/manager'
+import { IStatistics } from '../../types/statistics'
+import styles from './MDStatistics.module.css'
 
 const columns = [
   {
@@ -11,24 +11,24 @@ const columns = [
     width: '25%',
   },
   {
-    title: 'Winner',
+    title: 'Rabe7',
     dataIndex: 'winner',
     width: '25%',
   },
   {
-    title: 'Loser',
+    title: 'Kahser',
     dataIndex: 'loser',
     width: '25%',
   },
   {
-    title: 'Début du match',
+    title: 'We9t',
     dataIndex: 'startedAt',
     width: '25%',
   },
 ]
 
-export const MDTable: FunctionComponent = () => {
-  const [stats, setStats] = useState<IStatiscis[]>()
+export const MDStatistics: FunctionComponent = () => {
+  const [stats, setStats] = useState<IStatistics[]>()
 
   useEffect(() => {
     getManagerStatistics(setStats)
@@ -36,7 +36,7 @@ export const MDTable: FunctionComponent = () => {
 
   return (
     <div className={styles.all}>
-      <Table columns={columns} dataSource={stats} pagination={false} scroll={{ y: 320 }} />
+      <Table columns={columns} dataSource={stats} pagination={false} scroll={{ y: '80vh' }} />
     </div>
   )
 }

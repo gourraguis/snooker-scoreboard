@@ -10,10 +10,9 @@ import { GameService } from '../game/game.service'
 import { BoardEmitterGateway } from '../socket-emitters/board-emitter.gateway'
 import { ManagerClientToServerEvents, ManagerServer, ManagerSocket } from '../types/manager-sockets'
 import { IInitBoard } from '../types/initBoard'
-import { IBoard } from '../board/types/board'
 import { ManagerService } from '../manager/manager.service'
 import { BoardService } from '../board/board.service'
-import { ManagerEmmiterGateway } from '../socket-emitters/manager-emitter.gateway'
+import { Board } from '../board/entities/board.entity'
 
 @WebSocketGateway({ cors: true, namespace: 'manager' })
 export class ManagerListenerGateway implements OnGatewayConnection {
@@ -23,7 +22,6 @@ export class ManagerListenerGateway implements OnGatewayConnection {
 
   constructor(
     private readonly boardEmitterGateway: BoardEmitterGateway,
-    private readonly managerEmmiterGateway: ManagerEmmiterGateway,
     private readonly gameService: GameService,
     private readonly managerService: ManagerService,
     private readonly boardService: BoardService
@@ -34,10 +32,10 @@ export class ManagerListenerGateway implements OnGatewayConnection {
   }
 
   @SubscribeMessage<ManagerClientToServerEvents>('getBoardsData')
-  async onInitBoard(@MessageBody() managerId: string): Promise<void | IBoard[]> {
+  async onInitBoard(@MessageBody() managerId: string): Promise<void | Board[]> {
     if (!managerId) return
-    const manager = await this.managerService.getManagerByPhoneNumber(managerId)
-    const boards = await this.boardService.getOwnerBoards(manager.owner)
+    const manager = await this.managerService.getManager(managerId)
+    const boards = await this.boardService.getOwnerBoards(manager.ownerId)
     this.boardEmitterGateway.emitGetBoardsData(boards)
   }
 

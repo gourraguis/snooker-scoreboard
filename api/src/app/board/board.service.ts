@@ -1,13 +1,10 @@
-import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common'
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Board } from './entities/board.entity'
-import { IBoard } from './types/board'
 
 @Injectable()
 export class BoardService {
-  private logger: Logger = new Logger(BoardService.name)
-
   constructor(
     @InjectRepository(Board)
     private readonly boardRepository: Repository<Board>
@@ -18,42 +15,24 @@ export class BoardService {
       id,
     })
     if (!board) {
-      throw new NotFoundException('getBoardWithSocketId: There is no baord with this id')
+      throw new NotFoundException('getBoardWithSocketId: There is no board with this id')
     }
-    const res = {
-      id: board.id,
-      name: board.name,
-      owner: board.owner,
-    }
-    const newBoard = {
-      id: board.id,
-      name: board.name,
-      owner: board.owner,
-      socketId,
-    }
-    await this.boardRepository.save(newBoard)
-    return res
+    board.socketId = socketId
+    await this.boardRepository.save(board)
+    return board
   }
 
-  public async getBoards(): Promise<IBoard[]> {
-    const baords = await this.boardRepository.find()
-    return baords
-  }
-
-  public async getBoard(id: string): Promise<IBoard> {
+  public async getBoard(id: string): Promise<Board> {
     const board = await this.boardRepository.findOne({
       id,
     })
     if (!board) {
-      //Todo: Fix err when id is not valid
-      console.log(id)
-
       throw new NotFoundException('getBoard: There is no baord with this id')
     }
     return board
   }
 
-  public async getOwnerBoards(phoneNumber: string): Promise<IBoard[]> {
+  public async getOwnerBoards(phoneNumber: string): Promise<Board[]> {
     const boards = await this.boardRepository.find({ where: { owner: phoneNumber } })
     if (!boards) {
       throw new NotFoundException('There is no baords with this owner')
@@ -61,7 +40,7 @@ export class BoardService {
     return boards
   }
 
-  public async createBoard(board: IBoard, ownerId: string): Promise<Board> {
+  public async createBoard(board: Board, ownerId: string): Promise<Board> {
     const existingBaord = await this.boardRepository.findOne({
       id: board.id,
     })
@@ -72,11 +51,15 @@ export class BoardService {
     const newBoard = new Board()
     newBoard.id = board.id
     newBoard.name = board.name
-    newBoard.owner = ownerId
+    newBoard.ownerId = ownerId
     return this.boardRepository.save(newBoard)
   }
 
-  public async updateBoard(board: IBoard): Promise<Board> {
+  public async updateBoard(board: Board): Promise<Board> {
     return await this.boardRepository.save(board)
+  }
+
+  public async deleteBoard(id: string) {
+    return await this.boardRepository.delete({ id })
   }
 }

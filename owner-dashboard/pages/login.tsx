@@ -7,7 +7,7 @@ import { NextPage } from 'next'
 import { ODHeader } from '../components/ODHeader/ODHeader'
 import { ODLogin } from '../components/ODLogin/ODLogin'
 import { ownerState } from '../atoms/ownerState'
-import { getOwner } from '../services/owner-api'
+import { getOwner } from '../services/api'
 
 const Login: NextPage = () => {
   const router = useRouter()

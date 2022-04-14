@@ -8,7 +8,7 @@ import { MDMenu } from '../components/MDMenu/MDMenu'
 import { managerState } from '../atoms/managerState'
 import { getCurrentManager } from '../services/manager'
 import { MDHeader } from '../components/MDHeader/MDHeader'
-import { MDTable } from '../components/MDStatistics/MDTable/MDTable'
+import { MDStatistics } from '../components/MDStatistics/MDStatistics'
 
 const Statistics: NextPage = () => {
   const router = useRouter()
@@ -40,7 +40,7 @@ const Statistics: NextPage = () => {
       </Head>
       <Layout style={{ minHeight: '100vh' }}>
         <MDHeader />
-        <MDTable />
+        <MDStatistics />
         <MDMenu />
       </Layout>
     </>

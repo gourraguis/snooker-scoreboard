@@ -1,50 +1,52 @@
 import { Button, Select, DatePicker, Form } from 'antd'
 import { FunctionComponent, useState } from 'react'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
-import { managersStats, tablesStats } from '../../../atoms/mainStats'
-import { statisticsState } from '../../../atoms/statistics'
-import { getStatisticsByFilter } from '../../../services/owner-api'
+import { ownerBoardsState } from '../../../atoms/boards.atom'
+import { ownerManagersState } from '../../../atoms/managers.atom'
+import { statsState } from '../../../atoms/statsState'
+import { getStatsByFilter } from '../../../services/api'
 import styles from './ODSelector.module.css'
-
-const { RangePicker } = DatePicker
 
 const rangeConfig = {
   rules: [{ required: true, message: 'Please select time!' }],
 }
 
 export const ODSelector: FunctionComponent = () => {
-  const tablesElements = useRecoilValue(tablesStats)
-  const managersElements = useRecoilValue(managersStats)
-  const setStatistics = useSetRecoilState(statisticsState)
+  const ownerBoards = useRecoilValue(ownerBoardsState)
+  const ownerManagers = useRecoilValue(ownerManagersState)
+  const setStatistics = useSetRecoilState(statsState)
   const [isFetching, setIsFetching] = useState(false)
 
   const onFinish = async (fieldsValue: any) => {
     setIsFetching(true)
     const values = {
-      managerId: fieldsValue.manager,
-      tableId: fieldsValue.table,
+      managerId: fieldsValue.managerId,
+      boardId: fieldsValue.boardId,
       startDate: fieldsValue.startDate.format('YYYY-MM-DD'),
       endDate: fieldsValue.endDate.format('YYYY-MM-DD'),
     }
 
-    await getStatisticsByFilter(values, setStatistics)
+    const stats = await getStatsByFilter(values)
+    setStatistics(stats)
     setIsFetching(false)
   }
 
   return (
     <Form className={styles.all} name="time_related_controls" onFinish={onFinish}>
-      <Form.Item name="manager" className={styles.item}>
+      <Form.Item name="managerId" className={styles.item}>
         <Select showSearch placeholder="Select Manager">
-          {managersElements.map((elem) => (
+          {ownerManagers.map((elem) => (
             <Select.Option value={elem.id}>{elem.name}</Select.Option>
           ))}
           <Select.Option value="">Any Manager</Select.Option>
         </Select>
       </Form.Item>
-      <Form.Item name="table" className={styles.item}>
+      <Form.Item name="boardId" className={styles.item}>
         <Select showSearch placeholder="Select Table">
-          {tablesElements.map((elem) => (
-            <Select.Option value={elem.id}>{elem.name}</Select.Option>
+          {ownerBoards.map((elem) => (
+            <Select.Option key={elem.id} value={elem.id}>
+              {elem.name}
+            </Select.Option>
           ))}
           <Select.Option value="">Any Table</Select.Option>
         </Select>
@@ -56,7 +58,7 @@ export const ODSelector: FunctionComponent = () => {
         <DatePicker className={styles.date} placeholder="Select End Date" />
       </Form.Item>
       <Button className={styles.button} type="primary" htmlType="submit" loading={isFetching}>
-        Search
+        Rechercher
       </Button>
     </Form>
   )

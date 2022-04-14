@@ -5,13 +5,13 @@ import { IBoard } from '../types/board'
 import { ICardElements } from '../types/cardElement'
 import { IGame } from '../types/game'
 import { IManager } from '../types/manager'
-import { IStatiscis } from '../types/statistics'
+import { IStatistics } from '../types/statistics'
 import { getApiEndpoint } from './config'
 import { openNotification } from './notification'
 
 export const generateOtpManager = async (phoneNumber: string): Promise<boolean> => {
   try {
-    await axios.put<void>(`${getApiEndpoint()}manager/otp?phoneNumber=${phoneNumber}`)
+    await axios.put<void>(`${getApiEndpoint()}manager/otp?id=${phoneNumber}`)
 
     openNotification({
       title: `Veuillez entrer votre code d'authentification`,
@@ -28,18 +28,18 @@ export const generateOtpManager = async (phoneNumber: string): Promise<boolean> 
   }
 }
 
-export const loginManager = async (phoneNumber: string, otp: string): Promise<string | null> => {
+export const loginManager = async (id: string, otp: string): Promise<string | null> => {
   try {
     const { data: jwtToken } = await axios.get<string>(`${getApiEndpoint()}auth/manager`, {
       params: {
-        phoneNumber,
+        id,
         otp,
       },
     })
-    localStorage.setItem('token', phoneNumber)
+    // localStorage.setItem('token', phoneNumber)
 
     openNotification({
-      title: `Bienvenue, on va vous rediriger vers votre dashboard`,
+      title: `Bienvenue sur Jawad Club`,
     })
     return jwtToken
   } catch (e: any) {
@@ -74,7 +74,7 @@ export const getBoards = async (setBoards: SetterOrUpdater<IBoard[]>) => {
       Authorization: `Bearer ${token}`,
     },
   })
-  ownerId = manager.owner || ''
+  ownerId = manager.ownerId || ''
   await axios
     .get(`${getApiEndpoint()}board/all/${ownerId}`)
     .then((res) => {
@@ -120,7 +120,7 @@ export const saveGame = async (game: IGame, setTableStats: SetterOrUpdater<ICard
     setTableStats((oldTableStats) => {
       const newTableStats = oldTableStats.map((elem) => {
         return elem.id === game.boardId
-          ? { id: elem.id, name: elem.name, dailyScore: elem.dailyScore + 1, weeklyScore: elem.weeklyScore + 1 }
+          ? { id: elem.id, name: elem.name, dailyGames: elem.dailyGames + 1, weeklyGames: elem.weeklyGames + 1 }
           : elem
       })
       return newTableStats
@@ -154,7 +154,7 @@ export const getGamesStats = async (setStats: SetterOrUpdater<ICardElements[]>) 
   }
 }
 
-export const getManagerStatistics = async (setStatistics: SetterOrUpdater<IStatiscis[] | undefined>) => {
+export const getManagerStatistics = async (setStatistics: SetterOrUpdater<IStatistics[] | undefined>) => {
   const token = localStorage.getItem('jwtToken')
   try {
     const res = await axios.get(`${getApiEndpoint()}manager/statistics`, {

@@ -18,11 +18,11 @@ import { tableStats } from '../../../atoms/tableStats'
 
 interface MDBoardProps {
   board: IBoard
-  dailyScore: number
-  weeklyScore: number
+  dailyGames: number
+  weeklyGames: number
 }
 
-export const MDBoard: FunctionComponent<MDBoardProps> = ({ board, dailyScore, weeklyScore }) => {
+export const MDBoard: FunctionComponent<MDBoardProps> = ({ board, dailyGames, weeklyGames }) => {
   const game = useRecoilValue(gameForBoardIdSelector(board.id))
   const setGames = useSetRecoilState(gamesState)
   const addGame = addGameAction(setGames)
@@ -61,7 +61,6 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board, dailyScore, we
       return
     }
     setIsHistoryModalVisible(true)
-    console.log(`show history on board: ${board.name}`)
   }
   const handleCancelHistoryModal = () => {
     setIsHistoryModalVisible(false)
@@ -100,12 +99,12 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board, dailyScore, we
       cover={
         <div className={styles.cover}>
           <p className={styles.text}>
-            <span className={styles.day}>{dailyScore}</span>
-            Matches Ce Jour
+            <span className={styles.day}>{dailyGames}</span>
+            Jour
           </p>
           <p className={styles.text}>
-            <span className={styles.week}>{weeklyScore}</span>
-            Matches Cette Semaine
+            <span className={styles.week}>{weeklyGames}</span>
+            Semaine
           </p>
         </div>
       }

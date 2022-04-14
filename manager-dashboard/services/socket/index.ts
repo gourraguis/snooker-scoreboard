@@ -19,7 +19,6 @@ export const initSocket = (
 ) => {
   socket.on('connect', () => {
     socket.emit('getBoardsData', id)
-    console.log('Manager Socket Connected to server')
   })
   socket.on('addBoard', (board) => {
     addBoard(board)

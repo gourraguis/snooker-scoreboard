@@ -36,34 +36,35 @@ export const ODPromptPWA: FunctionComponent = () => {
 
         <Row justify="center" align="middle" style={{ flex: 1, textAlign: 'center' }}>
           <Col>
-            <Card
-              hoverable
-              onClick={handleInstallAccepted}
-              cover={<img alt="Jawad Club App" src="/icon-256x256.png" />}
-              style={{ width: '90vw', maxWidth: 480 }}
-            >
-              <Meta
-                title="Installer Jawad Club"
-                description="L'application qui va révolutionner la gestion de vos tables snooker"
-              />
-              {isIos ? (
-                <p style={{ marginTop: 24 }}>
-                  Appuyez sur
-                  <img
-                    src="/icons/ios-share.png"
-                    style={{ margin: 'auto 8px 8px' }}
-                    alt="Add to homescreen"
-                    width="20"
-                  />
-                  puis &quot;Ajouter à l&apos;écran d&apos;accueil&quot;
-                </p>
-              ) : (
-                <p style={{ marginTop: 24 }}>
-                  <CloudDownloadOutlined style={{ margin: 'auto 8px 8px' }} />
-                  Cliquez ici pour installer
-                </p>
-              )}
-            </Card>
+            <a onClick={handleInstallAccepted}>
+              <Card
+                hoverable
+                cover={<img alt="Jawad Club App" src="/icon-256x256.png" />}
+                style={{ width: '90vw', maxWidth: 480 }}
+              >
+                <Meta
+                  title="Installer Jawad Club"
+                  description="L'application qui va révolutionner la gestion de vos tables snooker"
+                />
+                {isIos ? (
+                  <p style={{ marginTop: 24 }}>
+                    Appuyez sur
+                    <img
+                      src="/icons/ios-share.png"
+                      style={{ margin: 'auto 8px 8px' }}
+                      alt="Installer Jawad Club"
+                      width="20"
+                    />
+                    puis &quot;Ajouter à l&apos;écran d&apos;accueil&quot;
+                  </p>
+                ) : (
+                  <p style={{ marginTop: 24 }}>
+                    <CloudDownloadOutlined style={{ margin: 'auto 8px 8px' }} />
+                    Cliquez ici pour installer
+                  </p>
+                )}
+              </Card>
+            </a>
           </Col>
         </Row>
       </Layout>

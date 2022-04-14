@@ -6,12 +6,12 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Get('owner')
-  loginOwner(@Query('phoneNumber') phoneNumber: string, @Query('otp') otp: string) {
-    return this.authService.checkOwnerOtp(phoneNumber, otp)
+  loginOwner(@Query('id') id: string, @Query('otp') otp: string) {
+    return this.authService.checkOwnerOtp(id, otp)
   }
 
   @Get('manager')
-  loginManager(@Query('phoneNumber') phoneNumber: string, @Query('otp') otp: string) {
-    return this.authService.checkManagerOtp(phoneNumber, otp)
+  loginManager(@Query('id') id: string, @Query('otp') otp: string) {
+    return this.authService.checkManagerOtp(id, otp)
   }
 }

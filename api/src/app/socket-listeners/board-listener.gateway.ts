@@ -12,9 +12,9 @@ import { BoardClientToServerEvents, BoardServer, BoardSocket } from '../types/bo
 import { BoardEmitterGateway } from '../socket-emitters/board-emitter.gateway'
 import { ManagerEmmiterGateway } from '../socket-emitters/manager-emitter.gateway'
 import { BoardService } from '../board/board.service'
-import { IBoard } from '../board/types/board'
 import { IGame } from '../game/types/game'
 import { Socket } from 'socket.io'
+import { Board } from '../board/entities/board.entity'
 
 @WebSocketGateway({ cors: true, namespace: 'board' })
 export class BoardListenerGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -41,7 +41,7 @@ export class BoardListenerGateway implements OnGatewayConnection, OnGatewayDisco
   }
 
   @SubscribeMessage<BoardClientToServerEvents>('initBoard')
-  async onInitBoard(@MessageBody() boardId: string, @ConnectedSocket() client: Socket): Promise<void | IBoard> {
+  async onInitBoard(@MessageBody() boardId: string, @ConnectedSocket() client: Socket): Promise<void | Board> {
     if (!boardId) return
     client.data.boardId = boardId
 

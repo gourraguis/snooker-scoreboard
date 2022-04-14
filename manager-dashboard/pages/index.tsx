@@ -26,7 +26,6 @@ const Home: NextPage = () => {
       router.push('/login')
       return
     }
-    console.log(currentManager)
     setManager(currentManager)
   }
 

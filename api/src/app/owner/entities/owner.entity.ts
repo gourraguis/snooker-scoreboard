@@ -2,20 +2,17 @@ import { Column, CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } fro
 
 @Entity()
 export class Owner {
+  // owner id is his phone number
   @PrimaryColumn()
-  phoneNumber: string
+  id: string
 
   @Column()
-  name: string
+  fullName: string
 
-  @Column({
-    nullable: true,
-  })
+  @Column()
   clubName: string
 
-  @Column({
-    nullable: true,
-  })
+  @Column()
   address: string
 
   @Column()

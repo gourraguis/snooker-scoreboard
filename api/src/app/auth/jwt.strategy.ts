@@ -1,15 +1,12 @@
 import { ExtractJwt, Strategy } from 'passport-jwt'
 import { PassportStrategy } from '@nestjs/passport'
-import { Injectable, Logger, UnauthorizedException } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { OwnerService } from '../owner/owner.service'
 import { ConfigService } from '../../config/config.service'
-import { Owner } from '../owner/entities/owner.entity'
 import { ManagerService } from '../manager/manager.service'
-import { IOwner } from '../owner/types/IOwner'
-import { IManager } from '../manager/types'
 
 interface Payload {
-  phoneNumber: string
+  id: string
   type: 'owner' | 'manager'
   iat: number
   exp: number
@@ -32,16 +29,16 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   public async validate(payload: Payload) {
-    const { phoneNumber, type } = payload
+    const { id, type } = payload
     try {
       if (type === 'owner') {
-        return await this.ownerService.getOwner(phoneNumber)
+        return await this.ownerService.getOwner(id)
       }
       if (type === 'manager') {
-        return await this.managerService.getManager(phoneNumber)
+        return await this.managerService.getManager(id)
       }
     } catch {
-      this.logger.warn(`Received invalid JWT validation request for ${type} with number: ${phoneNumber}`)
+      this.logger.warn(`Received invalid JWT validation request for ${type} with number: ${id}`)
     }
   }
 }

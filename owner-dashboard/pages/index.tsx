@@ -7,7 +7,7 @@ import { useRecoilState } from 'recoil'
 import { ODHeader } from '../components/ODHeader/ODHeader'
 import { ODMenu } from '../components/ODMenu/ODMenu'
 import { ODContent } from '../components/ODContent/ODContent'
-import { getOwner } from '../services/owner-api'
+import { getOwner } from '../services/api'
 import { ownerState } from '../atoms/ownerState'
 
 const Home: NextPage = () => {

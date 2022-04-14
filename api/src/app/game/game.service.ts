@@ -7,11 +7,13 @@ import { Manager } from '../manager/entities/manager.entity'
 import { IInitBoard } from '../types/initBoard'
 import { Game } from './entities/game.entity'
 import { ICardElements } from './types/cardElement'
-import { IGame, IGameDB } from './types/game'
+import { IGame } from './types/game'
 
 @Injectable()
 export class GameService {
   private logger: Logger = new Logger(GameService.name)
+  private lastDay = moment().startOf('day').toDate()
+  private lastWeek = moment().startOf('week').toDate()
 
   constructor(
     @InjectRepository(Game)
@@ -45,18 +47,15 @@ export class GameService {
     }
   }
 
-  public async saveGame(game: IGameDB): Promise<IGameDB> {
+  public async saveGame(game: Game): Promise<Game> {
     return this.gameRepository.save(game)
   }
 
   public async getWeeklyGames(phoneNumber: string) {
-    const date = new Date()
-    date.setDate(date.getDate() - 7)
-
     const games = await this.gameRepository.find({
       where: {
         ownerId: phoneNumber,
-        startedAt: Between(date, new Date()),
+        startedAt: Between(this.lastWeek, new Date()),
       },
     })
     if (!games) {
@@ -66,99 +65,16 @@ export class GameService {
   }
 
   public async getDailyGames(phoneNumber: string) {
-    const date = new Date()
-    date.setDate(date.getDate() - 1)
-
     const games = await this.gameRepository.find({
       where: {
         ownerId: phoneNumber,
-        startedAt: Between(date, new Date()),
+        startedAt: Between(this.lastDay, new Date()),
       },
     })
     if (!games) {
       throw new NotFoundException('There is no games this day')
     }
     return games.length
-  }
-
-  public async getManagersGames(phoneNumber: string): Promise<ICardElements[]> {
-    const dailDyate = new Date()
-    dailDyate.setDate(dailDyate.getDate() - 1)
-
-    const weeklyDate = new Date()
-    weeklyDate.setDate(weeklyDate.getDate() - 7)
-
-    const games = await this.gameRepository.query(`SELECT * FROM manager WHERE manager.owner = '${phoneNumber}'`)
-    if (!games) {
-      throw new NotFoundException('There is no games this day')
-    }
-
-    let data = []
-
-    for (let index = 0; index < games.length; index++) {
-      const day = await this.gameRepository.find({
-        ownerId: phoneNumber,
-        managerId: games[index].id,
-        startedAt: Between(dailDyate, new Date()),
-      })
-
-      const week = await this.gameRepository.find({
-        ownerId: phoneNumber,
-        managerId: games[index].id,
-        startedAt: Between(weeklyDate, new Date()),
-      })
-
-      data = [
-        ...data,
-        {
-          id: games[index].id,
-          name: games[index].name,
-          dailyScore: day.length,
-          weeklyScore: week.length,
-        },
-      ]
-    }
-    return data
-  }
-
-  public async getBoardsGames(phoneNumber: string): Promise<ICardElements[]> {
-    const dailDyate = new Date()
-    dailDyate.setDate(dailDyate.getDate() - 1)
-
-    const weeklyDate = new Date()
-    weeklyDate.setDate(weeklyDate.getDate() - 7)
-
-    const games = await this.gameRepository.query(`SELECT * FROM board WHERE board.owner = '${phoneNumber}'`)
-    if (!games) {
-      throw new NotFoundException('There is no games this day')
-    }
-
-    let data = []
-
-    for (let index = 0; index < games.length; index++) {
-      const day = await this.gameRepository.find({
-        ownerId: phoneNumber,
-        boardId: games[index].id,
-        startedAt: Between(dailDyate, new Date()),
-      })
-
-      const week = await this.gameRepository.find({
-        ownerId: phoneNumber,
-        boardId: games[index].id,
-        startedAt: Between(weeklyDate, new Date()),
-      })
-
-      data = [
-        ...data,
-        {
-          id: games[index].id,
-          name: games[index].name,
-          dailyScore: day.length,
-          weeklyScore: week.length,
-        },
-      ]
-    }
-    return data
   }
 
   public async getManagerGames(phoneNumber: string) {
@@ -170,7 +86,7 @@ export class GameService {
 
     const manager = await this.managerRepository.findOne({
       where: {
-        phoneNumber,
+        id: phoneNumber,
       },
     })
 
@@ -183,7 +99,7 @@ export class GameService {
     return managerBoards.map((board) => {
       const dailyCount = this.gameRepository.count({
         where: {
-          managerId: manager.phoneNumber,
+          manager: manager.id,
           boardId: board.id,
           startedAt: Between(previousDay, new Date()),
         },
@@ -191,7 +107,7 @@ export class GameService {
 
       const weeklyCount = this.gameRepository.count({
         where: {
-          managerId: manager.phoneNumber,
+          manager: manager.id,
           boardId: board.id,
           startedAt: Between(previousWeek, new Date()),
         },

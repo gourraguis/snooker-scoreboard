@@ -12,7 +12,7 @@ interface ODMainCardProps {
   title: string
   elements: ICardElements[]
 }
-const ODMainCard: FunctionComponent<ODMainCardProps> = ({ id, title, elements }) => {
+export const ODMainCard: FunctionComponent<ODMainCardProps> = ({ id, title, elements }) => {
   const [isModalVisible, setIsModalVisible] = useState(false)
 
   const showModal = () => {
@@ -21,11 +21,12 @@ const ODMainCard: FunctionComponent<ODMainCardProps> = ({ id, title, elements })
   const handleCancel = () => {
     setIsModalVisible(false)
   }
+
   return (
     <Card
       title={title}
       extra={
-        <Tooltip title={`Add ${title}`}>
+        <Tooltip title={`Ajout de ${title}`}>
           <Button onClick={showModal} shape="circle">
             +
           </Button>
@@ -38,18 +39,16 @@ const ODMainCard: FunctionComponent<ODMainCardProps> = ({ id, title, elements })
           key={elem.name}
           id={elem.id}
           name={elem.name}
-          dailyScore={elem.dailyScore}
-          weeklyScore={elem.weeklyScore}
+          dailyGames={elem.dailyGames}
+          weeklyGames={elem.weeklyGames}
         />
       ))}
-      {id === 'table' && (
+      {id === 'boards' && (
         <div>{isModalVisible && <ODTableForm onCancel={handleCancel} visible={isModalVisible} />}</div>
       )}
-      {id === 'manager' && (
+      {id === 'managers' && (
         <div>{isModalVisible && <ODManagerModal onCancel={handleCancel} visible={isModalVisible} />}</div>
       )}
     </Card>
   )
 }
-
-export default ODMainCard

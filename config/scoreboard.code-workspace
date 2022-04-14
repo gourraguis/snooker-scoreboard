@@ -13,15 +13,16 @@
       "path": "../owner-dashboard"
     },
     {
-      "name": "api",
-      "path": "../api"
-    },
-    {
       "name": "website",
       "path": "../website"
     },
     {
+      "name": "browser-scoreboard",
       "path": "../browser-scoreboard"
+    },
+    {
+      "name": "api",
+      "path": "../api"
     }
   ],
   "settings": {}

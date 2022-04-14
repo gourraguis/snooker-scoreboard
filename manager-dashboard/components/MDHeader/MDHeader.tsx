@@ -22,7 +22,7 @@ export const MDHeader: FunctionComponent = () => {
   return (
     <Header className={styles.header}>
       <Title level={2} className={styles.title}>
-        {manager?.clubName || 'Jawad Club'}
+        {manager?.owner?.clubName || 'Jawad Club'}
       </Title>
       {!!manager && (
         <Button className={styles.button} onClick={handleLogout}>

@@ -37,8 +37,8 @@ export const MDContent: FunctionComponent = () => {
             <MDBoard
               board={board}
               key={index}
-              dailyScore={stats[index]?.dailyScore || 0}
-              weeklyScore={stats[index]?.weeklyScore || 0}
+              dailyGames={stats[index]?.dailyGames || 0}
+              weeklyGames={stats[index]?.weeklyGames || 0}
             />
           ))}
         </Space>
