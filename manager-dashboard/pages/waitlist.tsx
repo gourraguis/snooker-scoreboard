@@ -6,7 +6,7 @@ import { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import { MDMenu } from '../components/MDMenu/MDMenu'
 import { managerState } from '../atoms/managerState'
-import { getCurrentManager } from '../services/manager'
+import { getManager } from '../services/api'
 import { MDHeader } from '../components/MDHeader/MDHeader'
 import { MDList } from '../components/MDList/MDList'
 
@@ -15,7 +15,7 @@ const List: NextPage = () => {
   const [manager, setManager] = useRecoilState(managerState)
 
   const fetchCurrentManager = async () => {
-    const currentManager = await getCurrentManager()
+    const currentManager = await getManager()
 
     if (!currentManager) {
       router.push('/login')

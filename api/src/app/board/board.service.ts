@@ -11,6 +11,7 @@ export class BoardService {
   ) {}
 
   public async getBoardWithSocketId(id: string, socketId: string) {
+    console.log(id)
     const board = await this.boardRepository.findOne({
       id,
     })
@@ -30,14 +31,6 @@ export class BoardService {
       throw new NotFoundException('getBoard: There is no baord with this id')
     }
     return board
-  }
-
-  public async getOwnerBoards(phoneNumber: string): Promise<Board[]> {
-    const boards = await this.boardRepository.find({ where: { owner: phoneNumber } })
-    if (!boards) {
-      throw new NotFoundException('There is no baords with this owner')
-    }
-    return boards
   }
 
   public async createBoard(board: Board, ownerId: string): Promise<Board> {

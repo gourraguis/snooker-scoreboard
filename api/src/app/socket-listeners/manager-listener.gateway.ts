@@ -23,8 +23,7 @@ export class ManagerListenerGateway implements OnGatewayConnection {
   constructor(
     private readonly boardEmitterGateway: BoardEmitterGateway,
     private readonly gameService: GameService,
-    private readonly managerService: ManagerService,
-    private readonly boardService: BoardService
+    private readonly managerService: ManagerService
   ) {}
 
   public handleConnection(ManagerClient: ManagerSocket) {
@@ -34,19 +33,12 @@ export class ManagerListenerGateway implements OnGatewayConnection {
   @SubscribeMessage<ManagerClientToServerEvents>('getBoardsData')
   async onInitBoard(@MessageBody() managerId: string): Promise<void | Board[]> {
     if (!managerId) return
-    const manager = await this.managerService.getManager(managerId)
-    const boards = await this.boardService.getOwnerBoards(manager.ownerId)
+    const boards = await this.managerService.getManagerBoards(managerId)
     this.boardEmitterGateway.emitGetBoardsData(boards)
   }
 
   @SubscribeMessage<ManagerClientToServerEvents>('initGame')
   onNewGame(@MessageBody() board: IInitBoard) {
-    // const managerId = client.data.managerId
-    const managerId = '1'
-    if (!managerId) {
-      //todo: redirect to login in case of error
-      return
-    }
     this.logger.log(`Starting new game on board id: ${board.boardId}`)
     const newGame = this.gameService.createGame(board)
     this.boardEmitterGateway.emitStartNewGame(newGame)

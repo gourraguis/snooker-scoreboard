@@ -19,7 +19,7 @@ export class OwnerService {
     @InjectRepository(Manager)
     private readonly managerRepository: Repository<Manager>,
     @InjectRepository(Board)
-    private readonly boardRepository: Repository<Manager>,
+    private readonly boardRepository: Repository<Board>,
     @InjectRepository(Game)
     private readonly gameRepository: Repository<Game>
   ) {}

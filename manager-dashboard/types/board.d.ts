@@ -3,4 +3,7 @@ export interface IBoard {
   name: string
   ownerId: string
   socketId?: string
+
+  dailyGames: number
+  weeklyGames: number
 }

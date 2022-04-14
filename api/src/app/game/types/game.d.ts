@@ -2,7 +2,7 @@ import { ITurn } from '../../types/turn'
 import { IPlayer } from '../../types/player'
 
 export interface IGame {
-  id: string
+  id?: string
   boardId: string
   players: IPlayer[]
   startedAt: Date

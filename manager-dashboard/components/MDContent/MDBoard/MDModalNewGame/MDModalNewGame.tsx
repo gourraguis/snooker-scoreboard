@@ -7,10 +7,9 @@ import { openNotification } from '../../../../services/notification'
 import { addGameAction, gameForBoardIdSelector, gamesState, timerState } from '../../../../atoms/games.atom'
 import { IGame } from '../../../../types/game'
 import { IInitBoard } from '../../../../types/initBoard'
-import { saveGame } from '../../../../services/manager'
-import { tableStats } from '../../../../atoms/tableStats'
+import { saveGame } from '../../../../services/api'
 import styles from './MDModalNewGame.module.css'
-import { listState } from '../../../../atoms/listState'
+import { waitListState } from '../../../../atoms/waitlist.atom'
 
 interface MDModalNewGameProps {
   onCancel: () => void
@@ -24,10 +23,9 @@ const MDModalNewGame: FunctionComponent<MDModalNewGameProps> = ({ onCancel, visi
   const addGame = addGameAction(setGames)
   const oldGame = useRecoilValue(gamesState)
   const stopedTimer = useSetRecoilState(timerState)
-  const setTableStats = useSetRecoilState(tableStats)
   const [firstPlayerName, setFirstPlayerName] = useState<string>('Player 1')
   const [secondPlayerName, setSecondPlayerName] = useState<string>('Player 2')
-  const [list, setList] = useRecoilState(listState)
+  const [list, setList] = useRecoilState(waitListState)
 
   const onListOne = () => {
     if (list.length > 0) {
@@ -61,7 +59,7 @@ const MDModalNewGame: FunctionComponent<MDModalNewGameProps> = ({ onCancel, visi
       firstPlayer: firstPlayerName,
       secondPlayer: secondPlayerName,
     }
-    if (oldGame.length > 0) saveGame(oldGame[oldGame.length - 1], setTableStats)
+    if (oldGame.length > 0) saveGame(oldGame[oldGame.length - 1])
     emitNewGame(initBoard, (newGame: IGame) => {
       if (!newGame) {
         openNotification({

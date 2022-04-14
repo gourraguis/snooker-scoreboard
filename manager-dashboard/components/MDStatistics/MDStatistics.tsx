@@ -1,7 +1,7 @@
 import { Table } from 'antd'
 import { FunctionComponent, useEffect, useState } from 'react'
-import { getManagerStatistics } from '../../services/manager'
-import { IStatistics } from '../../types/statistics'
+import { getManagerStats } from '../../services/api'
+import { IStats } from '../../types/stats'
 import styles from './MDStatistics.module.css'
 
 const columns = [
@@ -28,15 +28,20 @@ const columns = [
 ]
 
 export const MDStatistics: FunctionComponent = () => {
-  const [stats, setStats] = useState<IStatistics[]>()
+  const [stats, setStats] = useState<IStats[]>()
+
+  const fetchStats = async () => {
+    const fetchedStats = await getManagerStats()
+    setStats(fetchedStats)
+  }
 
   useEffect(() => {
-    getManagerStatistics(setStats)
+    fetchStats()
   }, [])
 
   return (
     <div className={styles.all}>
-      <Table columns={columns} dataSource={stats} pagination={false} scroll={{ y: '80vh' }} />
+      <Table columns={columns} dataSource={stats} pagination={false} scroll={{ y: '100vh' }} />
     </div>
   )
 }

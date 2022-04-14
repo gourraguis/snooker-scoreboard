@@ -1,13 +1,13 @@
 import { Input, List } from 'antd'
 import { FunctionComponent } from 'react'
 import { useRecoilState } from 'recoil'
-import { listState } from '../../atoms/listState'
+import { waitListState } from '../../atoms/waitlist.atom'
 import styles from './MDList.module.css'
 
 const { Search } = Input
 
 export const MDList: FunctionComponent = () => {
-  const [list, setState] = useRecoilState(listState)
+  const [list, setState] = useRecoilState(waitListState)
 
   const onAdd = (value: string) => {
     if (value) setState((oldState) => [...oldState, value])

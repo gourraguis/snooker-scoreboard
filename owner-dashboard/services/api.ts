@@ -70,76 +70,6 @@ export const getOwner = async (): Promise<IOwner | null> => {
   }
 }
 
-export const generateOwnerOtp = async (id: string): Promise<boolean> => {
-  try {
-    await put(`owner/otp?id=${id}`)
-
-    openNotification({
-      title: `Veuillez entrer votre code d'authentification`,
-      description: `Vous devez recevoir un code d'authentification par sms sur votre téléphone pour vous connecter`,
-    })
-    return true
-  } catch (e: any) {
-    console.error(e)
-    openNotification({
-      title: e?.response?.data?.message || 'Erreur du système, veuillez ressayer plus tard.',
-      type: 'error',
-    })
-    return false
-  }
-}
-
-export const loginOwner = async (phoneNumber: string, otp: string): Promise<string> => {
-  try {
-    const { data: jwtToken } = await get(`auth/owner?phoneNumber=${phoneNumber}&otp=${otp}`)
-    openNotification({
-      title: `Bienvenue sur Jawad Club`,
-    })
-    return jwtToken
-  } catch (error) {
-    openNotification({ title: `Erreur du système, veuillez ressayer plus tard.`, type: 'error' })
-    throw error
-  }
-}
-
-export const createManager = async (manager: IManager): Promise<void> => {
-  try {
-    await post('manager', manager)
-    openNotification({ title: 'Le manager a été ajouté' })
-  } catch (error) {
-    openNotification({ title: 'Le manager na pas pu etre ajouté', type: 'error' })
-    throw error
-  }
-}
-
-export const createBoard = async (board: IBoard): Promise<void> => {
-  try {
-    await post('board', board)
-    openNotification({ title: 'La nouvelle table a été créé' })
-  } catch (error) {
-    openNotification({ title: `La table n'a pas pu etre ajouté`, type: 'error' })
-    throw error
-  }
-}
-
-export const deleteManager = async (id: string): Promise<void> => {
-  try {
-    await remove(`manager/${id}`)
-  } catch (error) {
-    openNotification({ title: `Le manager n'a pas pu etre supprimé`, type: 'error' })
-    throw error
-  }
-}
-
-export const deleteBoard = async (id: string): Promise<void> => {
-  try {
-    await remove(`board/${id}`)
-  } catch (error) {
-    openNotification({ title: 'La table na pas pu etre supprimé', type: 'error' })
-    throw error
-  }
-}
-
 export const getWeeklyGames = async (): Promise<number> => {
   try {
     const { data: weeklyGames } = await get('game/weeklyGames')
@@ -186,6 +116,77 @@ export const getStatsByFilter = async (filter: any): Promise<IStats[]> => {
     return data
   } catch (error) {
     openNotification({ title: 'Failed to fetch stats', type: 'error' })
+    throw error
+  }
+}
+
+export const generateOwnerOtp = async (id: string): Promise<boolean> => {
+  try {
+    await put(`owner/otp?id=${id}`)
+
+    openNotification({
+      title: `Veuillez entrer votre code d'authentification`,
+      description: `Vous devez recevoir un code d'authentification par sms sur votre téléphone pour vous connecter`,
+    })
+    return true
+  } catch (error) {
+    console.error(error)
+    openNotification({
+      title: 'Erreur du système, veuillez ressayer plus tard.',
+      type: 'error',
+    })
+    return false
+  }
+}
+
+export const loginOwner = async (id: string, otp: string): Promise<string | null> => {
+  try {
+    const { data: jwtToken } = await get(`auth/owner?id=${id}&otp=${otp}`)
+    openNotification({
+      title: `Bienvenue sur Jawad Club`,
+    })
+    return jwtToken
+  } catch (error) {
+    console.error(error)
+    openNotification({ title: `Votre code OTP est invalide`, type: 'error' })
+    return null
+  }
+}
+
+export const createManager = async (manager: IManager): Promise<void> => {
+  try {
+    await post('manager', manager)
+    openNotification({ title: 'Le manager a été ajouté' })
+  } catch (error) {
+    openNotification({ title: 'Le manager na pas pu etre ajouté', type: 'error' })
+    throw error
+  }
+}
+
+export const createBoard = async (board: IBoard): Promise<void> => {
+  try {
+    await post('board', board)
+    openNotification({ title: 'La nouvelle table a été créé' })
+  } catch (error) {
+    openNotification({ title: `La table n'a pas pu etre ajouté`, type: 'error' })
+    throw error
+  }
+}
+
+export const deleteManager = async (id: string): Promise<void> => {
+  try {
+    await remove(`manager/${id}`)
+  } catch (error) {
+    openNotification({ title: `Le manager n'a pas pu etre supprimé`, type: 'error' })
+    throw error
+  }
+}
+
+export const deleteBoard = async (id: string): Promise<void> => {
+  try {
+    await remove(`board/${id}`)
+  } catch (error) {
+    openNotification({ title: 'La table na pas pu etre supprimé', type: 'error' })
     throw error
   }
 }

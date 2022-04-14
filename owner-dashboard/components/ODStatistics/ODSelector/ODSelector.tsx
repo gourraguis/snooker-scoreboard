@@ -22,8 +22,8 @@ export const ODSelector: FunctionComponent = () => {
     const values = {
       managerId: fieldsValue.managerId,
       boardId: fieldsValue.boardId,
-      startDate: fieldsValue.startDate.format('YYYY-MM-DD'),
-      endDate: fieldsValue.endDate.format('YYYY-MM-DD'),
+      startDate: fieldsValue.startDate,
+      endDate: fieldsValue.endDate,
     }
 
     const stats = await getStatsByFilter(values)

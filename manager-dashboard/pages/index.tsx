@@ -4,23 +4,23 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useEffect } from 'react'
 import { useRecoilState, useSetRecoilState } from 'recoil'
-import { addBoardAction, boardsState, removeBoardAction } from '../atoms/boards.atom'
+import { addBoardAction, managerBoardsState, removeBoardAction } from '../atoms/boards.atom'
 import { initSocket } from '../services/socket'
 import { MDHeader } from '../components/MDHeader/MDHeader'
 import { MDContent } from '../components/MDContent/MDContent'
 import { gamesState, updateGameAction } from '../atoms/games.atom'
-import { getCurrentManager } from '../services/manager'
+import { getManager } from '../services/api'
 import { managerState } from '../atoms/managerState'
 import { MDMenu } from '../components/MDMenu/MDMenu'
 
 const Home: NextPage = () => {
-  const setBoards = useSetRecoilState(boardsState)
+  const setBoards = useSetRecoilState(managerBoardsState)
   const setGames = useSetRecoilState(gamesState)
   const router = useRouter()
   const [manager, setManager] = useRecoilState(managerState)
 
   const fetchCurrentManager = async () => {
-    const currentManager = await getCurrentManager()
+    const currentManager = await getManager()
 
     if (!currentManager) {
       router.push('/login')

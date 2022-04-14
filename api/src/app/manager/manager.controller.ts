@@ -23,9 +23,9 @@ export class ManagerController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('statistics')
-  getManagerStatistics(@AuthenticatedUser('id') id: string) {
-    return this.managerService.getManagerStatistics(id)
+  @Get('boards')
+  getOwnerBoards(@AuthenticatedUser('id') id: string) {
+    return this.managerService.getManagerBoards(id)
   }
 
   @UseGuards(JwtAuthGuard)
