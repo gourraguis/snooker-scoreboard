@@ -1,14 +1,14 @@
 import { Card, Row, Col, Divider, Empty, Menu, Dropdown } from 'antd'
 import { PlusOutlined, HistoryOutlined, CloseCircleOutlined } from '@ant-design/icons'
 import { FunctionComponent, useState } from 'react'
-import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { IBoard } from '../../../types/board'
 import { MDTimer } from './MDTimer/MDTimer'
 
 import styles from './MDBoard.module.css'
 import { emitNewGame, stopTimer } from '../../../services/socket'
 import { MDPlayer } from './MDPlayer/MDPlayer'
-import { addGameAction, gameForBoardIdSelector, gamesState, timerState } from '../../../atoms/games.atom'
+import { gameStateFamily, timerState } from '../../../atoms/games.atom'
 import { openNotification } from '../../../services/notification'
 import MDModalHistory from './MDModalHistory/MDModalHistory'
 import MDModalNewGame from './MDModalNewGame/MDModalNewGame'
@@ -22,24 +22,24 @@ interface MDBoardProps {
 }
 
 export const MDBoard: FunctionComponent<MDBoardProps> = ({ board, dailyGames, weeklyGames }) => {
-  const game = useRecoilValue(gameForBoardIdSelector(board.id))
-  const setGames = useSetRecoilState(gamesState)
-  const oldGame = useRecoilValue(gamesState)
+  const [game, setGame] = useRecoilState(gameStateFamily(board.id))
   const stoppedTimer = useSetRecoilState(timerState)
   const [historyModal, setHistoryModal] = useState(false)
   const [newGameModal, setNewGameModal] = useState(false)
 
-  const addGame = addGameAction(setGames)
-
-  const startNewGame = () => {
+  const startNewGame = async (firstPlayer: string, secondPlayer: string) => {
     stoppedTimer(false)
     const initBoard: IInitBoard = {
       boardId: board.id,
-      firstPlayer: game?.players[0].name,
-      secondPlayer: game?.players[1].name,
+      firstPlayer,
+      secondPlayer,
     }
-    if (oldGame.length > 0) saveGame(oldGame[oldGame.length - 1])
+    // todo: refactor oldGame array to be a single element, containing the current game
+    if (game) {
+      await saveGame(game)
+    }
 
+    console.log(initBoard)
     emitNewGame(initBoard, (newGame) => {
       if (!newGame) {
         openNotification({
@@ -47,7 +47,8 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board, dailyGames, we
           type: 'error',
         })
       }
-      addGame(newGame)
+      setGame(newGame)
+      setNewGameModal(false)
       openNotification({
         title: 'Une nouvelle partie a été lancé',
       })
@@ -62,28 +63,19 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board, dailyGames, we
     setHistoryModal(true)
   }
 
-  const handleEndGame = () => {
+  const handleEndGame = async () => {
     stoppedTimer(true)
     const initBoard: IInitBoard = {
       boardId: board.id,
       firstPlayer: game?.players[0].name,
       secondPlayer: game?.players[1].name,
     }
-    if (oldGame.length > 0) saveGame(oldGame[oldGame.length - 1])
+    if (game) {
+      await saveGame(game)
+    }
     stopTimer(initBoard)
   }
 
-  const menu = (
-    <Menu>
-      <Menu.Item onClick={startNewGame} key="initSameGame">
-        3awed match (meme joueurs)
-      </Menu.Item>
-
-      <Menu.Item onClick={() => setNewGameModal(true)} key="initDifferentGame">
-        bda match jdid (joueurs différents)
-      </Menu.Item>
-    </Menu>
-  )
   return (
     <Card
       title={board.name}
@@ -106,10 +98,8 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board, dailyGames, we
         </div>
       }
       actions={[
-        <Dropdown overlay={menu} trigger={['click']}>
-          <PlusOutlined />
-        </Dropdown>,
-        <HistoryOutlined onClick={handleHistory} key="history" />,
+        <PlusOutlined onClick={() => setNewGameModal(true)} key="newGame" />,
+        <HistoryOutlined onClick={handleHistory} key="viewHistory" />,
       ]}
       className={styles.card}
     >
@@ -136,7 +126,13 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board, dailyGames, we
           />
         </Row>
       )}
-      <MDModalNewGame visible={newGameModal} onCancel={() => setNewGameModal(false)} boardId={board.id} />
+      {newGameModal && (
+        <MDModalNewGame
+          previousPlayers={game?.players.map(({ name }) => name)}
+          onSubmit={startNewGame}
+          onCancel={() => setNewGameModal(false)}
+        />
+      )}
     </Card>
   )
 }

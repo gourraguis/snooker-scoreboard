@@ -8,14 +8,14 @@ import { addBoardAction, managerBoardsState, removeBoardAction } from '../atoms/
 import { initSocket } from '../services/socket'
 import { MDHeader } from '../components/MDHeader/MDHeader'
 import { MDContent } from '../components/MDContent/MDContent'
-import { gamesState, updateGameAction } from '../atoms/games.atom'
+import { gameSelector } from '../atoms/games.atom'
 import { getManager } from '../services/api'
 import { managerState } from '../atoms/managerState'
 import { MDMenu } from '../components/MDMenu/MDMenu'
 
 const Home: NextPage = () => {
   const setBoards = useSetRecoilState(managerBoardsState)
-  const setGames = useSetRecoilState(gamesState)
+  const updateGame = useSetRecoilState(gameSelector)
   const router = useRouter()
   const [manager, setManager] = useRecoilState(managerState)
 
@@ -27,12 +27,9 @@ const Home: NextPage = () => {
       return
     }
     setManager(currentManager)
-  }
 
-  useEffect(() => {
-    const id = localStorage.getItem('token')
-    initSocket(addBoardAction(setBoards), removeBoardAction(setBoards), updateGameAction(setGames), setBoards, id)
-  }, [])
+    initSocket(addBoardAction(setBoards), removeBoardAction(setBoards), updateGame, currentManager.id)
+  }
 
   useEffect(() => {
     fetchCurrentManager()

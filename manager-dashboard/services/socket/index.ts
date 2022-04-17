@@ -13,8 +13,7 @@ socket.on('disconnect', () => console.error(`socket disconnected`))
 export const initSocket = (
   addBoard: (board: IBoard) => void,
   removeBoard: (board: IBoard) => void,
-  updateGame: (game: IGame) => void,
-  setBoards: SetterOrUpdater<IBoard[]>,
+  updateGame: SetterOrUpdater<IGame | null>,
   id: string | null
 ) => {
   socket.on('connect', () => {

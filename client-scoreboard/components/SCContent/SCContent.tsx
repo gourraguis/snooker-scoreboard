@@ -7,7 +7,7 @@ import Head from 'next/head'
 import { currentTurnSelector, historyState, playersScoreSelector } from '../../atoms/history'
 import { initSocket } from '../../services/sockets'
 import { boardState } from '../../atoms/board.atom'
-import { gameState, sendGameData, stopTimerAction, timerState, updateGameAction } from '../../atoms/game.atom'
+import { gameState, sendGameData, stopTimerAction, timerState, updatePlayerNameAction } from '../../atoms/game.atom'
 import SCHeading from './SCHeader/SCHeader'
 import SCGameDetails from './SCGameDetails/SCGameDetails'
 import SCHistory from './SCHistory/SCHistory'
@@ -38,7 +38,7 @@ const SCContent = () => {
       addGameAction(setGlobalScoreState, setGame, setHistory, setStopTimer),
       setBoard,
       id,
-      updateGameAction(setGame),
+      updatePlayerNameAction(setGame),
       sendGameData(setGame, setHistory),
       stopTimerAction(setStopTimer)
     )

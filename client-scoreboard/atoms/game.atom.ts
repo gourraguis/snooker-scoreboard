@@ -22,34 +22,38 @@ export const startedAtSelector = selector<Date>({
   },
 })
 
-export const updateGameAction = (setGame: SetterOrUpdater<IGame | null>) => (newPlayers: IPlayersNames) => {
-  setGame((oldGame: IGame | null) => {
-    if (oldGame) {
-      const players: IPlayer[] = [
-        {
-          name: newPlayers.firstPlayer || '',
-          turn: oldGame.players[0].turn,
-          score: oldGame.players[0].score,
-        },
-        {
-          name: newPlayers.secondPlayer || '',
-          turn: oldGame.players[1].turn,
-          score: oldGame.players[1].score,
-        },
-      ]
-
-      const newGame = {
-        id: oldGame.id,
-        boardId: oldGame.boardId,
-        players,
-        startedAt: oldGame.startedAt,
-        finishedAt: oldGame.finishedAt,
-        history: oldGame.history,
-      }
-
-      return newGame
+export const updatePlayerNameAction = (setGame: SetterOrUpdater<IGame | null>) => (newPlayers: IPlayersNames) => {
+  console.log('zz')
+  setGame((prevGame: IGame | null) => {
+    if (!prevGame) {
+      return null
     }
-    return null
+    console.log({
+      ...prevGame,
+      players: [
+        {
+          ...prevGame.players[0],
+          name: newPlayers.firstPlayer || prevGame.players[0].name,
+        },
+        {
+          ...prevGame.players[1],
+          name: newPlayers.secondPlayer || prevGame.players[1].name,
+        },
+      ],
+    })
+    return {
+      ...prevGame,
+      players: [
+        {
+          ...prevGame.players[0],
+          name: newPlayers.firstPlayer || prevGame.players[0].name,
+        },
+        {
+          ...prevGame.players[1],
+          name: newPlayers.secondPlayer || prevGame.players[1].name,
+        },
+      ],
+    }
   })
 }
 

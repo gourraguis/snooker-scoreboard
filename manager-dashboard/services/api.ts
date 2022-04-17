@@ -1,6 +1,5 @@
 import axios from 'axios'
 import moment from 'moment'
-import { SetterOrUpdater } from 'recoil'
 import { IGame } from '../types/game'
 import { IManager } from '../types/manager'
 import { IStats } from '../types/stats'
@@ -17,7 +16,7 @@ const get = (path: string) => {
   if (jwtToken) {
     return api.get(path, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+        Authorization: `Bearer ${jwtToken}`,
       },
     })
   }
@@ -29,7 +28,7 @@ const post = (path: string, body: any = {}) => {
   if (jwtToken) {
     return api.post(path, body, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+        Authorization: `Bearer ${jwtToken}`,
       },
     })
   }
@@ -41,7 +40,7 @@ const put = (path: string, body: any = {}) => {
   if (jwtToken) {
     return api.put(path, body, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+        Authorization: `Bearer ${jwtToken}`,
       },
     })
   }

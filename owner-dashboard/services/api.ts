@@ -17,7 +17,7 @@ const get = (path: string) => {
   if (jwtToken) {
     return api.get(path, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+        Authorization: `Bearer ${jwtToken}`,
       },
     })
   }
@@ -29,7 +29,7 @@ const post = (path: string, body: any = {}) => {
   if (jwtToken) {
     return api.post(path, body, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+        Authorization: `Bearer ${jwtToken}`,
       },
     })
   }
@@ -41,7 +41,7 @@ const put = (path: string, body: any = {}) => {
   if (jwtToken) {
     return api.put(path, body, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+        Authorization: `Bearer ${jwtToken}`,
       },
     })
   }
@@ -53,7 +53,7 @@ const remove = (path: string) => {
   if (jwtToken) {
     return api.delete(path, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('jwtToken')}`,
+        Authorization: `Bearer ${jwtToken}`,
       },
     })
   }

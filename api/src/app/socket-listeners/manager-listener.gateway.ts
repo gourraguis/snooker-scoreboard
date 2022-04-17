@@ -11,7 +11,6 @@ import { BoardEmitterGateway } from '../socket-emitters/board-emitter.gateway'
 import { ManagerClientToServerEvents, ManagerServer, ManagerSocket } from '../types/manager-sockets'
 import { IInitBoard } from '../types/initBoard'
 import { ManagerService } from '../manager/manager.service'
-import { BoardService } from '../board/board.service'
 import { Board } from '../board/entities/board.entity'
 
 @WebSocketGateway({ cors: true, namespace: 'manager' })
@@ -47,11 +46,6 @@ export class ManagerListenerGateway implements OnGatewayConnection {
 
   @SubscribeMessage<ManagerClientToServerEvents>('updatePlayerName')
   onUpdatePlayerName(@MessageBody() board: IInitBoard) {
-    const managerId = '1'
-    if (!managerId) {
-      return
-    }
-    this.logger.log(`Starting new game on board id: ${board.boardId}`)
     const newGame = this.gameService.createGame(board)
     this.boardEmitterGateway.emitUpdatePlayerName(board)
     return newGame
