@@ -8,9 +8,10 @@ import { MDMenu } from '../components/MDMenu/MDMenu'
 import { managerState } from '../atoms/managerState'
 import { getManager } from '../services/api'
 import { MDHeader } from '../components/MDHeader/MDHeader'
-import { MDStatistics } from '../components/MDStatistics/MDStatistics'
+import { MDStatistics } from '../components/MDStats/MDStats'
 
 const Statistics: NextPage = () => {
+  // todo: refactor this page to use cards instead of a table, a bit like superbots
   const router = useRouter()
   const [manager, setManager] = useRecoilState(managerState)
 
@@ -33,17 +34,11 @@ const Statistics: NextPage = () => {
   }
 
   return (
-    <>
-      <Head>
-        <title>Manager Dashboard</title>
-        <link rel="icon" href="/favicon/favicon.ico" />
-      </Head>
-      <Layout style={{ minHeight: '100vh' }}>
-        <MDHeader />
-        <MDStatistics />
-        <MDMenu />
-      </Layout>
-    </>
+    <Layout style={{ minHeight: '100vh' }}>
+      <MDHeader />
+      <MDStatistics />
+      <MDMenu />
+    </Layout>
   )
 }
 

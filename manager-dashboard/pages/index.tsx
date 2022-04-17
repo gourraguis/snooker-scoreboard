@@ -40,18 +40,11 @@ const Home: NextPage = () => {
   }
 
   return (
-    <>
-      <Head>
-        <title>Manager Dashboard</title>
-      </Head>
-
-      <Layout style={{ minHeight: '100vh' }}>
-        <MDHeader />
-        <MDContent />
-        <div style={{ marginTop: '10vh' }} />
-        <MDMenu />
-      </Layout>
-    </>
+    <Layout style={{ minHeight: '100vh' }}>
+      <MDHeader />
+      <MDContent />
+      <MDMenu />
+    </Layout>
   )
 }
 

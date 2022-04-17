@@ -22,9 +22,17 @@ export const MDContent: FunctionComponent = () => {
   }, [])
 
   return (
-    <Content className={classNames({ [styles.contentCentered]: !managerBoards.length })}>
+    <Content
+      className={classNames({
+        [styles.contentCentered]: !managerBoards.length,
+        [styles.content]: managerBoards.length,
+      })}
+    >
       {!managerBoards?.length ? (
-        <Empty description="Aucune table n'est connectée, veuillez demander à votre responsable d'ajouter les tables sur son compte." />
+        <p style={{ textAlign: 'center', fontWeight: 500 }}>
+          Aucune table n&apos;est connectée, veuillez demander à votre responsable d&apos;ajouter les tables sur son
+          compte.
+        </p>
       ) : (
         <Space direction="vertical" className={styles.space}>
           {managerBoards.map((board, index) => (

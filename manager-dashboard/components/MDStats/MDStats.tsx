@@ -1,14 +1,15 @@
 import { Table } from 'antd'
+import moment from 'moment'
 import { FunctionComponent, useEffect, useState } from 'react'
 import { getManagerStats } from '../../services/api'
 import { IStats } from '../../types/stats'
-import styles from './MDStatistics.module.css'
+import styles from './MDStats.module.css'
 
 const columns = [
   {
     title: 'Table',
-    dataIndex: 'table',
-    width: '25%',
+    dataIndex: 'boardName',
+    width: '30%',
   },
   {
     title: 'Rabe7',
@@ -22,8 +23,8 @@ const columns = [
   },
   {
     title: 'We9t',
-    dataIndex: 'startedAt',
-    width: '25%',
+    dataIndex: 'duration',
+    width: '20%',
   },
 ]
 
@@ -32,7 +33,12 @@ export const MDStatistics: FunctionComponent = () => {
 
   const fetchStats = async () => {
     const fetchedStats = await getManagerStats()
-    setStats(fetchedStats)
+    setStats(
+      fetchedStats.map((line) => ({
+        ...line,
+        duration: moment(moment(line.finishedAt).diff(line.startedAt)).format('mm:ss'),
+      }))
+    )
   }
 
   useEffect(() => {
@@ -40,8 +46,8 @@ export const MDStatistics: FunctionComponent = () => {
   }, [])
 
   return (
-    <div className={styles.all}>
-      <Table columns={columns} dataSource={stats} pagination={false} scroll={{ y: '100vh' }} />
-    </div>
+    <main className={styles.content}>
+      <Table columns={columns} dataSource={stats} pagination={false} bordered />
+    </main>
   )
 }

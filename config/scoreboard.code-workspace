@@ -13,10 +13,6 @@
       "path": "../owner-dashboard"
     },
     {
-      "name": "website",
-      "path": "../website"
-    },
-    {
       "name": "browser-scoreboard",
       "path": "../browser-scoreboard"
     },

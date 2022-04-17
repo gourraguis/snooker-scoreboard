@@ -14,6 +14,7 @@ import MDModalHistory from './MDModalHistory/MDModalHistory'
 import MDModalNewGame from './MDModalNewGame/MDModalNewGame'
 import { IInitBoard } from '../../../types/initBoard'
 import { saveGame } from '../../../services/api'
+import { incrementGamesSelector } from '../../../atoms/boards.atom'
 
 interface MDBoardProps {
   board: IBoard
@@ -23,6 +24,7 @@ interface MDBoardProps {
 
 export const MDBoard: FunctionComponent<MDBoardProps> = ({ board, dailyGames, weeklyGames }) => {
   const [game, setGame] = useRecoilState(gameStateFamily(board.id))
+  const incrementGames = useSetRecoilState(incrementGamesSelector)
   const stoppedTimer = useSetRecoilState(timerState)
   const [historyModal, setHistoryModal] = useState(false)
   const [newGameModal, setNewGameModal] = useState(false)
@@ -34,12 +36,11 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board, dailyGames, we
       firstPlayer,
       secondPlayer,
     }
-    // todo: refactor oldGame array to be a single element, containing the current game
     if (game) {
+      incrementGames(game.boardId)
       await saveGame(game)
     }
 
-    console.log(initBoard)
     emitNewGame(initBoard, (newGame) => {
       if (!newGame) {
         openNotification({
@@ -71,6 +72,7 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board, dailyGames, we
       secondPlayer: game?.players[1].name,
     }
     if (game) {
+      incrementGames(game.boardId)
       await saveGame(game)
     }
     stopTimer(initBoard)

@@ -125,8 +125,7 @@ export const generateOwnerOtp = async (id: string): Promise<boolean> => {
     await put(`owner/otp?id=${id}`)
 
     openNotification({
-      title: `Veuillez entrer votre code d'authentification`,
-      description: `Vous devez recevoir un code d'authentification par sms sur votre téléphone pour vous connecter`,
+      title: `Veuillez entrer le code sms reçu`,
     })
     return true
   } catch (error) {

@@ -25,27 +25,28 @@ export class GameController {
   @Post('stats')
   getStatus(
     @AuthenticatedUser('id') id: string,
-    @AuthenticatedUser('type') type: 'owner' | 'manager',
+    @AuthenticatedUser('ownerId') ownerId: string,
     @Body() filter: IStatsFilter
   ) {
-    if (type === 'owner') {
-      return this.gameService.getOwnerStats(id, filter)
-    }
-    if (type === 'manager') {
+    // inexistence of an owner id means that the authenticated user is an owner
+    console.log(id, ownerId, filter)
+    if (ownerId) {
       return this.gameService.getManagerStats(id, filter)
     }
+    return this.gameService.getOwnerStats(id, filter)
   }
 
   @UseGuards(JwtAuthGuard)
   @Post('')
   saveGame(
     @AuthenticatedUser('id') id: string,
-    @AuthenticatedUser('type') type: string,
+    @AuthenticatedUser('ownerId') ownerId: string,
     @Body() game: Game
   ): Promise<Game> {
-    if (type !== 'manager') {
+    if (!ownerId) {
+      // inexistence of an owner id means that the authenticated user is an owner
       throw new UnauthorizedException('Only managers can save a game')
     }
-    return this.gameService.saveGame(id, game)
+    return this.gameService.saveGame(id, ownerId, game)
   }
 }

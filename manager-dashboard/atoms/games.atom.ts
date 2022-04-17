@@ -7,8 +7,8 @@ export const gameStateFamily = atomFamily<IGame | null, string>({
 })
 
 export const gameSelector = selector<IGame | null>({
-  key: 'gameState',
-  get: ({ get }) => null,
+  key: 'gameSelector',
+  get: () => null,
   set: ({ set }, game) => set(gameStateFamily((game as IGame).boardId), game),
 })
 

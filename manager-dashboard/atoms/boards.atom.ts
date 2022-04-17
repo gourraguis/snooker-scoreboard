@@ -1,5 +1,5 @@
 /* eslint-disable no-plusplus */
-import { atom, SetterOrUpdater } from 'recoil'
+import { atom, selector, SetterOrUpdater } from 'recoil'
 import { IBoard } from '../types/board'
 
 export const managerBoardsState = atom<IBoard[]>({
@@ -7,14 +7,17 @@ export const managerBoardsState = atom<IBoard[]>({
   default: [],
 })
 
-export const incrementBoardGames = (setManagerBoards: SetterOrUpdater<IBoard[]>, boardId: string): void => {
-  setManagerBoards((boards) => {
-    const playedBoard = boards.find(({ id }) => id === boardId)!
-    playedBoard.dailyGames += 1
-    playedBoard.weeklyGames += 1
-    return [...boards.filter(({ id }) => id !== boardId), playedBoard]
-  })
-}
+export const incrementGamesSelector = selector<string | null>({
+  key: 'incrementGamesSelector',
+  get: () => null,
+  set: ({ set }, boardId) =>
+    set(managerBoardsState, (prevBoards) => {
+      const playedBoard = { ...prevBoards.find(({ id }) => id === boardId)! }
+      playedBoard.dailyGames += 1
+      playedBoard.weeklyGames += 1
+      return [...prevBoards.filter(({ id }) => id !== boardId), playedBoard]
+    }),
+})
 
 export const addBoardAction = (setManagerBoards: SetterOrUpdater<IBoard[]>) => (board: IBoard) => {
   setManagerBoards((boards) => {

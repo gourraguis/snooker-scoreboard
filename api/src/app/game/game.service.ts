@@ -48,13 +48,21 @@ export class GameService {
   }
 
   public async getManagerStats(id: string, filter: IStatsFilter) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const query: any = {
+      managerId: id,
+    }
+    if (filter.boardId) {
+      query.boardId = filter.boardId
+    }
+    if (filter.startDate) {
+      query.startedAt = Between(filter.startDate, new Date())
+    }
+    if (filter.finishDate) {
+      query.finishedAt = Between(filter.finishDate, new Date())
+    }
     const managerGames = await this.gameRepository.find({
-      where: {
-        managerId: id,
-        boardId: filter.boardId,
-        startedAt: filter.startDate && Between(filter.startDate, new Date()),
-        finishedAt: filter.finishDate && Between(filter.finishDate, new Date()),
-      },
+      where: query,
       relations: ['board'],
     })
 
@@ -68,14 +76,24 @@ export class GameService {
   }
 
   public async getOwnerStats(id: string, filter: IStatsFilter) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const query: any = {
+      ownerId: id,
+    }
+    if (filter.managerId) {
+      query.managerId = filter.managerId
+    }
+    if (filter.boardId) {
+      query.boardId = filter.boardId
+    }
+    if (filter.startDate) {
+      query.startedAt = Between(filter.startDate, new Date())
+    }
+    if (filter.finishDate) {
+      query.finishedAt = Between(filter.finishDate, new Date())
+    }
     const ownerGames = await this.gameRepository.find({
-      where: {
-        ownerId: id,
-        managerId: filter.managerId,
-        boardId: filter.boardId,
-        startedAt: filter.startDate && Between(filter.startDate, new Date()),
-        finishedAt: filter.finishDate && Between(filter.finishDate, new Date()),
-      },
+      where: query,
       relations: ['board', 'manager'],
     })
 
@@ -111,12 +129,7 @@ export class GameService {
     }
   }
 
-  public async saveGame(managerId: string, game: Game): Promise<Game> {
-    const { ownerId } = await this.managerRepository.findOne({
-      where: {
-        id: managerId,
-      },
-    })
+  public async saveGame(managerId: string, ownerId: string, game: Game): Promise<Game> {
     const newGame = new Game()
     newGame.boardId = game.boardId
     newGame.managerId = managerId
@@ -126,6 +139,8 @@ export class GameService {
     newGame.startedAt = game.startedAt
     newGame.finishedAt = game.finishedAt
 
-    return this.gameRepository.save(game)
+    console.log('new game:')
+    console.log(newGame)
+    return this.gameRepository.save(newGame)
   }
 }

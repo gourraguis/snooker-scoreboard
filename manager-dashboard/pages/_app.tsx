@@ -2,6 +2,7 @@ import type { AppProps } from 'next/app'
 import '../styles/antd.less'
 import { RecoilRoot } from 'recoil'
 import { useEffect, useState } from 'react'
+import Head from 'next/head'
 import { getDisablePWA } from '../services/config'
 import { MDPromptPWA } from '../components/MDPromptPWA/MDPromptPWA'
 
@@ -18,6 +19,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <RecoilRoot>
+      <Head>
+        <title>Jawad Club</title>
+      </Head>
       <SafeHydrate>{getDisablePWA() || isPWAInstalled ? <Component {...pageProps} /> : <MDPromptPWA />}</SafeHydrate>
     </RecoilRoot>
   )

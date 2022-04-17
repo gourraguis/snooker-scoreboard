@@ -13,22 +13,22 @@ export const MDHeader: FunctionComponent = () => {
   const [manager, setManager] = useRecoilState(managerState)
   const router = useRouter()
 
-  const handleLogout = () => {
-    localStorage.removeItem('jwtToken')
-    setManager(null)
-    router.push('/login')
-  }
+  // const handleLogout = () => {
+  //   localStorage.removeItem('jwtToken')
+  //   setManager(null)
+  //   router.push('/login')
+  // }
 
   return (
     <Header className={styles.header}>
       <Title level={2} className={styles.title}>
         {manager?.owner?.clubName || 'Jawad Club'}
       </Title>
-      {!!manager && (
+      {/* {!!manager && (
         <Button className={styles.button} onClick={handleLogout}>
           <LogoutOutlined />
         </Button>
-      )}
+      )} */}
     </Header>
   )
 }
