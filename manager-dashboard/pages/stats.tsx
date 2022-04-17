@@ -6,16 +6,17 @@ import { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import { MDMenu } from '../components/MDMenu/MDMenu'
 import { managerState } from '../atoms/managerState'
-import { getCurrentManager } from '../services/manager'
+import { getManager } from '../services/api'
 import { MDHeader } from '../components/MDHeader/MDHeader'
-import { MDList } from '../components/MDList/MDList'
+import { MDStatistics } from '../components/MDStats/MDStats'
 
-const List: NextPage = () => {
+const Statistics: NextPage = () => {
+  // todo: refactor this page to use cards instead of a table, a bit like superbots
   const router = useRouter()
   const [manager, setManager] = useRecoilState(managerState)
 
   const fetchCurrentManager = async () => {
-    const currentManager = await getCurrentManager()
+    const currentManager = await getManager()
 
     if (!currentManager) {
       router.push('/login')
@@ -33,18 +34,12 @@ const List: NextPage = () => {
   }
 
   return (
-    <>
-      <Head>
-        <title>Manager Dashboard</title>
-        <link rel="icon" href="/favicon/favicon.ico" />
-      </Head>
-      <Layout style={{ minHeight: '100vh' }}>
-        <MDHeader />
-        <MDList />
-        <MDMenu />
-      </Layout>
-    </>
+    <Layout style={{ minHeight: '100vh' }}>
+      <MDHeader />
+      <MDStatistics />
+      <MDMenu />
+    </Layout>
   )
 }
 
-export default List
+export default Statistics

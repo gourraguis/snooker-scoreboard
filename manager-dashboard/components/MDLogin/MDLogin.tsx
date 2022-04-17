@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import { FunctionComponent, useState } from 'react'
 import { Form, Input, Button, Layout, Card } from 'antd'
 import { motion, AnimatePresence } from 'framer-motion'
-import { generateOtpManager, loginManager } from '../../services/manager'
+import { generateOtpManager, loginManager } from '../../services/api'
 
 import styles from './MDLogin.module.css'
 import { validatePhoneNumber } from '../../services/utils'

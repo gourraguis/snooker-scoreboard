@@ -1,8 +1,8 @@
 import { Button, Form, Input, Modal } from 'antd'
 import { FunctionComponent } from 'react'
 import { useRecoilState } from 'recoil'
-import { managersStats } from '../../../../atoms/mainStats'
-import { createManager } from '../../../../services/owner-api'
+import { ownerManagersState } from '../../../../atoms/managers.atom'
+import { createManager } from '../../../../services/api'
 import { IManager } from '../../../../types/manager'
 
 interface ODManagerModalProps {
@@ -11,27 +11,33 @@ interface ODManagerModalProps {
 }
 
 const ODManagerModal: FunctionComponent<ODManagerModalProps> = ({ onCancel, visible }) => {
-  const [managersElements, setManagersElements] = useRecoilState(managersStats)
-  const handleCancel = () => {
-    onCancel()
-  }
+  const [ownerManagers, setOwnerManagers] = useRecoilState(ownerManagersState)
+
   const onFinish = async (values: IManager) => {
     const newManager: IManager = {
-      phoneNumber: values.phoneNumber,
+      id: values.id,
       name: values.name,
     }
-    createManager(newManager, managersElements, setManagersElements)
+    await createManager(newManager)
+    setOwnerManagers([
+      ...ownerManagers,
+      {
+        ...newManager,
+        dailyGames: 0,
+        weeklyGames: 0,
+      },
+    ])
     onCancel()
   }
 
   return (
     <div>
       <Modal
-        title="Add Manager"
+        title="Ajouter un Gérant"
         visible={visible}
-        onCancel={handleCancel}
+        onCancel={onCancel}
         footer={[
-          <Button key="back" onClick={handleCancel}>
+          <Button key="back" onClick={onCancel}>
             Cancel
           </Button>,
           <Button form="addManager" key="submit" htmlType="submit" type="primary">
@@ -50,7 +56,7 @@ const ODManagerModal: FunctionComponent<ODManagerModalProps> = ({ onCancel, visi
           <Form.Item label="Name" name="name">
             <Input />
           </Form.Item>
-          <Form.Item label="Phone" name="phoneNumber">
+          <Form.Item label="Phone" name="id">
             <Input />
           </Form.Item>
         </Form>

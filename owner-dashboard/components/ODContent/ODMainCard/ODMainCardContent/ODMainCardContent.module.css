@@ -14,14 +14,14 @@
   height: 100%;
 }
 
-.weeklyScore {
+.weeklyGames {
   font-size: 1.2rem;
   font-weight: 600;
   color: rgb(27, 153, 48);
   margin-bottom: 0rem !important;
 }
 
-.dailyScore {
+.dailyGames {
   font-size: 1.2rem;
   font-weight: 600;
   color: rgb(21, 158, 250);

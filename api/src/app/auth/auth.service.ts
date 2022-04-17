@@ -24,7 +24,7 @@ export class AuthService {
     }
 
     return this.jwtService.signAsync({
-      phoneNumber,
+      id: phoneNumber,
       type: 'owner',
     })
   }
@@ -38,7 +38,7 @@ export class AuthService {
     }
 
     return this.jwtService.signAsync({
-      phoneNumber,
+      id: phoneNumber,
       type: 'manager',
     })
   }

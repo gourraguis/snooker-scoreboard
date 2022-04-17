@@ -1,21 +1,21 @@
 import { Row, Col, Divider, Card } from 'antd'
 import { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
-import { dailyStats, weeklyStats } from '../../../atoms/globaleStats'
-import { getDailyGames, getWeeklyGames } from '../../../services/owner-api'
+import { dailyGamesState, weeklyGamesState } from '../../../atoms/statsState'
+import { getDailyGames, getWeeklyGames } from '../../../services/api'
 
 import styles from './ODHeadingCard.module.css'
 import { ODHeadingStats } from './ODHeadingStats/ODHeadingStats'
 
 export const ODHeadingCard = () => {
-  const [dailyScore, setDailyScore] = useRecoilState(dailyStats)
-  const [weeklyScore, setWeeklyScore] = useRecoilState(weeklyStats)
+  const [dailyGames, setdailyGames] = useRecoilState(dailyGamesState)
+  const [weeklyGames, setweeklyGames] = useRecoilState(weeklyGamesState)
 
   const fetchStats = async () => {
     const week = await getWeeklyGames()
     const day = await getDailyGames()
-    setWeeklyScore(week)
-    setDailyScore(day)
+    setweeklyGames(week)
+    setdailyGames(day)
   }
 
   useEffect(() => {
@@ -26,7 +26,7 @@ export const ODHeadingCard = () => {
     <Card className={styles.card}>
       <Row>
         <Col span={11} className={styles.column}>
-          <ODHeadingStats title="Ce jour" score={dailyScore} color="Blue" />
+          <ODHeadingStats title="Jour" score={dailyGames} color="Blue" />
         </Col>
 
         <Col span={2}>
@@ -34,7 +34,7 @@ export const ODHeadingCard = () => {
         </Col>
 
         <Col span={11} className={styles.column}>
-          <ODHeadingStats title="Cette Semaine" score={weeklyScore} color="Green" />
+          <ODHeadingStats title="Semaine" score={weeklyGames} color="Green" />
         </Col>
       </Row>
     </Card>

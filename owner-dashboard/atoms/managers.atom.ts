@@ -1,7 +1,7 @@
 import { atom } from 'recoil'
 import { ICardElements } from '../types/cardElement'
 
-export const tableStats = atom<ICardElements[]>({
-  key: 'tableStats',
+export const ownerManagersState = atom<ICardElements[]>({
+  key: 'ownerManagersState',
   default: [],
 })

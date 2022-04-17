@@ -4,8 +4,6 @@ import { PassportModule } from '@nestjs/passport'
 import { AuthService } from './auth.service'
 import { AuthController } from './auth.controller'
 import { JwtStrategy } from './jwt.strategy'
-import { TypeOrmModule } from '@nestjs/typeorm'
-import { Owner } from '../owner/entities/owner.entity'
 import { OwnerModule } from '../owner/owner.module'
 import { OwnerService } from '../owner/owner.service'
 import ConfigModule from '../../config/config.module'
@@ -15,7 +13,6 @@ import { TwilioModule } from '../twilio/twilio.module'
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Owner]),
     ConfigModule,
     OwnerModule,
     ManagerModule,
@@ -26,11 +23,12 @@ import { TwilioModule } from '../twilio/twilio.module'
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.getJwtSecret(),
-        signOptions: { expiresIn: '14 days' },
+        signOptions: { expiresIn: '90 days' },
       }),
     }),
+    OwnerModule,
   ],
-  providers: [AuthService, JwtStrategy, OwnerService],
+  providers: [AuthService, JwtStrategy],
   controllers: [AuthController],
 })
 export class AuthModule {}

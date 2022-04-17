@@ -13,7 +13,7 @@ interface MDTimerProps {
 
 export const MDTimer: FunctionComponent<MDTimerProps> = ({ startedAt }) => {
   const [timerText, setTimerText] = useState('00:00')
-  const stopedTimer = useRecoilValue(timerState)
+  const stoppedTimer = useRecoilValue(timerState)
 
   useInterval(() => {
     if (startedAt) {
@@ -23,8 +23,8 @@ export const MDTimer: FunctionComponent<MDTimerProps> = ({ startedAt }) => {
 
   return (
     <div>
-      {stopedTimer && <Text type="secondary">00:00</Text>}
-      {!stopedTimer && <Text type="secondary">{timerText}</Text>}
+      {stoppedTimer && <Text type="secondary">00:00</Text>}
+      {!stoppedTimer && <Text type="secondary">{timerText}</Text>}
     </div>
   )
 }

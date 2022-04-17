@@ -1,7 +1,6 @@
 .header {
-  height: inherit;
   padding-top: 0.5rem;
-  position: relative;
+  background-color: #212121;
 }
 
 .title {

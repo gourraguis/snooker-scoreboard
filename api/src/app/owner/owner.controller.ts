@@ -12,25 +12,37 @@ export class OwnerController {
   constructor(
     private configService: ConfigService,
     private readonly ownerService: OwnerService,
-    private readonly smsService: TwilioService
+    private readonly twilioService: TwilioService
   ) {}
-
-  @Put('otp')
-  async checkPhoneNumber(@Query('phoneNumber') phoneNumber: string) {
-    const owner = await this.ownerService.getOwner(phoneNumber)
-    if (owner) this.smsService.sendOtp(phoneNumber)
-  }
 
   @Get('')
   @UseGuards(JwtAuthGuard)
-  getOwner(@AuthenticatedUser() { phoneNumber }: Owner) {
-    return this.ownerService.getOwner(phoneNumber)
+  getOwner(@AuthenticatedUser('id') id) {
+    return this.ownerService.getOwner(id)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('managers')
+  getOwnerManagers(@AuthenticatedUser('id') id: string) {
+    return this.ownerService.getOwnerManagers(id)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('boards')
+  getOwnerBoards(@AuthenticatedUser('id') id: string) {
+    return this.ownerService.getOwnerBoards(id)
+  }
+
+  @Post('statistics')
+  @UseGuards(JwtAuthGuard)
+  getStatistics(@AuthenticatedUser('id') id: string, @Body() filter) {
+    return this.ownerService.getStatisticsByFilter(id, filter)
   }
 
   @Post('')
   createOwner(@Body('owner') owner: Partial<Owner>, @Body('secret') secret: string) {
-    validatePhoneNumber(owner.phoneNumber)
-    if (!owner.name) {
+    validatePhoneNumber(owner.id)
+    if (!owner.fullName) {
       throw new BadRequestException("Please provide the owner's name")
     }
     if (!owner.clubName) {
@@ -46,9 +58,9 @@ export class OwnerController {
     return this.ownerService.createOwner(owner)
   }
 
-  @Post('statistics')
-  @UseGuards(JwtAuthGuard)
-  getStatistics(@AuthenticatedUser('phoneNumber') phoneNumber: string, @Body() filter) {
-    return this.ownerService.getStatisticsByFilter(phoneNumber, filter)
+  @Put('otp')
+  async checkPhoneNumber(@Query('id') id: string) {
+    const owner = await this.ownerService.getOwner(id)
+    if (owner) this.twilioService.sendOtp(id)
   }
 }

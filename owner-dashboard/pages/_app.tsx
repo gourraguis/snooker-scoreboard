@@ -14,7 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     setPWAInstalled(window.matchMedia('(display-mode: standalone)').matches)
-  })
+  }, [])
 
   return (
     <RecoilRoot>

@@ -1,9 +1,10 @@
+import { IOwner } from '../owner/types/IOwner'
+
 export interface IManager {
-  phoneNumber: phoneNumber
+  id: phoneNumber
   name: string
   clubName?: string
   address?: string
   balance?: number
-  otp?: string
-  owner?: string
+  owner?: IOwner
 }

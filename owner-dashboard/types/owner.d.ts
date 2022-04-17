@@ -1,5 +1,5 @@
 export interface IOwner {
-  phoneNumber: string
+  id: string
   name: string
   clubName: string
   address: string

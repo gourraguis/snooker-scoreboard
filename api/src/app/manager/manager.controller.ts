@@ -5,39 +5,33 @@ import { validatePhoneNumber } from '../owner/utils'
 import { TwilioService } from '../twilio/twilio.service'
 import { Manager } from './entities/manager.entity'
 import { ManagerService } from './manager.service'
-import { IManager } from './types'
 
 @Controller('manager')
 export class ManagerController {
   constructor(private readonly managerService: ManagerService, private readonly smsService: TwilioService) {}
 
   @Put('otp')
-  async checkPhoneNumber(@Query('phoneNumber') phoneNumber: string) {
-    const manager = await this.managerService.getManager(phoneNumber)
-    if (manager) this.smsService.sendOtp(phoneNumber)
+  async checkPhoneNumber(@Query('id') id: string) {
+    const manager = await this.managerService.getManager(id)
+    if (manager) this.smsService.sendOtp(id)
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('')
-  getManager(@AuthenticatedUser() { phoneNumber }: Manager) {
-    return this.managerService.getManager(phoneNumber)
-  }
-
-  @Get()
-  getManagers(): Promise<IManager[]> {
-    return this.managerService.getManagers()
+  getManager(@AuthenticatedUser('id') id: string) {
+    return this.managerService.getManager(id)
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('all')
-  getOwnerManagers(@AuthenticatedUser('phoneNumber') phoneNumber: string): Promise<IManager[]> {
-    return this.managerService.getOwnerManagers(phoneNumber)
+  @Get('boards')
+  getOwnerBoards(@AuthenticatedUser('id') id: string) {
+    return this.managerService.getManagerBoards(id)
   }
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  createManager(@AuthenticatedUser('phoneNumber') ownerId: string, @Body() manager: IManager): Promise<Manager> {
-    validatePhoneNumber(manager.phoneNumber)
+  createManager(@AuthenticatedUser('id') ownerId: string, @Body() manager: Manager): Promise<Manager> {
+    validatePhoneNumber(manager.id)
     if (!manager.name) {
       throw new BadRequestException("Please provide the manager's name")
     }
@@ -45,14 +39,8 @@ export class ManagerController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete(':phoneNumber')
-  deleteManager(@Param('phoneNumber') phoneNumber: string) {
-    return this.managerService.deleteManager(phoneNumber)
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('statistics')
-  getManagerStatistics(@AuthenticatedUser('phoneNumber') phoneNumber: string) {
-    return this.managerService.getManagerStatistics(phoneNumber)
+  @Delete(':id')
+  deleteManager(@Param('id') id: string) {
+    return this.managerService.deleteManager(id)
   }
 }

@@ -6,6 +6,6 @@ const { Paragraph } = Typography
 
 export const MDFooter: FunctionComponent = () => (
   <Footer style={{ textAlign: 'center' }}>
-    <Paragraph>Manager Dashboard © 2022</Paragraph>
+    <Paragraph>Jawad Club © 2022</Paragraph>
   </Footer>
 )

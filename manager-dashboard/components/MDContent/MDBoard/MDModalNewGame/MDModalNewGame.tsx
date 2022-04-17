@@ -1,119 +1,57 @@
 import React, { FunctionComponent, useState } from 'react'
 import { Button, Modal, Space, Tooltip } from 'antd'
 import { FileTextOutlined } from '@ant-design/icons'
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
-import { emitNewGame } from '../../../../services/socket'
+import { useRecoilState } from 'recoil'
 import { openNotification } from '../../../../services/notification'
-import { addGameAction, gameForBoardIdSelector, gamesState, timerState } from '../../../../atoms/games.atom'
-import { IGame } from '../../../../types/game'
-import { IInitBoard } from '../../../../types/initBoard'
-import { saveGame } from '../../../../services/manager'
-import { tableStats } from '../../../../atoms/tableStats'
 import styles from './MDModalNewGame.module.css'
-import { listState } from '../../../../atoms/listState'
+import { waitlistState } from '../../../../atoms/waitlist.atom'
 
 interface MDModalNewGameProps {
+  previousPlayers?: string[]
   onCancel: () => void
-  visible: boolean
-  boardId: string
+  onSubmit: (firstPlayer: string, secondPlayer: string) => void
 }
 
-const MDModalNewGame: FunctionComponent<MDModalNewGameProps> = ({ onCancel, visible, boardId }) => {
-  const game = useRecoilValue(gameForBoardIdSelector(boardId))
-  const [games, setGames] = useRecoilState(gamesState)
-  const addGame = addGameAction(setGames)
-  const oldGame = useRecoilValue(gamesState)
-  const stopedTimer = useSetRecoilState(timerState)
-  const setTableStats = useSetRecoilState(tableStats)
-  const [firstPlayerName, setFirstPlayerName] = useState<string>('Player 1')
-  const [secondPlayerName, setSecondPlayerName] = useState<string>('Player 2')
-  const [list, setList] = useRecoilState(listState)
+const MDModalNewGame: FunctionComponent<MDModalNewGameProps> = ({ previousPlayers, onCancel, onSubmit }) => {
+  const [waitlist, setWaitlist] = useRecoilState(waitlistState)
+  const [firstPlayerName, setFirstPlayerName] = useState(previousPlayers ? previousPlayers[0] : 'Joueur 1')
+  const [secondPlayerName, setSecondPlayerName] = useState(previousPlayers ? previousPlayers[1] : 'Joueur 2')
 
-  const onListOne = () => {
-    if (list.length > 0) {
-      setFirstPlayerName(list[0])
-      setList((prev) => {
-        const arr = prev.slice(1)
-        return arr
-      })
-    }
-  }
-
-  const onListTwo = () => {
-    if (list.length > 0) {
-      setSecondPlayerName(list[0])
-      setList((prev) => {
-        const arr = prev.slice(1)
-        return arr
-      })
-    }
-  }
-
-  const handleCancel = () => {
-    onCancel()
-  }
-
-  const onFinish = (e: { preventDefault: () => void }) => {
-    e.preventDefault()
-    stopedTimer(false)
-    const initBoard: IInitBoard = {
-      boardId,
-      firstPlayer: firstPlayerName,
-      secondPlayer: secondPlayerName,
-    }
-    if (oldGame.length > 0) saveGame(oldGame[oldGame.length - 1], setTableStats)
-    emitNewGame(initBoard, (newGame: IGame) => {
-      if (!newGame) {
-        openNotification({
-          title: 'Erreur, on a pas pu lancer une nouvelle partie..',
-          type: 'error',
-        })
-      }
-
-      if (game) {
-        const players = [
-          {
-            name: initBoard.firstPlayer!,
-            turn: game!.players[0].turn,
-            score: game!.players[0].score,
-          },
-          {
-            name: initBoard.secondPlayer!,
-            turn: game!.players[1].turn,
-            score: game!.players[1].score,
-          },
-        ]
-        const newGameData = {
-          id: game!.id,
-          boardId: game!.boardId,
-          players,
-          startedAt: game!.startedAt,
-          finishedAt: game!.finishedAt,
-          history: game!.history,
-        }
-        setGames(() => [...games.filter(({ id }) => id !== newGameData.id), newGameData])
-      }
-
-      addGame(newGame)
+  const useWaitlist = (position: 0 | 1) => () => {
+    if (!waitlist?.length) {
       openNotification({
-        title: 'Une nouvelle partie a été lancé',
+        title: `Makayen ta joueur fla liste d'attente`,
+        type: 'warning',
       })
+      return
+    }
+
+    if (position === 0) {
+      setFirstPlayerName(waitlist[0])
+    }
+    if (position === 0) {
+      setSecondPlayerName(waitlist[0])
+    }
+
+    setWaitlist((previousWaitList) => {
+      return previousWaitList.slice(1)
     })
-    onCancel()
+  }
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault()
+    onSubmit(firstPlayerName, secondPlayerName)
   }
 
   return (
     <div>
       <Modal
-        title="New Game"
-        visible={visible}
-        onCancel={handleCancel}
+        title="Nouvelle Partie"
+        visible
+        onCancel={onCancel}
         footer={[
-          <Button key="back" onClick={handleCancel}>
-            Cancel
-          </Button>,
-          <Button onClick={onFinish} key="submit" htmlType="submit" type="primary">
-            Submit
+          <Button onClick={handleSubmit} key="submit" htmlType="submit" type="primary">
+            Commencer la partie
           </Button>,
         ]}
       >
@@ -127,7 +65,7 @@ const MDModalNewGame: FunctionComponent<MDModalNewGameProps> = ({ onCancel, visi
               onChange={(e) => setFirstPlayerName(e.target.value)}
             />
             <Tooltip title="Take player from waiting list">
-              <FileTextOutlined onClick={onListOne} className={styles.icon} />
+              <FileTextOutlined onClick={useWaitlist(0)} className={styles.icon} />
             </Tooltip>
           </Space>
           <Space className={styles.space}>
@@ -139,7 +77,7 @@ const MDModalNewGame: FunctionComponent<MDModalNewGameProps> = ({ onCancel, visi
               onChange={(e) => setSecondPlayerName(e.target.value)}
             />
             <Tooltip title="Take player from waiting list">
-              <FileTextOutlined onClick={onListTwo} className={styles.icon} />
+              <FileTextOutlined onClick={useWaitlist(1)} className={styles.icon} />
             </Tooltip>
           </Space>
         </form>

@@ -1,8 +1,8 @@
 import { Button, Form, Input, Modal } from 'antd'
 import { FunctionComponent } from 'react'
 import { useRecoilState } from 'recoil'
-import { tablesStats } from '../../../../atoms/mainStats'
-import { createBoard } from '../../../../services/owner-api'
+import { ownerBoardsState } from '../../../../atoms/boards.atom'
+import { createBoard } from '../../../../services/api'
 import { IBoard } from '../../../../types/board'
 
 interface ODTableFormProps {
@@ -11,45 +11,42 @@ interface ODTableFormProps {
 }
 
 const ODTableForm: FunctionComponent<ODTableFormProps> = ({ onCancel, visible }) => {
-  const [tablesElements, setTablesElements] = useRecoilState(tablesStats)
+  const [ownerBoards, setOwnerBoards] = useRecoilState(ownerBoardsState)
   const handleCancel = () => {
     onCancel()
   }
-  const onFinish = (values: IBoard) => {
-    const BoardId = Math.floor(Math.random() * 1000).toString()
-    const newTable: IBoard = {
+  const onFinish = async (values: IBoard) => {
+    const BoardId = Math.floor(Math.random() * 10000).toString()
+    const newBoard: IBoard = {
       id: BoardId,
       name: values.name,
-      owner: '',
     }
-    createBoard(newTable, tablesElements, setTablesElements)
+    await createBoard(newBoard)
+    setOwnerBoards([
+      ...ownerBoards,
+      {
+        ...newBoard,
+        dailyGames: 0,
+        weeklyGames: 0,
+      },
+    ])
     onCancel()
   }
 
   return (
     <div>
       <Modal
-        title="Add Table"
+        title="Ajouter une Table"
         visible={visible}
         onCancel={handleCancel}
         footer={[
-          <Button key="back" onClick={handleCancel}>
-            Cancel
-          </Button>,
           <Button form="addTable" key="submit" htmlType="submit" type="primary">
-            Submit
+            Ajouter la nouvelle table
           </Button>,
         ]}
       >
-        <Form
-          id="addTable"
-          name="basic"
-          labelCol={{ span: 4 }}
-          wrapperCol={{ span: 16 }}
-          onFinish={onFinish}
-          autoComplete="off"
-        >
-          <Form.Item label="Name" name="name">
+        <Form id="addTable" onFinish={onFinish} autoComplete="off">
+          <Form.Item label="Nom de la table" name="name">
             <Input />
           </Form.Item>
         </Form>
