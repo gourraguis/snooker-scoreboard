@@ -27,9 +27,7 @@ const MDModalHistory: FunctionComponent<MDModalHistoryProps> = ({ onCancel, visi
             <div key={index} className={styles.wrapper}>
               <UserOutlined className={styles[`icon${item.value}`]} />
               <div>
-                <h3 className={classNames({ [styles.text]: !item.undoed }, { [styles.textBar]: item.undoed })}>
-                  Marque {item.scoredBalls.reduce((a, b) => a + b, 0)} points
-                </h3>
+                <h3 className={classNames(styles.text)}>Marque {item.scoredBalls.reduce((a, b) => a + b, 0)} points</h3>
                 <div className={styles.ballBox}>
                   {item.scoredBalls.map((ball, index2) => (
                     <div

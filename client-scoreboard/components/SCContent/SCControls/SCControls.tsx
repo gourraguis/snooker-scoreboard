@@ -34,7 +34,6 @@ export const SCControls: FunctionComponent<SCControlsProps> = ({ showControls })
       {
         value: currentTurn.value,
         scoredBalls: [...currentTurn.scoredBalls, ball],
-        undoed: false,
       },
     ])
   }
@@ -42,28 +41,39 @@ export const SCControls: FunctionComponent<SCControlsProps> = ({ showControls })
   const undoBall = () => {
     if (currentScore > 0) {
       const elem = {
-        value: currentTurn.value as 0 | 1,
+        value: history[history.length - 1].value,
         scoredBalls: history[history.length - 1].scoredBalls.slice(0, -1),
-        undoed: false,
       }
       setHistory([...history.slice(0, -1), elem])
-    } else {
-      const index = historyWithoutCurrentTurn
-        .slice()
-        .reverse()
-        .findIndex(({ undoed }) => undoed === false)
-
-      const count = historyWithoutCurrentTurn.length - 1
-      const finalIndex = index >= 0 ? count - index : index
-      const newHistory = [...history]
-      newHistory[finalIndex] = {
-        value: newHistory[finalIndex]?.value,
-        scoredBalls: newHistory[finalIndex]?.scoredBalls,
-        undoed: true,
-      }
-      setHistory(newHistory)
-      setSend(true)
+      return
     }
+
+    if (history.length < 2) {
+      return
+    }
+
+    const elem = {
+      value: history[history.length - 2].value,
+      scoredBalls: history[history.length - 2].scoredBalls.slice(0, -1),
+    }
+    setHistory([...history.slice(0, -2), elem])
+    // } else {
+    //   const index = historyWithoutCurrentTurn
+    //     .slice()
+    //     .reverse()
+    //     .findIndex(({ undoed }) => undoed === false)
+
+    //   const count = historyWithoutCurrentTurn.length - 1
+    //   const finalIndex = index >= 0 ? count - index : index
+    //   const newHistory = [...history]
+    //   newHistory[finalIndex] = {
+    //     value: newHistory[finalIndex]?.value,
+    //     scoredBalls: newHistory[finalIndex]?.scoredBalls,
+    //     undoed: true,
+    //   }
+    //   setHistory(newHistory)
+    //   setSend(true)
+    // }
   }
 
   useEffect(() => {
@@ -95,7 +105,6 @@ export const SCControls: FunctionComponent<SCControlsProps> = ({ showControls })
         {
           value: ((currentTurn.value + 1) % 2) as 0 | 1,
           scoredBalls: [],
-          undoed: false,
         },
       ])
     } else {
@@ -104,7 +113,6 @@ export const SCControls: FunctionComponent<SCControlsProps> = ({ showControls })
         {
           value: ((currentTurn.value + 1) % 2) as 0 | 1,
           scoredBalls: [],
-          undoed: false,
         },
       ])
     }

@@ -1,5 +1,5 @@
 .card {
-  background-color: #121212;
+  background-color: #202020;
   border: solid 1px #e9d8ae;
   border-radius: 0.5rem;
   margin: 10% 0;
@@ -10,6 +10,7 @@
 .wrapper {
   width: 100%;
   display: flex;
+  align-items: center;
   margin-bottom: 10%;
   margin-top: 2%;
 }
@@ -21,15 +22,7 @@
 .text {
   margin: 0;
   font-size: 1rem;
-  margin-top: -10px;
   color: #e9d8ae;
-}
-.textBar {
-  margin: 0;
-  font-size: 1rem;
-  margin-top: -10px;
-  color: #e9d8ae;
-  text-decoration: line-through;
 }
 .ballBox {
   display: flex;
@@ -48,13 +41,13 @@
 
 .icon0 {
   font-size: 30px;
-  color: rgb(250 204 21);
+  color: #42a5f5;
   margin-right: 7%;
 }
 
 .icon1 {
   font-size: 30px;
-  color: rgb(153 27 27);
+  color: #ef5350;
   margin-right: 7%;
 }
 .all {

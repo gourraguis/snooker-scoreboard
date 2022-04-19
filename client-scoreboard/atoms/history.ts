@@ -9,7 +9,6 @@ export const historyState = atom<ITurn[]>({
     {
       value: 0,
       scoredBalls: [],
-      undoed: false,
     },
   ],
 })
@@ -26,7 +25,7 @@ export const currentTurnSelector = selector<ITurn>({
   key: 'currentTurnSelector',
   get: ({ get }) => {
     const playingHistory = get(historyState)
-    return _.last(playingHistory.filter(({ undoed }) => undoed === false))!
+    return _.last(playingHistory)!
   },
 })
 
@@ -49,7 +48,7 @@ export const lastBallSelector = selector<EBall>({
 export const playersScoreSelector = selector<number[]>({
   key: 'playersScoreSelector',
   get: ({ get }) => {
-    const scoreHistory = get(historyState).filter(({ undoed }) => undoed === false)
+    const scoreHistory = get(historyState)
 
     const playerZeroScore = scoreHistory
       .filter(({ value }) => value === 0)
