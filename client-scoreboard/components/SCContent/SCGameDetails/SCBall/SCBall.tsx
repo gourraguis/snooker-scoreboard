@@ -1,13 +1,13 @@
 import { FunctionComponent } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import classNames from 'classnames'
 import { getBallColor } from '../../../../utils/balls'
-import { EBall } from '../../../../types/ball'
 
 import styles from './SCBall.module.css'
+import { EBall } from '../../../../types/ball'
 
 interface SCBallProps {
   value: EBall
-  showValue?: boolean
   size?: 'sm' | 'md'
   onClick?: () => void
 }
@@ -17,7 +17,7 @@ const sizes = {
   md: 50,
 }
 
-const SCBall: FunctionComponent<SCBallProps> = ({ size = 'md', onClick, value, showValue = false }) => (
+const SCBall: FunctionComponent<SCBallProps> = ({ size = 'md', onClick, value }) => (
   <AnimatePresence exitBeforeEnter>
     <motion.div
       key={value}
@@ -33,10 +33,8 @@ const SCBall: FunctionComponent<SCBallProps> = ({ size = 'md', onClick, value, s
           width: `${sizes[size]}px`,
           height: `${sizes[size]}px`,
         }}
-        className={styles.ball}
-      >
-        {showValue && value}
-      </div>
+        className={classNames(styles.ball, { [styles.ballPlaceholder]: !value })}
+      />
     </motion.div>
   </AnimatePresence>
 )

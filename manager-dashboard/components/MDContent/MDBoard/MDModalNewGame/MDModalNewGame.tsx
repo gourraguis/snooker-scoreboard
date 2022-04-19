@@ -29,12 +29,14 @@ const MDModalNewGame: FunctionComponent<MDModalNewGameProps> = ({ previousPlayer
     if (position === 0) {
       setFirstPlayerName(waitlist[0])
     }
-    if (position === 0) {
+    if (position === 1) {
       setSecondPlayerName(waitlist[0])
     }
 
     setWaitlist((previousWaitList) => {
-      return previousWaitList.slice(1)
+      const newList = previousWaitList.slice(1)
+      localStorage.setItem('waitlist', JSON.stringify(newList))
+      return newList
     })
   }
 

@@ -38,7 +38,6 @@ export const addGameAction =
         {
           value: 0,
           scoredBalls: [],
-          undoed: false,
         },
       ]
     })

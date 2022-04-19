@@ -23,7 +23,7 @@ const SCGameDetails = () => {
               <Row>
                 <p className={styles.text}>LAST</p>
               </Row>
-              <Row>{lastBall ? <SCBall value={lastBall} showValue /> : <SCBall value={0} />}</Row>
+              <Row>{lastBall ? <SCBall value={lastBall} /> : <SCBall value={0} />}</Row>
             </Col>
           </Row>
           <Divider type="horizontal" className={styles.divider} />

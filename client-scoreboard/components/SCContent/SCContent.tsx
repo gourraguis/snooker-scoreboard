@@ -78,7 +78,7 @@ const SCContent = () => {
               {game.players.map((player) => (
                 <SCPlayerCard
                   isCurrent={currentTurn?.value === player.turn}
-                  color={player.turn ? 'rgb(153 27 27)' : 'rgb(250 204 21)'}
+                  color={player.turn ? '#ef5350' : '#42a5f5'}
                   playerName={player.name}
                   points={playersScore[player.turn]}
                   globalScore={globalScore[player.turn].score}
