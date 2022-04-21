@@ -9,6 +9,7 @@ import { getApiEndpoint } from '../config'
 const socket: ManagerSocket = io(`${getApiEndpoint()}manager`)
 
 socket.on('disconnect', () => console.error(`socket disconnected`))
+socket.on('disconnect', () => console.error(`socket connected`))
 
 export const initSocket = (
   addBoard: (board: IBoard) => void,
@@ -16,9 +17,6 @@ export const initSocket = (
   updateGame: SetterOrUpdater<IGame | null>,
   id: string | null
 ) => {
-  socket.on('connect', () => {
-    socket.emit('getBoardsData', id)
-  })
   socket.on('addBoard', (board) => {
     addBoard(board)
   })
@@ -28,6 +26,8 @@ export const initSocket = (
   socket.on('updateGame', (game) => {
     updateGame(game)
   })
+
+  socket.emit('getBoardsData', id)
 }
 
 export const emitNewGame = (board: IInitBoard, addGame: (game: IGame) => void) => {

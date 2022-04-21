@@ -111,9 +111,6 @@ export const loginManager = async (id: string, otp: string): Promise<string | nu
 
 export const saveGame = async (game: IGame): Promise<void> => {
   const { players: p } = game
-  if (p[0].score === 0 && p[1].score === 0) {
-    return
-  }
 
   const winner = p[0].score! >= p[1].score! ? p[0].name : p[1].name
   const loser = p[0].score! < p[1].score! ? p[0].name : p[1].name

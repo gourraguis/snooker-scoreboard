@@ -17,8 +17,7 @@ const SCTimer = () => {
 
   return (
     <div className={styles.center}>
-      {stopedTimer && <p className={styles.timer}>00:00</p>}
-      {!stopedTimer && <p className={styles.timer}>{timerText}</p>}
+      <p className={styles.timer}>{stopedTimer ? '00:00' : timerText}</p>
     </div>
   )
 }

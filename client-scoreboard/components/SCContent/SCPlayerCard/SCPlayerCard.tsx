@@ -38,7 +38,7 @@ export const SCPlayerCard: FunctionComponent<SCPlayerCardProps> = ({
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.15 }}
           >
-            <p className={styles.points}>{points}</p>
+            <p className={styles.points}>{points || '00'}</p>
           </motion.div>
         </AnimatePresence>
       </div>

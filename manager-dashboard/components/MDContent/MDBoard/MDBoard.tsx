@@ -37,8 +37,11 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board, dailyGames, we
       secondPlayer,
     }
     if (game) {
-      incrementGames(game.boardId)
-      await saveGame(game)
+      const { players: p } = game
+      if (p[0].score !== 0 || p[1].score !== 0) {
+        incrementGames(game.boardId)
+        await saveGame(game)
+      }
     }
 
     emitNewGame(initBoard, (newGame) => {
