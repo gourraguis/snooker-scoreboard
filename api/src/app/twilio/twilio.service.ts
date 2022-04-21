@@ -19,10 +19,11 @@ export class TwilioService {
     const firstChar = phoneNumber.substring(0)
     const newPhone: string = firstChar !== '+' ? '+212' + phoneNumber.substring(1) : phoneNumber
 
-    this.twilioClient.verify
-      .services(serviceSid)
-      .verifications.create({ to: newPhone, channel: 'sms' })
-      .catch((err) => console.log(err))
+    try {
+      this.twilioClient.verify.services(serviceSid).verifications.create({ to: newPhone, channel: 'sms' })
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   public async validateOtp(phoneNumber: string, otp: string) {

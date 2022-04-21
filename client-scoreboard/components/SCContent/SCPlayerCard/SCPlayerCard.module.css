@@ -1,9 +1,9 @@
 .icon {
-  font-size: 50px;
+  font-size: 40px;
 }
 
 .text {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 500;
   color: #e9d8ae;
   margin: 0;
@@ -36,6 +36,8 @@
 
 .divider {
   background-color: #e9d8ae;
+  margin-bottom: 0;
+  margin-top: 12px;
   width: 100%;
 }
 
@@ -47,13 +49,15 @@
 }
 
 .points {
-  font-size: 2.1rem;
-  font-weight: 600;
+  font-size: 4rem;
+  font-weight: bold;
   color: #e9d8ae;
   margin: 0;
 }
 
 .globalScore {
+  font-size: 1.2rem;
+  font-weight: bold;
   position: absolute;
   bottom: 0;
   left: 0;

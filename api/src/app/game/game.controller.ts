@@ -29,7 +29,6 @@ export class GameController {
     @Body() filter: IStatsFilter
   ) {
     // inexistence of an owner id means that the authenticated user is an owner
-    console.log(id, ownerId, filter)
     if (ownerId) {
       return this.gameService.getManagerStats(id, filter)
     }

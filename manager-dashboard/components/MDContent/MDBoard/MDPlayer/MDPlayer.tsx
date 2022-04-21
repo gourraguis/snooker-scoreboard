@@ -31,19 +31,6 @@ export const MDPlayer: FunctionComponent<MDPlayerProps> = ({ player, boardId }) 
       if (!prevGame) {
         return null
       }
-      console.log({
-        ...prevGame,
-        players: [
-          {
-            ...prevGame.players[0],
-            name: player.turn === 0 ? name : prevGame.players[0].name,
-          },
-          {
-            ...prevGame.players[1],
-            name: player.turn === 1 ? name : prevGame.players[1].name,
-          },
-        ],
-      })
       return {
         ...prevGame,
         players: [

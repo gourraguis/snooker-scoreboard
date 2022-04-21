@@ -11,7 +11,6 @@ export class BoardService {
   ) {}
 
   public async getBoardWithSocketId(id: string, socketId: string) {
-    console.log(id)
     const board = await this.boardRepository.findOne({
       id,
     })

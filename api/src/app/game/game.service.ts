@@ -139,8 +139,6 @@ export class GameService {
     newGame.startedAt = game.startedAt
     newGame.finishedAt = game.finishedAt
 
-    console.log('new game:')
-    console.log(newGame)
     return this.gameRepository.save(newGame)
   }
 }

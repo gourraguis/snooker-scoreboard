@@ -3,6 +3,7 @@ import { FunctionComponent } from 'react'
 import { useRecoilState } from 'recoil'
 import { ownerManagersState } from '../../../../atoms/managers.atom'
 import { createManager } from '../../../../services/api'
+import { openNotification } from '../../../../services/notification'
 import { IManager } from '../../../../types/manager'
 
 interface ODManagerModalProps {
@@ -13,21 +14,29 @@ interface ODManagerModalProps {
 const ODManagerModal: FunctionComponent<ODManagerModalProps> = ({ onCancel, visible }) => {
   const [ownerManagers, setOwnerManagers] = useRecoilState(ownerManagersState)
 
-  const onFinish = async (values: IManager) => {
+  const onFinish = async ({ id, name }: IManager) => {
+    const formattedPhone = id.replace(/\D/g, '').replace(/^212/, '0')
     const newManager: IManager = {
-      id: values.id,
-      name: values.name,
+      id: formattedPhone,
+      name,
     }
-    await createManager(newManager)
-    setOwnerManagers([
-      ...ownerManagers,
-      {
-        ...newManager,
-        dailyGames: 0,
-        weeklyGames: 0,
-      },
-    ])
-    onCancel()
+    try {
+      await createManager(newManager)
+      setOwnerManagers([
+        ...ownerManagers,
+        {
+          ...newManager,
+          dailyGames: 0,
+          weeklyGames: 0,
+        },
+      ])
+      onCancel()
+    } catch (error) {
+      console.error(error)
+      openNotification({
+        title: 'Création du manager échoué, veuillez vérifier le numéro de téléphone',
+      })
+    }
   }
 
   return (

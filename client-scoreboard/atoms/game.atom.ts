@@ -23,24 +23,10 @@ export const startedAtSelector = selector<Date>({
 })
 
 export const updatePlayerNameAction = (setGame: SetterOrUpdater<IGame | null>) => (newPlayers: IPlayersNames) => {
-  console.log('zz')
   setGame((prevGame: IGame | null) => {
     if (!prevGame) {
       return null
     }
-    console.log({
-      ...prevGame,
-      players: [
-        {
-          ...prevGame.players[0],
-          name: newPlayers.firstPlayer || prevGame.players[0].name,
-        },
-        {
-          ...prevGame.players[1],
-          name: newPlayers.secondPlayer || prevGame.players[1].name,
-        },
-      ],
-    })
     return {
       ...prevGame,
       players: [
@@ -96,15 +82,14 @@ export const sendGameData =
           },
         ]
         const newGame = {
-          id: oldGame.id,
           boardId: oldGame.boardId,
           players,
           startedAt: oldGame.startedAt,
           finishedAt: oldGame.finishedAt,
-          history: historyData.slice(0, -1),
+          history: historyData,
         }
         emitUpdateGame(newGame)
-        return newGame
+        return oldGame
       }
       return null
     })

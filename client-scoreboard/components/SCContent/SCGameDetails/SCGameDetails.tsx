@@ -14,29 +14,12 @@ const SCGameDetails = () => {
     <Content className={styles.all}>
       <Card className={styles.card}>
         <Col className={styles.center}>
-          <Row>
-            <SCTimer />
-          </Row>
+          <SCTimer />
           <Divider type="horizontal" className={styles.divider} />
-          <Row>
-            <Col className={styles.center}>
-              <Row>
-                <p className={styles.text}>LAST</p>
-              </Row>
-              <Row>{lastBall ? <SCBall value={lastBall} /> : <SCBall value={0} />}</Row>
-            </Col>
-          </Row>
+          <Row>{lastBall ? <SCBall value={lastBall} /> : <SCBall value={0} />}</Row>
           <Divider type="horizontal" className={styles.divider} />
-          <Row>
-            <Col className={styles.center}>
-              <Row>
-                <p className={styles.text}>SCORE</p>
-              </Row>
-              <Row>
-                <p className={styles.text}>{currentScore}</p>
-              </Row>
-            </Col>
-          </Row>
+          <p className={styles.text}>SCORE</p>
+          <p className={styles.score}>{currentScore || '00'}</p>
         </Col>
       </Card>
     </Content>

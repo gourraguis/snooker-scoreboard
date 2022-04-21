@@ -16,9 +16,10 @@ export const MDLogin: FunctionComponent = () => {
 
   const onPhoneNumberSubmit = async ({ phoneNumber }: { phoneNumber: string }) => {
     setIsFetching(true)
-    const isValid = await generateOtpManager(phoneNumber)
+    const formattedPhone = phoneNumber.replace(/\D/g, '').replace(/^212/, '0')
+    const isValid = await generateOtpManager(formattedPhone)
     if (isValid) {
-      setFormPhoneNumber(phoneNumber)
+      setFormPhoneNumber(formattedPhone)
     }
     setIsFetching(false)
   }
