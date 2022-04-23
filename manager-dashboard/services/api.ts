@@ -59,7 +59,7 @@ export const getManager = async (): Promise<IManager | null> => {
 
 export const getBoards = async () => {
   try {
-    const { data } = await get('owner/boards')
+    const { data } = await get('manager/boards')
     return data
   } catch (err) {
     openNotification({ title: 'Failed to fetch boards', type: 'error' })
