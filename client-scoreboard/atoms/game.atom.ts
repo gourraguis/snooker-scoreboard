@@ -1,24 +1,52 @@
+import moment from 'moment'
 import { atom, selector, SetterOrUpdater } from 'recoil'
 import { emitUpdateGame } from '../services/sockets'
 import { IGame } from '../types/game'
 import { IPlayer, IPlayersNames } from '../types/player'
 import { ITurn } from '../types/turn'
+import { historyState, playersScoreSelector } from './history'
 
 export const gameState = atom<IGame | null>({
   key: 'gameState',
   default: null,
 })
 
-export const timerState = atom<boolean>({
-  key: 'timerState',
-  default: false,
-})
-
-export const startedAtSelector = selector<Date>({
+export const startedAtSelector = selector<Date | null>({
   key: 'startedAtSelector',
   get: ({ get }) => {
-    const game = get(gameState)!
-    return game.startedAt!
+    const game = get(gameState)
+    return game?.startedAt || null
+  },
+})
+
+export const formattedGameSelector = selector<IGame | null>({
+  key: 'formattedGameSelected',
+  get: ({ get }) => {
+    const game = get(gameState)
+    const history = get(historyState)
+    const playersScore = get(playersScoreSelector)
+    if (!game) {
+      return null
+    }
+    return {
+      boardId: game.boardId,
+      players: [
+        {
+          name: game.players[0].name,
+          turn: game.players[0].turn,
+          score: playersScore[0],
+        },
+        {
+          name: game.players[1].name || '',
+          turn: game.players[1].turn,
+          score: playersScore[1],
+        },
+      ],
+      startedAt: game.startedAt,
+      finishedAt: game.finishedAt,
+      history,
+      updatedAt: moment().toDate(),
+    }
   },
 })
 
@@ -43,58 +71,6 @@ export const updatePlayerNameAction = (setGame: SetterOrUpdater<IGame | null>) =
   })
 }
 
-export const sendGameData =
-  (setGame: SetterOrUpdater<IGame | null>, setHistory: SetterOrUpdater<ITurn[]>) => async () => {
-    let playerZeroScore: number
-    let playerOneScore: number
-    const historyData: ITurn[] = await new Promise((resolve) => {
-      setHistory((oldHistory: ITurn[]) => {
-        playerZeroScore = oldHistory
-          .filter(({ value }) => value === 0)
-          .reduce((acc, turn) => {
-            const turnScore = turn.scoredBalls.reduce((acc2, val) => acc2 + val, 0)
-            return acc + turnScore
-          }, 0)
-
-        playerOneScore = oldHistory
-          .filter(({ value }) => value === 1)
-          .reduce((acc, turn) => {
-            const turnScore = turn.scoredBalls.reduce((acc2, val) => acc2 + val, 0)
-            return acc + turnScore
-          }, 0)
-        resolve(oldHistory)
-        return oldHistory
-      })
-    })
-
-    setGame((oldGame: IGame | null) => {
-      if (oldGame) {
-        const players: IPlayer[] = [
-          {
-            name: oldGame.players[0].name || '',
-            turn: oldGame.players[0].turn,
-            score: playerZeroScore,
-          },
-          {
-            name: oldGame.players[1].name || '',
-            turn: oldGame.players[1].turn,
-            score: playerOneScore,
-          },
-        ]
-        const newGame = {
-          boardId: oldGame.boardId,
-          players,
-          startedAt: oldGame.startedAt,
-          finishedAt: oldGame.finishedAt,
-          history: historyData,
-        }
-        emitUpdateGame(newGame)
-        return oldGame
-      }
-      return null
-    })
-  }
-
-export const stopTimerAction = (stopTimer: SetterOrUpdater<boolean>) => async () => {
-  stopTimer(true)
+export const stopTimerAction = (setGame: SetterOrUpdater<IGame | null>) => async () => {
+  setGame(null)
 }

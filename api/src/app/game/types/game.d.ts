@@ -9,4 +9,5 @@ export interface IGame {
   finishedAt: Date
   // history is not persistent. We only use it for current games but don't save it on DB
   history?: ITurn[]
+  updatedAt?: Date
 }

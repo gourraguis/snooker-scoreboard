@@ -1,7 +1,7 @@
 import { Table } from 'antd'
 import moment from 'moment'
 import { FunctionComponent, useEffect, useState } from 'react'
-import { getManagerStats } from '../../services/api'
+import { getManagerStats } from '../../services/manager-api'
 import { IStats } from '../../types/stats'
 import styles from './MDStats.module.css'
 
@@ -28,7 +28,7 @@ const columns = [
   },
 ]
 
-export const MDStatistics: FunctionComponent = () => {
+export const MDStats: FunctionComponent = () => {
   const [stats, setStats] = useState<IStats[]>()
 
   const fetchStats = async () => {

@@ -1,15 +1,15 @@
 import { useRouter } from 'next/router'
 import { Layout } from 'antd'
 import type { NextPage } from 'next'
-import Head from 'next/head'
 import { useEffect } from 'react'
 import { useRecoilState, useSetRecoilState } from 'recoil'
+import { useInterval } from 'usehooks-ts'
 import { addBoardAction, managerBoardsState, removeBoardAction } from '../atoms/boards.atom'
 import { initSocket } from '../services/socket'
 import { MDHeader } from '../components/MDHeader/MDHeader'
 import { MDContent } from '../components/MDContent/MDContent'
 import { gameSelector } from '../atoms/games.atom'
-import { getManager } from '../services/api'
+import { getGamesState, getManager } from '../services/manager-api'
 import { managerState } from '../atoms/managerState'
 import { MDMenu } from '../components/MDMenu/MDMenu'
 
@@ -28,12 +28,22 @@ const Home: NextPage = () => {
     }
     setManager(currentManager)
 
-    initSocket(addBoardAction(setBoards), removeBoardAction(setBoards), updateGame, currentManager.id)
+    initSocket(addBoardAction(setBoards), removeBoardAction(setBoards), currentManager.id)
   }
 
   useEffect(() => {
     fetchCurrentManager()
   }, [])
+
+  useInterval(async () => {
+    if (!manager) {
+      return
+    }
+    const gamesState = await getGamesState()
+    gamesState.forEach((game) => {
+      updateGame(game)
+    })
+  }, 1000)
 
   if (!manager) {
     return null

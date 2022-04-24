@@ -1,6 +1,5 @@
 import { FunctionComponent, useCallback, useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { RollbackOutlined, SyncOutlined } from '@ant-design/icons'
 import {
   currentTurnSelector,
   playersScoreSelector,
@@ -8,18 +7,11 @@ import {
   previousTurnsSelector,
   currentScoreSelector,
 } from '../../../atoms/history'
-import SCBall from '../SCGameDetails/SCBall/SCBall'
 import { EBall } from '../../../types/ball'
-import { balls } from '../../../utils/balls'
 import { gameState } from '../../../atoms/game.atom'
 import { emitUpdateGame } from '../../../services/sockets'
-import styles from './SCControls.module.css'
 
-interface SCControlsProps {
-  showControls: boolean
-}
-
-export const SCControls: FunctionComponent<SCControlsProps> = ({ showControls }) => {
+export const SCControls: FunctionComponent = () => {
   const game = useRecoilValue(gameState)!
   const playersScore = useRecoilValue(playersScoreSelector)
   const [history, setHistory] = useRecoilState(historyState)
@@ -57,23 +49,6 @@ export const SCControls: FunctionComponent<SCControlsProps> = ({ showControls })
       scoredBalls: history[history.length - 2].scoredBalls.slice(0, -1),
     }
     setHistory([...history.slice(0, -2), elem])
-    // } else {
-    //   const index = historyWithoutCurrentTurn
-    //     .slice()
-    //     .reverse()
-    //     .findIndex(({ undoed }) => undoed === false)
-
-    //   const count = historyWithoutCurrentTurn.length - 1
-    //   const finalIndex = index >= 0 ? count - index : index
-    //   const newHistory = [...history]
-    //   newHistory[finalIndex] = {
-    //     value: newHistory[finalIndex]?.value,
-    //     scoredBalls: newHistory[finalIndex]?.scoredBalls,
-    //     undoed: true,
-    //   }
-    //   setHistory(newHistory)
-    //   setSend(true)
-    // }
   }
 
   useEffect(() => {
@@ -151,17 +126,5 @@ export const SCControls: FunctionComponent<SCControlsProps> = ({ showControls })
     }
   }, [handleKeyPress])
 
-  if (!showControls) {
-    return null
-  }
-
-  return (
-    <div className={styles.content}>
-      <RollbackOutlined onClick={undoBall} className={styles.icon} />
-      {balls.map((value) => (
-        <SCBall key={value} value={value} onClick={scoreBall(value)} />
-      ))}
-      <SyncOutlined onClick={switchPlayer} className={styles.icon} />
-    </div>
-  )
+  return null
 }

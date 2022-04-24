@@ -12,8 +12,7 @@ export const addGameAction =
   (
     setGlobalScoreState: SetterOrUpdater<IGlobalScore[]>,
     startNewGame: SetterOrUpdater<IGame | null>,
-    history: SetterOrUpdater<ITurn[]>,
-    setStopTimer: SetterOrUpdater<boolean>
+    history: SetterOrUpdater<ITurn[]>
   ) =>
   (game: IGame) => {
     let playerZeroScore = 0
@@ -95,5 +94,4 @@ export const addGameAction =
       ]
     })
     startNewGame(game)
-    setStopTimer(false)
   }

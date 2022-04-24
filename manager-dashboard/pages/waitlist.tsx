@@ -6,7 +6,7 @@ import { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import { MDMenu } from '../components/MDMenu/MDMenu'
 import { managerState } from '../atoms/managerState'
-import { getManager } from '../services/api'
+import { getManager } from '../services/manager-api'
 import { MDHeader } from '../components/MDHeader/MDHeader'
 import { MDList } from '../components/MDWaitList/MDWaitList'
 

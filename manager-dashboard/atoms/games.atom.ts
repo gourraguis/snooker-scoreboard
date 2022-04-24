@@ -1,4 +1,4 @@
-import { atom, atomFamily, selector, SetterOrUpdater } from 'recoil'
+import { atom, atomFamily, selector } from 'recoil'
 import { IGame } from '../types/game'
 
 export const gameStateFamily = atomFamily<IGame | null, string>({

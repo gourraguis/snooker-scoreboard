@@ -1,51 +1,25 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common'
+import { CACHE_MANAGER, Inject, Injectable, Logger } from '@nestjs/common'
+import { Cache } from 'cache-manager'
 import { InjectRepository } from '@nestjs/typeorm'
 import * as moment from 'moment'
 import { Between, Repository } from 'typeorm'
-import { Manager } from '../manager/entities/manager.entity'
 import { IInitBoard } from '../types/initBoard'
 import { Game } from './entities/game.entity'
 import { IGame } from './types/game'
 import { IStatsFilter } from './types/stats-filter'
+import { Board } from '../board/entities/board.entity'
 
 @Injectable()
 export class GameService {
   private logger: Logger = new Logger(GameService.name)
-  private lastDay = moment().startOf('day').toDate()
-  private lastWeek = moment().startOf('week').toDate()
 
   constructor(
     @InjectRepository(Game)
     private readonly gameRepository: Repository<Game>,
-    @InjectRepository(Manager)
-    private readonly managerRepository: Repository<Manager>
+    @InjectRepository(Board)
+    private readonly boardRepository: Repository<Board>,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {}
-
-  public async getDailyGames(id: string) {
-    const games = await this.gameRepository.find({
-      where: {
-        ownerId: id,
-        startedAt: Between(this.lastDay, new Date()),
-      },
-    })
-    if (!games) {
-      throw new NotFoundException('There is no games this day')
-    }
-    return games.length
-  }
-
-  public async getWeeklyGames(id: string) {
-    const games = await this.gameRepository.find({
-      where: {
-        ownerId: id,
-        startedAt: Between(this.lastWeek, new Date()),
-      },
-    })
-    if (!games) {
-      throw new NotFoundException('There is no games this week')
-    }
-    return games.length
-  }
 
   public async getManagerStats(id: string, filter: IStatsFilter) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -140,5 +114,25 @@ export class GameService {
     newGame.finishedAt = game.finishedAt
 
     return this.gameRepository.save(newGame)
+  }
+
+  public async getGamesState(ownerId: string): Promise<IGame[]> {
+    const managerBoards = await this.boardRepository.find({
+      where: {
+        ownerId,
+      },
+    })
+    const gamesState = managerBoards.map((board) => this.cacheManager.get<IGame>(board.id))
+
+    return (await Promise.all(gamesState)).filter((gameState) => !!gameState)
+  }
+
+  public async saveGameState(game: IGame): Promise<void> {
+    const prevState = await this.cacheManager.get<IGame>(game.boardId)
+    if (prevState?.updatedAt && moment(prevState?.updatedAt).isAfter(game.updatedAt)) {
+      return
+    }
+
+    await this.cacheManager.set<IGame>(game.boardId, game)
   }
 }

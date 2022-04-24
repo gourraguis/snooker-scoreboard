@@ -14,7 +14,7 @@ const rangeConfig = {
 export const ODSelector: FunctionComponent = () => {
   const ownerBoards = useRecoilValue(ownerBoardsState)
   const ownerManagers = useRecoilValue(ownerManagersState)
-  const setStatistics = useSetRecoilState(statsState)
+  const setStats = useSetRecoilState(statsState)
   const [isFetching, setIsFetching] = useState(false)
 
   const onFinish = async (fieldsValue: any) => {
@@ -27,7 +27,7 @@ export const ODSelector: FunctionComponent = () => {
     }
 
     const stats = await getStatsByFilter(values)
-    setStatistics(stats)
+    setStats(stats)
     setIsFetching(false)
   }
 

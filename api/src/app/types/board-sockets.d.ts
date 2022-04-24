@@ -6,7 +6,7 @@ export interface ServerToClientEvents {
   initGame: (newGame: IGame) => void
   updatePlayerName: (game: IGame) => void
   getBoardsData: (boardId: string) => void
-  stopTimer: () => void
+  endGame: () => void
 }
 
 export interface ClientToServerEvents {

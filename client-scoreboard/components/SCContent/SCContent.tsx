@@ -1,54 +1,52 @@
 import { useRouter } from 'next/router'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Col, Empty, Row } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
-import Head from 'next/head'
-import { currentTurnSelector, historyState, playersScoreSelector } from '../../atoms/history'
+import { useInterval } from 'usehooks-ts'
 import { initSocket } from '../../services/sockets'
 import { boardState } from '../../atoms/board.atom'
-import { gameState, sendGameData, stopTimerAction, timerState, updatePlayerNameAction } from '../../atoms/game.atom'
-import SCHeading from './SCHeader/SCHeader'
-import SCGameDetails from './SCGameDetails/SCGameDetails'
-import SCHistory from './SCHistory/SCHistory'
-
-import styles from './SCContent.module.css'
+import { formattedGameSelector, gameState, stopTimerAction, updatePlayerNameAction } from '../../atoms/game.atom'
+import { currentTurnSelector, historyState, playersScoreSelector } from '../../atoms/history'
 import { addGameAction, globalScoreState } from '../../atoms/globalScore.atom'
 import { SCControls } from './SCControls/SCControls'
 import { SCPlayerCard } from './SCPlayerCard/SCPlayerCard'
+import { SCHistory } from './SCHistory/SCHistory'
+import { SCGameDetails } from './SCGameDetails/SCGameDetails'
+import { SCHeading } from './SCHeader/SCHeader'
+
+import styles from './SCContent.module.css'
+import { saveGameState } from '../../services/client-api'
 
 const SCContent = () => {
+  const router = useRouter()
+  const id = router?.query?.id as string
   const [board, setBoard] = useRecoilState(boardState)
   const [game, setGame] = useRecoilState(gameState)
+  const formattedGame = useRecoilValue(formattedGameSelector)
   const currentTurn = useRecoilValue(currentTurnSelector)
   const playersScore = useRecoilValue(playersScoreSelector)
   const [globalScore, setGlobalScoreState] = useRecoilState(globalScoreState)
   const setHistory = useSetRecoilState(historyState)
-  const [showGlobalScore, setShowGlobalScore] = useState(false)
-  const setStopTimer = useSetRecoilState(timerState)
-  const router = useRouter()
-  const id = router?.query?.id as string
-  const showControls = !!router?.query?.showControls
+
+  useInterval(() => {
+    if (formattedGame) {
+      saveGameState(formattedGame)
+    }
+  }, 1000)
 
   useEffect(() => {
     if (!id) {
       return
     }
     initSocket(
-      addGameAction(setGlobalScoreState, setGame, setHistory, setStopTimer),
+      addGameAction(setGlobalScoreState, setGame, setHistory),
       setBoard,
       id,
       updatePlayerNameAction(setGame),
-      sendGameData(setGame, setHistory),
-      stopTimerAction(setStopTimer)
+      stopTimerAction(setGame)
     )
   }, [id])
-
-  useEffect(() => {
-    const found = globalScore.find((element) => element.score > 0)
-    if (!found) setShowGlobalScore(false)
-    else setShowGlobalScore(true)
-  }, [globalScore])
 
   return (
     <Content className={styles.content}>
@@ -82,7 +80,7 @@ const SCContent = () => {
                   playerName={player.name}
                   points={playersScore[player.turn]}
                   globalScore={globalScore[player.turn].score}
-                  showGlobalScore={showGlobalScore}
+                  showGlobalScore={!!globalScore[0].score && !!globalScore[1].score}
                   key={player.turn}
                 />
               ))}
@@ -94,7 +92,7 @@ const SCContent = () => {
               <SCHistory />
             </Col>
           </Row>
-          <SCControls showControls={showControls} />
+          <SCControls />
         </>
       )}
     </Content>

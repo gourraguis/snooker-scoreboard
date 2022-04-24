@@ -10,7 +10,7 @@ import SCBall from '../SCGameDetails/SCBall/SCBall'
 import styles from './SCHistory.module.css'
 import { gameState } from '../../../atoms/game.atom'
 
-const SCHistory = () => {
+export const SCHistory = () => {
   const playingHistory = useRecoilValue(historyState)
   const game = useRecoilValue(gameState)!
 
@@ -38,7 +38,7 @@ const SCHistory = () => {
                     {score !== 0 ? (
                       <div>
                         <p className={classNames(styles.text)}>
-                          {player.name} dekhel {score}
+                          +{score} pour {player.name}
                         </p>
                         <div className={styles.ballBox}>
                           {item.scoredBalls.map((ball, index2) => (
@@ -47,7 +47,7 @@ const SCHistory = () => {
                         </div>
                       </div>
                     ) : (
-                      <p className={classNames(styles.text)}>{player.name} howa la3eb</p>
+                      <p className={classNames(styles.text)}>Canne chez {player.name}</p>
                     )}
                   </div>
                 </motion.div>
@@ -59,5 +59,3 @@ const SCHistory = () => {
     </Content>
   )
 }
-
-export default SCHistory

@@ -8,4 +8,5 @@ export interface IGame {
   startedAt: Date
   finishedAt: Date
   history?: ITurn[]
+  updatedAt?: Date
 }

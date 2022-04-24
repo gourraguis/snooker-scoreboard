@@ -50,7 +50,7 @@ const put = (path: string, body: any = {}) => {
 // API Endpoints
 export const getManager = async (): Promise<IManager | null> => {
   try {
-    const { data: manager } = await get(`${getApiEndpoint()}manager`)
+    const { data: manager } = await get('manager')
     return manager
   } catch {
     return null
@@ -61,9 +61,19 @@ export const getBoards = async () => {
   try {
     const { data } = await get('manager/boards')
     return data
-  } catch (err) {
+  } catch (error) {
     openNotification({ title: 'Failed to fetch boards', type: 'error' })
-    throw err
+    throw error
+  }
+}
+
+export const getGamesState = async (): Promise<IGame[]> => {
+  try {
+    const { data } = await get('game/state')
+    return data
+  } catch (error) {
+    console.error(error)
+    return []
   }
 }
 

@@ -51,15 +51,15 @@ export class ManagerListenerGateway implements OnGatewayConnection {
     return newGame
   }
 
-  @SubscribeMessage<ManagerClientToServerEvents>('stopTimer')
-  onStopTimer(@MessageBody() board: IInitBoard) {
+  @SubscribeMessage<ManagerClientToServerEvents>('endGame')
+  onEndGame(@MessageBody() board: IInitBoard) {
     const managerId = '1'
     if (!managerId) {
       return
     }
     this.logger.log(`Stop Timer on board id: ${board.boardId}`)
     const newGame = this.gameService.createGame(board)
-    this.boardEmitterGateway.emitStopTimer(board)
+    this.boardEmitterGateway.emitEndGame(board)
     return newGame
   }
 }

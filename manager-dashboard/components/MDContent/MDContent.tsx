@@ -1,10 +1,10 @@
 import classNames from 'classnames'
-import { Layout, Empty, Space } from 'antd'
+import { Layout, Space } from 'antd'
 import { FunctionComponent, useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import { managerBoardsState } from '../../atoms/boards.atom'
 import { MDBoard } from './MDBoard/MDBoard'
-import { getBoards } from '../../services/api'
+import { getBoards } from '../../services/manager-api'
 import styles from './MDContent.module.css'
 
 const { Content } = Layout

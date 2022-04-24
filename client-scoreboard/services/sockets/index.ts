@@ -20,14 +20,11 @@ export const initSocket = (
   setBoard: SetterOrUpdater<IBoard | null>,
   id: string,
   updatePlayerName: (game: IGame) => void,
-  sendGameData: (game: IGame) => void,
-  stopTimer: () => void
+  endGame: () => void
 ) => {
   socket.on('initGame', startNewGame)
 
-  socket.on('stopTimer', stopTimer)
-
-  socket.on('getBoardsData', sendGameData)
+  socket.on('endGame', endGame)
 
   socket.on('updatePlayerName', (game) => {
     updatePlayerName(game)

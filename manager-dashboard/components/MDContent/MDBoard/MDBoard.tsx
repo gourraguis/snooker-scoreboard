@@ -6,14 +6,14 @@ import { IBoard } from '../../../types/board'
 import { MDTimer } from './MDTimer/MDTimer'
 
 import styles from './MDBoard.module.css'
-import { emitNewGame, stopTimer } from '../../../services/socket'
+import { emitNewGame, endGame } from '../../../services/socket'
 import { MDPlayer } from './MDPlayer/MDPlayer'
 import { gameStateFamily, timerState } from '../../../atoms/games.atom'
 import { openNotification } from '../../../services/notification'
 import MDModalHistory from './MDModalHistory/MDModalHistory'
 import MDModalNewGame from './MDModalNewGame/MDModalNewGame'
 import { IInitBoard } from '../../../types/initBoard'
-import { saveGame } from '../../../services/api'
+import { saveGame } from '../../../services/manager-api'
 import { incrementGamesSelector } from '../../../atoms/boards.atom'
 
 interface MDBoardProps {
@@ -25,12 +25,10 @@ interface MDBoardProps {
 export const MDBoard: FunctionComponent<MDBoardProps> = ({ board, dailyGames, weeklyGames }) => {
   const [game, setGame] = useRecoilState(gameStateFamily(board.id))
   const incrementGames = useSetRecoilState(incrementGamesSelector)
-  const stoppedTimer = useSetRecoilState(timerState)
   const [historyModal, setHistoryModal] = useState(false)
   const [newGameModal, setNewGameModal] = useState(false)
 
   const startNewGame = async (firstPlayer: string, secondPlayer: string) => {
-    stoppedTimer(false)
     const initBoard: IInitBoard = {
       boardId: board.id,
       firstPlayer,
@@ -68,7 +66,6 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board, dailyGames, we
   }
 
   const handleEndGame = async () => {
-    stoppedTimer(true)
     const initBoard: IInitBoard = {
       boardId: board.id,
       firstPlayer: game?.players[0].name,
@@ -78,7 +75,8 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board, dailyGames, we
       incrementGames(game.boardId)
       await saveGame(game)
     }
-    stopTimer(initBoard)
+    endGame(initBoard)
+    setGame(null)
   }
 
   return (

@@ -14,7 +14,6 @@ socket.on('disconnect', () => console.error(`socket connected`))
 export const initSocket = (
   addBoard: (board: IBoard) => void,
   removeBoard: (board: IBoard) => void,
-  updateGame: SetterOrUpdater<IGame | null>,
   id: string | null
 ) => {
   socket.on('addBoard', (board) => {
@@ -22,9 +21,6 @@ export const initSocket = (
   })
   socket.on('removeBoard', (board) => {
     removeBoard(board)
-  })
-  socket.on('updateGame', (game) => {
-    updateGame(game)
   })
 
   socket.emit('getBoardsData', id)
@@ -34,8 +30,8 @@ export const emitNewGame = (board: IInitBoard, addGame: (game: IGame) => void) =
   socket.emit('initGame', board, addGame)
 }
 
-export const stopTimer = (board: IInitBoard) => {
-  socket.emit('stopTimer', board)
+export const endGame = (board: IInitBoard) => {
+  socket.emit('endGame', board)
 }
 
 export const emitUpdatePlayerName = (board: IInitBoard) => {

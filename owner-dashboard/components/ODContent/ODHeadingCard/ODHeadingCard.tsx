@@ -1,8 +1,9 @@
 import { Row, Col, Divider, Card } from 'antd'
+import moment from 'moment'
 import { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 import { dailyGamesState, weeklyGamesState } from '../../../atoms/statsState'
-import { getDailyGames, getWeeklyGames } from '../../../services/api'
+import { getStatsByFilter } from '../../../services/api'
 
 import styles from './ODHeadingCard.module.css'
 import { ODHeadingStats } from './ODHeadingStats/ODHeadingStats'
@@ -12,10 +13,14 @@ export const ODHeadingCard = () => {
   const [weeklyGames, setweeklyGames] = useRecoilState(weeklyGamesState)
 
   const fetchStats = async () => {
-    const week = await getWeeklyGames()
-    const day = await getDailyGames()
-    setweeklyGames(week)
-    setdailyGames(day)
+    const dayGames = await getStatsByFilter({
+      startDate: moment().startOf('day').toDate(),
+    })
+    const weekGames = await getStatsByFilter({
+      startDate: moment().startOf('week').toDate(),
+    })
+    setdailyGames(dayGames.length)
+    setweeklyGames(weekGames.length)
   }
 
   useEffect(() => {
