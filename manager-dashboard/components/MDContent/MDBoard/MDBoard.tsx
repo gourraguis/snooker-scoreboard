@@ -1,20 +1,20 @@
-import { Card, Row, Col, Divider, Empty, Menu, Dropdown } from 'antd'
+import { Card, Row, Col, Divider, Empty } from 'antd'
 import { PlusOutlined, HistoryOutlined, CloseCircleOutlined } from '@ant-design/icons'
 import { FunctionComponent, useState } from 'react'
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
+import { useRecoilState, useSetRecoilState } from 'recoil'
 import { IBoard } from '../../../types/board'
 import { MDTimer } from './MDTimer/MDTimer'
 
 import styles from './MDBoard.module.css'
-import { emitNewGame, endGame } from '../../../services/socket'
 import { MDPlayer } from './MDPlayer/MDPlayer'
-import { gameStateFamily, timerState } from '../../../atoms/games.atom'
+import { gameStateFamily } from '../../../atoms/games.atom'
 import { openNotification } from '../../../services/notification'
 import MDModalHistory from './MDModalHistory/MDModalHistory'
 import MDModalNewGame from './MDModalNewGame/MDModalNewGame'
-import { IInitBoard } from '../../../types/initBoard'
-import { saveGame } from '../../../services/manager-api'
+import { saveGame, startGame } from '../../../services/manager-api'
 import { incrementGamesSelector } from '../../../atoms/boards.atom'
+import { pauseUpdatesState } from '../../../atoms/pauseUpdates.atom'
+import { playersNamesState } from '../../../atoms/playersNames.atom'
 
 interface MDBoardProps {
   board: IBoard
@@ -24,38 +24,11 @@ interface MDBoardProps {
 
 export const MDBoard: FunctionComponent<MDBoardProps> = ({ board, dailyGames, weeklyGames }) => {
   const [game, setGame] = useRecoilState(gameStateFamily(board.id))
-  const incrementGames = useSetRecoilState(incrementGamesSelector)
   const [historyModal, setHistoryModal] = useState(false)
   const [newGameModal, setNewGameModal] = useState(false)
-
-  const startNewGame = async (firstPlayer: string, secondPlayer: string) => {
-    const initBoard: IInitBoard = {
-      boardId: board.id,
-      firstPlayer,
-      secondPlayer,
-    }
-    if (game) {
-      const { players: p } = game
-      if (p[0].score !== 0 || p[1].score !== 0) {
-        incrementGames(game.boardId)
-        await saveGame(game)
-      }
-    }
-
-    emitNewGame(initBoard, (newGame) => {
-      if (!newGame) {
-        openNotification({
-          title: 'Erreur, on a pas pu lancer une nouvelle partie..',
-          type: 'error',
-        })
-      }
-      setGame(newGame)
-      setNewGameModal(false)
-      openNotification({
-        title: 'Une nouvelle partie a été lancé',
-      })
-    })
-  }
+  const incrementGames = useSetRecoilState(incrementGamesSelector)
+  const setPauseUpdates = useSetRecoilState(pauseUpdatesState)
+  const setPlayersNamesState = useSetRecoilState(playersNamesState)
 
   const handleHistory = () => {
     if (!game) {
@@ -66,17 +39,50 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board, dailyGames, we
   }
 
   const handleEndGame = async () => {
-    const initBoard: IInitBoard = {
-      boardId: board.id,
-      firstPlayer: game?.players[0].name,
-      secondPlayer: game?.players[1].name,
+    if (!game) {
+      openNotification({
+        title: "Aucun match n'est actif sur ce tableau",
+        type: 'warning',
+      })
+      return
     }
-    if (game) {
-      incrementGames(game.boardId)
-      await saveGame(game)
+
+    const { players: p } = game
+    if (p[0].score === 0 && p[1].score === 0) {
+      openNotification({
+        title: 'Score 0-0, le match ne sera pas enregistré',
+        type: 'warning',
+      })
+      return
     }
-    endGame(initBoard)
+
+    setPauseUpdates(true)
+    setTimeout(() => {
+      setPauseUpdates(false)
+    }, 10000)
     setGame(null)
+    incrementGames(game.boardId)
+    await saveGame(game)
+  }
+
+  const handleStartGame = async (firstPlayer: string, secondPlayer: string) => {
+    if (game) {
+      await handleEndGame()
+    }
+
+    const newGame = await startGame({
+      boardId: board.id,
+      firstPlayer,
+      secondPlayer,
+    })
+
+    if (!newGame) {
+      return
+    }
+
+    setGame(newGame)
+    setPlayersNamesState([newGame.players[0].name, newGame.players[1].name])
+    setNewGameModal(false)
   }
 
   return (
@@ -132,7 +138,7 @@ export const MDBoard: FunctionComponent<MDBoardProps> = ({ board, dailyGames, we
       {newGameModal && (
         <MDModalNewGame
           previousPlayers={game?.players.map(({ name }) => name)}
-          onSubmit={startNewGame}
+          onSubmit={handleStartGame}
           onCancel={() => setNewGameModal(false)}
         />
       )}

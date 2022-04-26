@@ -1,25 +1,15 @@
 import classNames from 'classnames'
 import { Layout, Space } from 'antd'
-import { FunctionComponent, useEffect } from 'react'
-import { useRecoilState } from 'recoil'
+import { FunctionComponent } from 'react'
+import { useRecoilValue } from 'recoil'
 import { managerBoardsState } from '../../atoms/boards.atom'
 import { MDBoard } from './MDBoard/MDBoard'
-import { getBoards } from '../../services/manager-api'
 import styles from './MDContent.module.css'
 
 const { Content } = Layout
 
 export const MDContent: FunctionComponent = () => {
-  const [managerBoards, setManagerBoards] = useRecoilState(managerBoardsState)
-
-  const setBoards = async () => {
-    const boards = await getBoards()
-    setManagerBoards(boards)
-  }
-
-  useEffect(() => {
-    setBoards()
-  }, [])
+  const managerBoards = useRecoilValue(managerBoardsState)
 
   return (
     <Content

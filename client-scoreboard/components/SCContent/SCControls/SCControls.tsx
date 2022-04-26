@@ -1,24 +1,12 @@
-import { FunctionComponent, useCallback, useEffect, useState } from 'react'
+import { FunctionComponent, useCallback, useEffect } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import {
-  currentTurnSelector,
-  playersScoreSelector,
-  historyState,
-  previousTurnsSelector,
-  currentScoreSelector,
-} from '../../../atoms/history'
+import { currentTurnSelector, historyState, currentScoreSelector } from '../../../atoms/history'
 import { EBall } from '../../../types/ball'
-import { gameState } from '../../../atoms/game.atom'
-import { emitUpdateGame } from '../../../services/sockets'
 
 export const SCControls: FunctionComponent = () => {
-  const game = useRecoilValue(gameState)!
-  const playersScore = useRecoilValue(playersScoreSelector)
   const [history, setHistory] = useRecoilState(historyState)
   const currentTurn = useRecoilValue(currentTurnSelector)
-  const historyWithoutCurrentTurn = useRecoilValue(previousTurnsSelector)
   const currentScore = useRecoilValue(currentScoreSelector)
-  const [send, setSend] = useState(false)
 
   const scoreBall = (ball: EBall) => () => {
     setHistory([
@@ -51,26 +39,6 @@ export const SCControls: FunctionComponent = () => {
     setHistory([...history.slice(0, -2), elem])
   }
 
-  useEffect(() => {
-    setSend(false)
-    if (!send) {
-      emitUpdateGame({
-        ...game,
-        players: [
-          {
-            ...game.players[0],
-            score: playersScore[0],
-          },
-          {
-            ...game.players[1],
-            score: playersScore[1],
-          },
-        ],
-        history: historyWithoutCurrentTurn,
-      })
-    }
-  }, [send])
-
   const switchPlayer = () => {
     if (currentTurn.scoredBalls.length === 0) {
       const newHistory = [...history]
@@ -91,7 +59,6 @@ export const SCControls: FunctionComponent = () => {
         },
       ])
     }
-    setSend(true)
   }
 
   const handleKeyPress = useCallback(

@@ -10,18 +10,6 @@ export class BoardService {
     private readonly boardRepository: Repository<Board>
   ) {}
 
-  public async getBoardWithSocketId(id: string, socketId: string) {
-    const board = await this.boardRepository.findOne({
-      id,
-    })
-    if (!board) {
-      throw new NotFoundException('getBoardWithSocketId: There is no board with this id')
-    }
-    board.socketId = socketId
-    await this.boardRepository.save(board)
-    return board
-  }
-
   public async getBoard(id: string): Promise<Board> {
     const board = await this.boardRepository.findOne({
       id,

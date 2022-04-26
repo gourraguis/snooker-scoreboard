@@ -1,6 +1,7 @@
 import axios from 'axios'
 import moment from 'moment'
 import { IGame } from '../types/game'
+import { IGameEvent } from '../types/game-event'
 import { IManager } from '../types/manager'
 import { IStats } from '../types/stats'
 import { getApiEndpoint } from './config'
@@ -119,13 +120,24 @@ export const loginManager = async (id: string, otp: string): Promise<string | nu
   }
 }
 
+export const startGame = async (newGame: IGameEvent): Promise<IGame | null> => {
+  try {
+    const { data } = await post('game', newGame)
+    return data
+  } catch (error) {
+    console.error(error)
+    openNotification({ title: `Failed to start new game`, type: 'error' })
+    return null
+  }
+}
+
 export const saveGame = async (game: IGame): Promise<void> => {
   const { players: p } = game
 
   const winner = p[0].score! >= p[1].score! ? p[0].name : p[1].name
   const loser = p[0].score! < p[1].score! ? p[0].name : p[1].name
   try {
-    await post('game', {
+    await put('game', {
       boardId: game.boardId,
       winner,
       loser,
@@ -137,6 +149,21 @@ export const saveGame = async (game: IGame): Promise<void> => {
     })
   } catch (err) {
     openNotification({ title: 'Failed to save game', type: 'error' })
+    throw err
+  }
+}
+
+export const createGameEvent = async (boardId: string, event: any) => {
+  try {
+    openNotification({
+      title: `Nom changé á ${event.payload.firstPlayer || event.payload.secondPlayer}`,
+    })
+    await put('game/event', {
+      boardId,
+      event,
+    })
+  } catch (err) {
+    openNotification({ title: 'Failed to send new game event', type: 'error' })
     throw err
   }
 }

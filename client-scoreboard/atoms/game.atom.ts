@@ -1,9 +1,7 @@
 import moment from 'moment'
 import { atom, selector, SetterOrUpdater } from 'recoil'
-import { emitUpdateGame } from '../services/sockets'
 import { IGame } from '../types/game'
-import { IPlayer, IPlayersNames } from '../types/player'
-import { ITurn } from '../types/turn'
+import { IPlayersNames } from '../types/player'
 import { historyState, playersScoreSelector } from './history'
 
 export const gameState = atom<IGame | null>({
@@ -69,8 +67,4 @@ export const updatePlayerNameAction = (setGame: SetterOrUpdater<IGame | null>) =
       ],
     }
   })
-}
-
-export const stopTimerAction = (setGame: SetterOrUpdater<IGame | null>) => async () => {
-  setGame(null)
 }

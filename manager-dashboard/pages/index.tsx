@@ -2,22 +2,28 @@ import { useRouter } from 'next/router'
 import { Layout } from 'antd'
 import type { NextPage } from 'next'
 import { useEffect } from 'react'
-import { useRecoilState, useSetRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import { useInterval } from 'usehooks-ts'
-import { addBoardAction, managerBoardsState, removeBoardAction } from '../atoms/boards.atom'
-import { initSocket } from '../services/socket'
 import { MDHeader } from '../components/MDHeader/MDHeader'
 import { MDContent } from '../components/MDContent/MDContent'
 import { gameSelector } from '../atoms/games.atom'
-import { getGamesState, getManager } from '../services/manager-api'
+import { getBoards, getGamesState, getManager } from '../services/manager-api'
 import { managerState } from '../atoms/managerState'
 import { MDMenu } from '../components/MDMenu/MDMenu'
+import { managerBoardsState } from '../atoms/boards.atom'
+import { pauseUpdatesState } from '../atoms/pauseUpdates.atom'
 
 const Home: NextPage = () => {
-  const setBoards = useSetRecoilState(managerBoardsState)
-  const updateGame = useSetRecoilState(gameSelector)
   const router = useRouter()
   const [manager, setManager] = useRecoilState(managerState)
+  const pauseUpdates = useRecoilValue(pauseUpdatesState)
+  const setGame = useSetRecoilState(gameSelector)
+  const setManagerBoards = useSetRecoilState(managerBoardsState)
+
+  const setBoards = async () => {
+    const boards = await getBoards()
+    setManagerBoards(boards)
+  }
 
   const fetchCurrentManager = async () => {
     const currentManager = await getManager()
@@ -27,21 +33,25 @@ const Home: NextPage = () => {
       return
     }
     setManager(currentManager)
-
-    initSocket(addBoardAction(setBoards), removeBoardAction(setBoards), currentManager.id)
   }
 
   useEffect(() => {
     fetchCurrentManager()
   }, [])
 
+  useEffect(() => {
+    if (manager) {
+      setBoards()
+    }
+  }, [manager])
+
   useInterval(async () => {
-    if (!manager) {
+    if (!manager || pauseUpdates) {
       return
     }
     const gamesState = await getGamesState()
     gamesState.forEach((game) => {
-      updateGame(game)
+      setGame(game)
     })
   }, 1000)
 

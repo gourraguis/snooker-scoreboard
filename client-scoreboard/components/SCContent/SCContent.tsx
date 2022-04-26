@@ -4,9 +4,8 @@ import { useEffect } from 'react'
 import { Col, Empty, Row } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import { useInterval } from 'usehooks-ts'
-import { initSocket } from '../../services/sockets'
 import { boardState } from '../../atoms/board.atom'
-import { formattedGameSelector, gameState, stopTimerAction, updatePlayerNameAction } from '../../atoms/game.atom'
+import { formattedGameSelector, gameState, updatePlayerNameAction } from '../../atoms/game.atom'
 import { currentTurnSelector, historyState, playersScoreSelector } from '../../atoms/history'
 import { addGameAction, globalScoreState } from '../../atoms/globalScore.atom'
 import { SCControls } from './SCControls/SCControls'
@@ -16,7 +15,7 @@ import { SCGameDetails } from './SCGameDetails/SCGameDetails'
 import { SCHeading } from './SCHeader/SCHeader'
 
 import styles from './SCContent.module.css'
-import { saveGameState } from '../../services/client-api'
+import { getBoard, getGameEvents, saveGameState } from '../../services/client-api'
 
 const SCContent = () => {
   const router = useRouter()
@@ -29,7 +28,29 @@ const SCContent = () => {
   const [globalScore, setGlobalScoreState] = useRecoilState(globalScoreState)
   const setHistory = useSetRecoilState(historyState)
 
-  useInterval(() => {
+  useInterval(async () => {
+    if (!id) {
+      return
+    }
+
+    const gameEvents = await getGameEvents(id)
+    gameEvents.forEach((gameEvent) => {
+      if (gameEvent.event === 'updatePlayer') {
+        updatePlayerNameAction(setGame)(gameEvent.payload)
+      }
+      if (gameEvent.event === 'endGame') {
+        setGame(null)
+      }
+      if (gameEvent.event === 'startGame') {
+        addGameAction(setGlobalScoreState, setGame, setHistory)(gameEvent.payload as any)
+      }
+    })
+
+    // we want all the atom updates to be completed before calling saveGameState
+    await new Promise((resolve) => {
+      setTimeout(resolve, 500)
+    })
+
     if (formattedGame) {
       saveGameState(formattedGame)
     }
@@ -39,13 +60,7 @@ const SCContent = () => {
     if (!id) {
       return
     }
-    initSocket(
-      addGameAction(setGlobalScoreState, setGame, setHistory),
-      setBoard,
-      id,
-      updatePlayerNameAction(setGame),
-      stopTimerAction(setGame)
-    )
+    getBoard(id).then(setBoard)
   }, [id])
 
   return (
@@ -57,12 +72,12 @@ const SCContent = () => {
       )}
       {id && !board && (
         <div className={styles.contentCentered}>
-          <Empty className={styles.centered} description="BOARD IS NOT CONNECTED TO API" />
+          <Empty className={styles.centered} description="Le tableau n'est pas connecté" />
         </div>
       )}
       {board && !game && (
         <div className={styles.contentCentered}>
-          <Empty className={styles.centered} description="GAME IS NOT STARTED" />
+          <Empty className={styles.centered} description="Aucune partie commencé" />
         </div>
       )}
 
