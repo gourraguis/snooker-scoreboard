@@ -5,7 +5,7 @@ import { IBoard } from '../types/board'
 import { openNotification } from './notification'
 import { getApiEndpoint } from './config'
 import { ICardElements } from '../types/cardElement'
-import { IStats } from '../types/statistics'
+import { IStats, IStatsFilter } from '../types/statistics'
 
 const api = axios.create({
   baseURL: getApiEndpoint(),
@@ -70,26 +70,6 @@ export const getOwner = async (): Promise<IOwner | null> => {
   }
 }
 
-export const getWeeklyGames = async (): Promise<number> => {
-  try {
-    const { data: weeklyGames } = await get('game/weeklyGames')
-    return weeklyGames
-  } catch (error) {
-    openNotification({ title: 'Failed to fetch weekly games', type: 'error' })
-    throw error
-  }
-}
-
-export const getDailyGames = async (): Promise<number> => {
-  try {
-    const { data: dailyGames } = await get('game/dailyGames')
-    return dailyGames
-  } catch (error) {
-    openNotification({ title: 'Failed to fetch weekly games', type: 'error' })
-    throw error
-  }
-}
-
 export const getManagers = async (): Promise<ICardElements[]> => {
   try {
     const { data } = await get('owner/managers')
@@ -110,9 +90,9 @@ export const getBoards = async (): Promise<ICardElements[]> => {
   }
 }
 
-export const getStatsByFilter = async (filter: any): Promise<IStats[]> => {
+export const getStatsByFilter = async (filter: IStatsFilter): Promise<IStats[]> => {
   try {
-    const { data } = await post('owner/statistics', filter)
+    const { data } = await post('game/stats', filter)
     return data
   } catch (error) {
     openNotification({ title: 'Failed to fetch stats', type: 'error' })

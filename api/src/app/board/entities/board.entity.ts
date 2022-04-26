@@ -16,6 +16,7 @@ export class Board {
   @ManyToOne(() => Owner, (owner) => owner.id)
   owner: Owner
 
+  // todo: remove this column
   @Column({
     nullable: true,
   })

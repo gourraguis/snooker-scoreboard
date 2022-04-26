@@ -39,7 +39,8 @@ const Settings: NextPage = () => {
       </Head>
       <Layout style={{ minHeight: '100vh' }}>
         <ODHeader />
-        <div style={{ marginTop: '10vh' }} />
+        <div style={{ marginTop: '5vh' }} />
+        <p style={{ textAlign: 'center', fontWeight: 'bold' }}>EN COURS DE DEVELOPEMENT...</p>
         <ODMenu />
       </Layout>
     </>

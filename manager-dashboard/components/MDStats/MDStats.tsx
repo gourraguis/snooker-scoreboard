@@ -1,9 +1,8 @@
 import { Table } from 'antd'
 import moment from 'moment'
 import { FunctionComponent, useEffect, useState } from 'react'
-import { getManagerStats } from '../../services/api'
+import { getManagerStats } from '../../services/manager-api'
 import { IStats } from '../../types/stats'
-import styles from './MDStats.module.css'
 
 const columns = [
   {
@@ -12,23 +11,23 @@ const columns = [
     width: '30%',
   },
   {
-    title: 'Rabe7',
+    title: 'Gagnant',
     dataIndex: 'winner',
     width: '25%',
   },
   {
-    title: 'Kahser',
+    title: 'Perdant',
     dataIndex: 'loser',
     width: '25%',
   },
   {
-    title: 'We9t',
+    title: 'Temps',
     dataIndex: 'duration',
     width: '20%',
   },
 ]
 
-export const MDStatistics: FunctionComponent = () => {
+export const MDStats: FunctionComponent = () => {
   const [stats, setStats] = useState<IStats[]>()
 
   const fetchStats = async () => {
@@ -45,9 +44,5 @@ export const MDStatistics: FunctionComponent = () => {
     fetchStats()
   }, [])
 
-  return (
-    <main className={styles.content}>
-      <Table columns={columns} dataSource={stats} pagination={false} bordered />
-    </main>
-  )
+  return <Table columns={columns} dataSource={stats} pagination={false} bordered scroll={{ y: '80vh' }} />
 }

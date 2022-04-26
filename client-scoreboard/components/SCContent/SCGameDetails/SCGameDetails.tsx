@@ -6,7 +6,7 @@ import SCBall from './SCBall/SCBall'
 import styles from './SCGameDetails.module.css'
 import SCTimer from './SCTimer/SCTimer'
 
-const SCGameDetails = () => {
+export const SCGameDetails = () => {
   const lastBall = useRecoilValue(lastBallSelector)
   const currentScore = useRecoilValue(currentScoreSelector)
 
@@ -25,5 +25,3 @@ const SCGameDetails = () => {
     </Content>
   )
 }
-
-export default SCGameDetails

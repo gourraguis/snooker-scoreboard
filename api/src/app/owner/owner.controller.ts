@@ -33,12 +33,6 @@ export class OwnerController {
     return this.ownerService.getOwnerBoards(id)
   }
 
-  @Post('statistics')
-  @UseGuards(JwtAuthGuard)
-  getStatistics(@AuthenticatedUser('id') id: string, @Body() filter) {
-    return this.ownerService.getStatisticsByFilter(id, filter)
-  }
-
   @Post('')
   createOwner(@Body('owner') owner: Partial<Owner>, @Body('secret') secret: string) {
     validatePhoneNumber(owner.id)

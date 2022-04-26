@@ -1,32 +1,37 @@
 import { Table } from 'antd'
+import moment from 'moment'
 import { FunctionComponent } from 'react'
 import { useRecoilValue } from 'recoil'
 import { statsState } from '../../../atoms/statsState'
-import styles from './ODTable.module.css'
 
 const columns = [
   {
     title: 'Manager',
-    dataIndex: 'manager',
+    dataIndex: 'managerName',
     width: '30%',
   },
   {
     title: 'Table',
-    dataIndex: 'table',
+    dataIndex: 'boardName',
     width: '30%',
   },
   {
-    title: 'Durée du match',
-    dataIndex: 'duration',
+    title: 'Date',
+    dataIndex: 'startedAt',
+    render: (startedAt: Date) => {
+      const date = moment(startedAt)
+      return (
+        <>
+          <p style={{ marginBottom: 0 }}>{date.format('DD/MM')}</p>
+          <p>{date.format('HH:mm')}</p>
+        </>
+      )
+    },
   },
 ]
 
 export const ODTable: FunctionComponent = () => {
   const stats = useRecoilValue(statsState)
 
-  return (
-    <div className={styles.all}>
-      <Table columns={columns} dataSource={stats} pagination={{ pageSize: 50 }} scroll={{ y: 240 }} />
-    </div>
-  )
+  return <Table columns={columns} dataSource={stats} pagination={false} scroll={{ y: '50vh' }} />
 }

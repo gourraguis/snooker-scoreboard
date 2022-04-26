@@ -5,7 +5,6 @@ export interface IPlayer {
 }
 
 export interface IPlayersNames {
-  boardId: string
   firstPlayer?: string
   secondPlayer?: string
 }
