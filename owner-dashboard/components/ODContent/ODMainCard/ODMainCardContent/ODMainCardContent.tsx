@@ -2,16 +2,14 @@ import { EllipsisOutlined } from '@ant-design/icons'
 import { Row, Col, Divider, Card, Dropdown, Menu } from 'antd'
 import { FunctionComponent } from 'react'
 import { useRecoilState } from 'recoil'
-import { ownerBoardsState } from '../../../../atoms/boards.atom'
 import { ownerManagersState } from '../../../../atoms/managers.atom'
-import { deleteManager, deleteBoard } from '../../../../services/api'
+import { deleteManager } from '../../../../services/api'
 import { ICardElements } from '../../../../types/cardElement'
 
 import styles from './ODMainCardContent.module.css'
 
 export const ODMainCardContent: FunctionComponent<ICardElements> = ({ id, name, dailyGames, weeklyGames }) => {
   const [ownerManagers, setOwnerManagers] = useRecoilState(ownerManagersState)
-  const [ownerBoards, setOwnerBoards] = useRecoilState(ownerBoardsState)
 
   const isPhoneNumber = (phoneNumber: string): boolean => {
     const phoneRegex = /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/
@@ -27,10 +25,10 @@ export const ODMainCardContent: FunctionComponent<ICardElements> = ({ id, name, 
     if (isPhoneNumber(id)) {
       deleteManager(id)
       setOwnerManagers(ownerManagers.filter((element) => element.id !== id))
-      return
     }
-    deleteBoard(id)
-    setOwnerBoards(ownerBoards.filter((element) => element.id !== id))
+    // we disabled deleting boards per said request, if it stays disabled for a few months delete it from the code
+    // deleteBoard(id)
+    // setOwnerBoards(ownerBoards.filter((element) => element.id !== id))
   }
 
   const menu = (
@@ -44,18 +42,20 @@ export const ODMainCardContent: FunctionComponent<ICardElements> = ({ id, name, 
   return (
     <Card className={styles.card} bodyStyle={{ paddingTop: '18px' }}>
       <Row className={styles.ellips}>
-        <Dropdown overlay={menu} placement="bottomRight" trigger={['click']}>
-          <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
-            <EllipsisOutlined key="ellipsis" />
-          </a>
-        </Dropdown>
+        {isPhoneNumber(id) && (
+          <Dropdown overlay={menu} placement="bottomRight" trigger={['click']}>
+            <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
+              <EllipsisOutlined key="ellipsis" />
+            </a>
+          </Dropdown>
+        )}
       </Row>
       <Row>
-        <Col span={6} className={styles.column}>
+        <Col span={8} className={styles.column}>
           <h3 className={styles.name}>{name}</h3>
         </Col>
 
-        <Col span={2}>
+        <Col span={1}>
           <Divider type="vertical" className={styles.divider} />
         </Col>
 
@@ -64,7 +64,7 @@ export const ODMainCardContent: FunctionComponent<ICardElements> = ({ id, name, 
           <span className={styles.text}>Jour</span>
         </Col>
 
-        <Col span={2}>
+        <Col span={1}>
           <Divider type="vertical" className={styles.divider} />
         </Col>
 
