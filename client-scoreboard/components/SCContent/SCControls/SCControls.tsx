@@ -1,12 +1,17 @@
-import { FunctionComponent, useCallback, useEffect } from 'react'
+import { FunctionComponent, useCallback, useEffect, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
+import { gameState } from '../../../atoms/game.atom'
 import { currentTurnSelector, historyState, currentScoreSelector } from '../../../atoms/history'
+import { getMaxUndoCount } from '../../../services/config'
+import { openNotification } from '../../../services/notification'
 import { EBall } from '../../../types/ball'
 
 export const SCControls: FunctionComponent = () => {
+  const game = useRecoilValue(gameState)
   const [history, setHistory] = useRecoilState(historyState)
   const currentTurn = useRecoilValue(currentTurnSelector)
   const currentScore = useRecoilValue(currentScoreSelector)
+  const [undoCount, setUndoCount] = useState(0)
 
   const scoreBall = (ball: EBall) => () => {
     setHistory([
@@ -16,9 +21,23 @@ export const SCControls: FunctionComponent = () => {
         scoredBalls: [...currentTurn.scoredBalls, ball],
       },
     ])
+    setUndoCount((prevUndoCount) => Math.max(0, prevUndoCount - 1))
   }
 
   const undoBall = () => {
+    console.log(undoCount)
+    console.log(getMaxUndoCount())
+    if (undoCount >= getMaxUndoCount()) {
+      openNotification({
+        type: 'warning',
+        title: 'Maximum de retour en arrière',
+        description: `t9ed terje3 blour ${getMaxUndoCount()} balles max`,
+      })
+      return
+    }
+
+    setUndoCount((prevUndoCount) => prevUndoCount + 1)
+
     if (currentScore > 0) {
       const elem = {
         value: history[history.length - 1].value,
@@ -40,13 +59,14 @@ export const SCControls: FunctionComponent = () => {
   }
 
   const switchPlayer = () => {
+    const newTurn = ((currentTurn.value + 1) % 2) as 0 | 1
     if (currentTurn.scoredBalls.length === 0) {
       const newHistory = [...history]
       newHistory.pop()
       setHistory([
         ...newHistory,
         {
-          value: ((currentTurn.value + 1) % 2) as 0 | 1,
+          value: newTurn,
           scoredBalls: [],
         },
       ])
@@ -54,11 +74,15 @@ export const SCControls: FunctionComponent = () => {
       setHistory([
         ...history,
         {
-          value: ((currentTurn.value + 1) % 2) as 0 | 1,
+          value: newTurn,
           scoredBalls: [],
         },
       ])
     }
+    openNotification({
+      type: 'success',
+      title: `La canne est chez ${game?.players[newTurn].name}`,
+    })
   }
 
   const handleKeyPress = useCallback(

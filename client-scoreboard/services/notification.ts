@@ -1,4 +1,5 @@
 import { notification as notificationAntd } from 'antd'
+import { debounce } from 'debounce'
 
 interface INotificationConfiguration {
   title: string
@@ -12,11 +13,14 @@ const notifications = {
   error: notificationAntd.error,
 }
 
-export const openNotification = ({ title, description, type = 'success' }: INotificationConfiguration): void => {
-  const notification = notifications[type]
-  notification({
-    message: title,
-    description,
-    placement: 'bottomRight',
-  })
-}
+export const openNotification = debounce(
+  ({ title, description, type = 'success' }: INotificationConfiguration): void => {
+    const notification = notifications[type]
+    notification({
+      message: title,
+      description,
+      placement: 'bottomRight',
+    })
+  },
+  500
+)

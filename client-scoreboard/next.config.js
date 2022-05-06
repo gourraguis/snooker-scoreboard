@@ -16,6 +16,7 @@ const nextConfig = withLess({
   },
   env: {
     API_ENDPOINT: process.env.API_ENDPOINT,
+    MAX_UNDO_COUNT: process.env.MAX_UNDO_COUNT,
   },
 })
 
